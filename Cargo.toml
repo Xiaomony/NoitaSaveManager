@@ -1,9 +1,3 @@
 [workspace]
-members = [
-    "Core",
-    "App_cmd",
-    "App_gui",
-]
+members = ["noitarchiver_core"]
 
-
-resolver = "2"
