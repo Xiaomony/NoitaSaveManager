@@ -1,0 +1,6 @@
+Noita (Jan 25 2025) - 20250830-151239
+-------------------------------------------
+LoadImage() - Failed to load image: data/ui_gfx/mouse_cursor_big.png
+ERROR - LoadSpriteTo()... file doesn't exist: data/ui_gfx/mouse_cursor_big.png
+Unable to open text csv file: data/translations/common.csv
+Unable to open text csv file: 

@@ -6,15 +6,24 @@
 - File Lock
 - Error Handling
 
-## Possible Resolution
+## expected features
+
+- Scheduled Backup
+- Localization
+- Automatic Update
 
 ## Project Design
 
 1. Core
     - [ ] file operator
+        - get noita archive path
+        - save the archive
+        - delete an archive
+
     - [ ] archives info
     - [ ] customized error
     - [ ] core manager
+    - [ ] output manager
 2. Command Line Application(icon: Nuke)
 3. GUI Application(icon: Circle of Vigour)
 
