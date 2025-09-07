@@ -15,16 +15,18 @@
 ## Project Design
 
 1. Core
-    - [ ] file operator
+    - [x] file operator
         - get noita archive path
         - save the archive
         - delete an archive
 
-    - [ ] archives info
-    - [ ] customized error
-    - [ ] core manager
-    - [ ] output manager
+    - [x] archives info
+    - [x] customized error
+    - [x] core manager
+    - [x] output manager
 2. Command Line Application(icon: Nuke)
+    - [ ] command parser
+    - [ ] 
 3. GUI Application(icon: Circle of Vigour)
 
 ## Log Classification

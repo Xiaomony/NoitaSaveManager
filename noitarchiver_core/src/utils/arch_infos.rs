@@ -62,12 +62,32 @@ impl SingleArch {
     }
 
     #[inline]
+    pub fn get_data(&self) -> &str {
+        &self.m_data
+    }
+
+    #[inline]
+    pub fn get_time(&self) -> &str {
+        &self.m_time
+    }
+
+    #[inline]
     pub fn get_name(&self) -> &str {
         &self.m_name
     }
 
     #[inline]
-    pub fn protect(&self) -> Result<(), NAchError> {
+    pub fn get_note(&self) -> &str {
+        &self.m_note
+    }
+
+    #[inline]
+    pub fn is_locked(&self) -> bool {
+        self.m_islocked
+    }
+
+    #[inline]
+    pub fn protect(&self) -> NAComResult {
         if self.m_islocked {
             throw(MSG_FAVORED_UNTOUCHABLE)
         } else {

@@ -1,3 +1,4 @@
 [workspace]
 members = [ "noitarchiver_cmd","noitarchiver_core"]
 resolver = "2"
+
