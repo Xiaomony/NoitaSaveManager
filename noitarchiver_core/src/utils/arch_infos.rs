@@ -101,4 +101,9 @@ impl AllInfos {
     pub fn get_exe_path(&self) -> &Path {
         &self.noita_exe_path
     }
+
+    #[inline]
+    pub fn set_noita_path(&mut self, new_path: String) {
+        self.noita_exe_path = PathBuf::from(new_path);
+    }
 }

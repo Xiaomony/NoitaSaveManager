@@ -118,7 +118,7 @@ impl std::fmt::Display for ErrorType {
             General => "GeneralError",
             Io(..) => "IoError",
             Serialize(..) => "SerializeError",
-            Mutex(..) => "MutexError",
+            Mutex(msg) => &format!("MutexError({})", msg),
             Regex(..) => "RegexError",
         };
         write!(f, "{}", msg)

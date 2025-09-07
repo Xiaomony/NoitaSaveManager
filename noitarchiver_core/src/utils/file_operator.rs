@@ -130,6 +130,16 @@ impl FileOperator {
         Ok(())
     }
 
+    pub fn rename_archive(&self, old_name: &str, new_name: &str) -> NAComResult {
+        let arch_folder_path = PathBuf::from(ARCH_FOLDER_PATH);
+        fs::rename(
+            arch_folder_path.join(old_name),
+            arch_folder_path.join(new_name),
+        )
+        .explain("Fail to rename archive folder")?;
+        Ok(())
+    }
+
     pub fn caculate_usage(path: &Path) -> NAResult<f64> {
         let mut size = 0f64;
         for entry in fs::read_dir(path).explain(&format!(

@@ -43,6 +43,11 @@ impl<Opm: OutputManager> Core<Opm> {
         &self.m_info
     }
 
+    #[inline]
+    pub fn write_infos(&mut self) -> NAComResult {
+        self.m_file_operator.write_infos(&self.m_info)
+    }
+
     pub fn startgame(&self) -> NAComResult {
         let noipath = self.m_info.get_exe_path();
         if !(noipath.exists() && noipath.ends_with("noita.exe")) {
@@ -57,6 +62,11 @@ impl<Opm: OutputManager> Core<Opm> {
         Ok(())
     }
 
+    pub fn set_noita_path(&mut self, path: String) -> NAComResult {
+        self.m_info.set_noita_path(path);
+        self.write_infos()
+    }
+
     pub fn save(&mut self, archive_name: String, archive_note: String) -> NAComResult {
         if self
             .m_info
@@ -67,6 +77,10 @@ impl<Opm: OutputManager> Core<Opm> {
             return throw("The archive name is the same with another.Please change one");
         }
 
+        if archive_name.is_empty() {
+            return throw("Archive name can't be empty");
+        }
+
         self.m_file_operator.save_archive(&archive_name)?;
         self.m_info.archives.push(SingleArch::new(
             Self::get_data(),
@@ -74,7 +88,7 @@ impl<Opm: OutputManager> Core<Opm> {
             archive_name,
             archive_note,
         ));
-        self.m_file_operator.write_infos(&self.m_info)?;
+        self.write_infos()?;
         Ok(())
     }
 
@@ -126,6 +140,8 @@ impl<Opm: OutputManager> Core<Opm> {
 
             arch.modify_data(Self::get_data());
             arch.modify_time(Self::get_time());
+
+            self.write_infos()?;
             Ok(())
         } else {
             throw("There's no archives to replace")
@@ -147,6 +163,9 @@ impl<Opm: OutputManager> Core<Opm> {
 
     #[inline]
     pub fn quick_load(&self) -> NAComResult {
+        if self.m_info.archives.is_empty() {
+            return throw("No archives to load");
+        }
         self.load_archive(self.m_info.archives.len() - 1)
     }
 
@@ -159,11 +178,18 @@ impl<Opm: OutputManager> Core<Opm> {
         if let Some(item) = self.m_info.archives.get_mut(index) {
             item.protect()?;
             if let Some(name) = new_name {
+                if name.trim().is_empty() {
+                    return throw("Archive name can't be empty");
+                }
+
+                self.m_file_operator
+                    .rename_archive(item.get_name(), &name)?;
                 item.modify_name(name);
             }
             if let Some(note) = new_note {
                 item.modify_note(note);
             }
+            self.write_infos()?;
             Ok(())
         } else {
             throw("The index of the archive need to modify is invalid")
@@ -218,26 +244,60 @@ impl<Opm: OutputManager> Core<Opm> {
         self.delete_archives(vec![self.m_info.archives.len() - 1])
     }
 
-    pub fn lock(&mut self, index: usize) -> NAComResult {
-        if let Some(item) = self.m_info.archives.get_mut(index) {
-            item.lock();
-            Ok(())
-        } else {
-            throw("The index of the archive need to lock is invalid")
+    pub fn lock(&mut self, indexes: Vec<usize>) -> NAComResult {
+        let mut suc_msg = "The following archives have been locked:\n".to_string();
+        let mut any_valid = false;
+        for index in indexes {
+            if let Some(item) = self.m_info.archives.get_mut(index) {
+                item.lock();
+                suc_msg += &format!(
+                    "[{}]  {}\t\t{}\n",
+                    index + 1,
+                    item.get_name(),
+                    item.get_note()
+                );
+                any_valid = true;
+            }
         }
+        if any_valid {
+            suc_msg += "Invalid indexes are filtered\n";
+            self.m_opm.log_green(suc_msg);
+        } else {
+            self.m_opm
+                .warning("No archives to lock after invalid indexes are filtered\n".to_string());
+        }
+        self.write_infos()?;
+        Ok(())
     }
 
-    pub fn unlock(&mut self, index: usize) -> NAComResult {
-        if let Some(item) = self.m_info.archives.get_mut(index) {
-            item.unlock();
-            Ok(())
-        } else {
-            throw("The index of the archive need to unlock is invalid")
+    pub fn unlock(&mut self, indexes: Vec<usize>) -> NAComResult {
+        let mut suc_msg = "The following archives have been unlocked:\n".to_string();
+        let mut any_valid = false;
+        for index in indexes {
+            if let Some(item) = self.m_info.archives.get_mut(index) {
+                item.unlock();
+                suc_msg += &format!(
+                    "[{}]  {}\t\t{}\n",
+                    index + 1,
+                    item.get_name(),
+                    item.get_note()
+                );
+                any_valid = true;
+            }
         }
+        if any_valid {
+            suc_msg += "Invalid indexes are filtered\n";
+            self.m_opm.log_green(suc_msg);
+        } else {
+            self.m_opm
+                .warning("No archives to lock after invalid indexes are filtered\n".to_string());
+        }
+        self.write_infos()?;
+        Ok(())
     }
 
     #[inline]
-    pub fn usage() -> NAResult<f64> {
+    pub fn usage_by_mb() -> NAResult<f64> {
         FileOperator::caculate_usage(Path::new(ARCH_FOLDER_PATH))
     }
 }

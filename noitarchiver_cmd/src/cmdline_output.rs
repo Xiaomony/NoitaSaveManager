@@ -1,6 +1,6 @@
 use std::io::{self, Write};
 
-use noitarchiver_core::{output_manager, NAResult, ResultExt};
+use noitarchiver_core::{output_manager::{self, OutputManager}, NAResult, ResultExt};
 
 use colored::Colorize;
 
@@ -9,6 +9,10 @@ pub struct CmdlineOutput {}
 impl CmdlineOutput {
     pub fn flush() {
         io::stdout().flush().unwrap();
+    }
+
+    pub fn succeed(&self) {
+        self.log_green("Succeed\n".to_string());
     }
 }
 
