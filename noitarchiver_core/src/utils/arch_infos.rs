@@ -3,8 +3,6 @@ use super::error::*;
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
 
-const MSG_FAVORED_UNTOUCHABLE: &str = "Locked archives can't be touched";
-
 #[derive(Serialize, Deserialize)]
 pub struct SingleArch {
     m_data: String,
@@ -89,7 +87,7 @@ impl SingleArch {
     #[inline]
     pub fn protect(&self) -> NAComResult {
         if self.m_islocked {
-            throw(MSG_FAVORED_UNTOUCHABLE)
+            throw(&t!("locked_untouchable_msg"))
         } else {
             Ok(())
         }

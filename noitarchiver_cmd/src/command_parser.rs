@@ -85,11 +85,7 @@ impl<'a> CommandParser<'a> {
         new.add_command(&["unlock", "ul", "uf"], "unlock an archive", Self::unlock);
 
         // OTHER
-        new.add_command(
-            &["usage", "use"],
-            "check current disk usage",
-            Self::usage,
-        );
+        new.add_command(&["usage", "use"], "check current disk usage", Self::usage);
         Ok(new)
     }
 
@@ -150,7 +146,7 @@ impl<'a> CommandParser<'a> {
                     CMDOPT.log_green(format!(" or {}", item.cmd_name[i]));
                 }
             }
-            CMDOPT.log_green(")\n\t".to_string() + item.cmd_explanation);
+            CMDOPT.log_green(")\n\t".to_string() + item.cmd_explanation + "\n");
         }
         Ok(true)
     }
@@ -199,7 +195,7 @@ impl<'a> CommandParser<'a> {
         mut parameter: Vec<String>,
     ) -> NAResult<bool> {
         core.set_noita_path(if parameter.is_empty() {
-            CMDOPT.getline("Please input the path of \"noita.exe\"".to_string())?
+            CMDOPT.getline("Please input the path of \"noita.exe\":".to_string())?
         } else {
             parameter.remove(0)
         })?;
@@ -245,11 +241,12 @@ impl<'a> CommandParser<'a> {
         mut core: MutexGuard<'_, CmdCore>,
         _parameter: Vec<String>,
     ) -> NAResult<bool> {
-        core.replace_save()?;
+        core.overwrite_save()?;
         CMDOPT.succeed();
         Ok(true)
     }
 
+    // TODO:
     fn scheduled_save(
         &self,
         _core: MutexGuard<'_, CmdCore>,

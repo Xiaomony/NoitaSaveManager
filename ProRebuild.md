@@ -26,7 +26,6 @@
     - [x] output manager
 2. Command Line Application(icon: Nuke)
     - [ ] command parser
-    - [ ] 
 3. GUI Application(icon: Circle of Vigour)
 
 ## Log Classification

@@ -28,45 +28,42 @@ impl FileOperator {
         if let Some(home_dir) = BaseDirs::new() {
             Ok(home_dir.home_dir().join(NOITA_ARCH_PATH_POSTFIX))
         } else {
-            throwfatal("Fail to get the path where noita store the archive")
+            throwfatal(&t!("fail_get_noita_archive_store_path"))
         }
     }
 
     fn open_info_file() -> NAResult<fs::File> {
         fs::create_dir_all(ARCH_FOLDER_PATH)
-            .explain_fatal("Fail to create folder to store archives")?;
+            .explain_fatal(&t!("fail_create_archive_storage_folder"))?;
         let mut f = fs::OpenOptions::new()
             .create(true)
             .truncate(false)
             .read(true)
             .write(true)
             .open(ARCH_INFO_PATH)
-            .explain_fatal("Fail to create/open archives info file")?;
+            .explain_fatal(&t!("fail_create_archive_storage_folder"))?;
         if f.metadata()
-            .explain("Fail to query the size of archive info file")?
+            .explain(&t!("fail_query_info_file_size"))?
             .len()
             == 0
         {
             f.write_all(br#"{ "noita_exe_path":"", "archives":[]}"#)
-                .explain_fatal("Fail to initialize archive info file")?;
-            f.rewind().explain(
-                "Fail to go back to the beginning after initialize the archive info file",
-            )?;
+                .explain_fatal(&t!("fail_initialize_info_file"))?;
+            f.rewind()
+                .explain(&t!("fail_goto_info_file_start_after_init"))?;
         }
-        f.try_lock_exclusive().explain_fatal("Archive Info file(Archives/infos.json) has already been occupied.Maybe another Noitarchiver is running.")?;
+        f.try_lock_exclusive()
+            .explain_fatal(&t!("info_file_occupied"))?;
         Ok(f)
     }
 
     fn copy_dir(src: &Path, dst: &Path) -> NAComResult {
         if !src.exists() {
-            return throw(&format!(
-                "The source path (\"{}\") needs to copy does not exists",
-                src.to_str().unwrap()
-            ));
+            return throw(&t!("source_path_not_exist", path = src.to_str().unwrap()));
         }
-        fs::create_dir_all(dst).explain_fatal(&format!(
-            "Fail to create destination path (\"{}\") while copying",
-            dst.to_str().unwrap()
+        fs::create_dir_all(dst).explain_fatal(&t!(
+            "fail_create_destination_path",
+            path = dst.to_str().unwrap()
         ))?;
         for entry in fs::read_dir(src)? {
             let dir_entry = entry?;
@@ -87,46 +84,45 @@ impl FileOperator {
 
     pub fn load_infos(&self) -> NAResult<AllInfos> {
         let infos: AllInfos = serde_json::from_reader(std::io::BufReader::new(&self.m_file))
-            .explain_fatal("Fail to parse the archive info file")?;
+            .explain_fatal(&t!("fail_parse_archive_info_file"))?;
         Ok(infos)
     }
 
     pub fn write_infos(&mut self, infos: &AllInfos) -> NAComResult {
         self.m_file
             .rewind()
-            .explain("Failt to go back to the beginning before writing into archive info file")?;
-        serde_json::to_writer(&self.m_file, infos)
-            .explain("Fail to write archives info into \"info.json\"")?;
+            .explain(&t!("fail_go_back_to_start_before_writing"))?;
+        serde_json::to_writer(&self.m_file, infos).explain(&t!("fail_write_into_info_file"))?;
         let pos = self
             .m_file
             .stream_position()
-            .explain("Fail to get the current position after writing into archive info file")?;
+            .explain(&t!("fail_get_crr_pos_after_writing"))?;
         self.m_file
             .set_len(pos)
-            .explain("Fail to set file length after writing into archive info file")?;
+            .explain(&t!("fail_set_file_length_after_writing"))?;
         Ok(())
     }
 
     pub fn save_archive(&self, folder_name: &str) -> NAComResult {
         let dst = PathBuf::from(ARCH_FOLDER_PATH).join(folder_name);
-        Self::copy_dir(&self.m_noita_arch_path, &dst).explain("Fail to save the archive file")?;
+        Self::copy_dir(&self.m_noita_arch_path, &dst).explain(&t!("fail_save_achive"))?;
         Ok(())
     }
 
     pub fn remove_archive(&self, folder_name: &str) -> NAComResult {
         fs::remove_dir_all(PathBuf::from(ARCH_FOLDER_PATH).join(folder_name))
-            .explain(&format!("Fail to remove forlder \"{folder_name}\""))?;
+            .explain(&t!("fail_remove_folder", folder_name = folder_name))?;
         Ok(())
     }
 
     pub fn load_archive(&self, folder_name: String) -> NAComResult {
         fs::remove_dir_all(&self.m_noita_arch_path)
-            .explain("Fail to remove existing noita archive")?;
+            .explain(&t!("fail_remove_crr_noita_archive"))?;
         Self::copy_dir(
             &PathBuf::from(ARCH_FOLDER_PATH).join(folder_name),
             &self.m_noita_arch_path,
         )
-        .explain("Fail to load archive")?;
+        .explain(&t!("fail_load_archive"))?;
         Ok(())
     }
 
@@ -136,24 +132,19 @@ impl FileOperator {
             arch_folder_path.join(old_name),
             arch_folder_path.join(new_name),
         )
-        .explain("Fail to rename archive folder")?;
+        .explain(&t!("fail_rename_archive_folder"))?;
         Ok(())
     }
 
     pub fn caculate_usage(path: &Path) -> NAResult<f64> {
         let mut size = 0f64;
-        for entry in fs::read_dir(path).explain(&format!(
-            "Error ocurred when caculating the size of \"{:?}\"",
-            path,
-        ))? {
-            let dir = entry.explain(&format!(
-                "Error ocurred when caculating the size of \"{:?}\"",
-                path,
-            ))?;
-            let metadata = dir.metadata().explain(&format!(
-                "Error ocurred when caculating the size of \"{:?}\"",
-                path,
-            ))?;
+        for entry in
+            fs::read_dir(path).explain(&t!("fail_caculate_size", path = format!("{path:?}")))?
+        {
+            let dir = entry.explain(&t!("fail_caculate_size", path = format!("{path:?}")))?;
+            let metadata = dir
+                .metadata()
+                .explain(&t!("fail_caculate_size", path = format!("{path:?}")))?;
             size += if metadata.is_dir() {
                 Self::caculate_usage(&dir.path())?
             } else {
