@@ -1,0 +1,134 @@
+_version: 2
+
+exp.help:
+  zh-CN: 使用教程
+  zh-TW: 使用教學
+  en-US: help & instructions
+  en-GB: help & instructions
+  ja-JP: 使い方ガイド
+
+exp.clear:
+  zh-CN: 清屏
+  zh-TW: 清除畫面
+  en-US: clear screen
+  en-GB: clear screen
+  ja-JP: 画面クリア
+
+exp.quit:
+  zh-CN: 退出程序
+  zh-TW: 結束程式
+  en-US: exit application
+  en-GB: exit application
+  ja-JP: アプリケーション終了
+
+exp.startgame:
+  zh-CN: 启动noita
+  zh-TW: 啟動noita
+  en-US: start noita.exe
+  en-GB: start noita.exe
+  ja-JP: noitaを起動
+
+exp.setpath:
+  zh-CN: 设置noita路径
+  zh-TW: 設定noita路徑
+  en-US: set the path of noita.exe
+  en-GB: set the path of noita.exe
+  ja-JP: noitaのパス設定
+
+exp.save:
+  zh-CN: 存档
+  zh-TW: 存檔
+  en-US: save archive
+  en-GB: save archive
+  ja-JP: アーカイブ保存
+
+exp.qsave:
+  zh-CN: 快速存档
+  zh-TW: 快速存檔
+  en-US: quick save
+  en-GB: quick save
+  ja-JP: クイックセーブ
+
+exp.overwrite:
+  zh-CN: 覆盖式存档
+  zh-TW: 覆蓋式存檔
+  en-US: overwrite the latest
+  en-GB: overwrite the latest
+  ja-JP: 上書き保存
+
+exp.ssave:
+  zh-CN: 定时存档
+  zh-TW: 定時存檔
+  en-US: scheduled save
+  en-GB: scheduled save
+  ja-JP: スケジュール保存
+
+exp.load:
+  zh-CN: 加载存档
+  zh-TW: 載入存檔
+  en-US: load archive
+  en-GB: load archive
+  ja-JP: アーカイブ読み込み
+
+exp.qload:
+  zh-CN: 快速加载
+  zh-TW: 快速載入
+  en-US: quick load
+  en-GB: quick load
+  ja-JP: クイックロード
+
+exp.list:
+  zh-CN: 存档列表
+  zh-TW: 存檔列表
+  en-US: list saved archives
+  en-GB: list saved archives
+  ja-JP: アーカイブ一覧
+
+exp.slist:
+  zh-CN: 近几次存档列表
+  zh-TW: 近期存檔列表
+  en-US: short list
+  en-GB: short list
+  ja-JP: 最近のアーカイブ一覧
+
+exp.modarch:
+  zh-CN: 修改存档信息
+  zh-TW: 修改存檔資訊
+  en-US: modify archive info
+  en-GB: modify archive info
+  ja-JP: アーカイブ情報変更
+
+exp.delete:
+  zh-CN: 删除存档
+  zh-TW: 刪除存檔
+  en-US: delete archive
+  en-GB: delete archive
+  ja-JP: アーカイブ削除
+
+exp.qdelete:
+  zh-CN: 删除最新存档
+  zh-TW: 刪除最新存檔
+  en-US: quick delete
+  en-GB: quick delete
+  ja-JP: 最新アーカイブ削除
+
+exp.lock:
+  zh-CN: 锁定存档
+  zh-TW: 鎖定存檔
+  en-US: lock an archive
+  en-GB: lock an archive
+  ja-JP: アーカイブロック
+
+exp.unlock:
+  zh-CN: 解锁存档
+  zh-TW: 解鎖存檔
+  en-US: unlock an archive
+  en-GB: unlock an archive
+  ja-JP: アーカイブロック解除
+
+exp.usage:
+  zh-CN: 查看磁盘占用
+  zh-TW: 查看磁碟使用量
+  en-US: check disk usage
+  en-GB: check disk usage
+  ja-JP: ディスク使用量確認

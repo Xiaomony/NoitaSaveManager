@@ -92,7 +92,7 @@ impl FileOperator {
         self.m_file
             .rewind()
             .explain(&t!("fail_go_back_to_start_before_writing"))?;
-        serde_json::to_writer(&self.m_file, infos).explain(&t!("fail_write_into_info_file"))?;
+        serde_json::to_writer_pretty(&self.m_file, infos).explain(&t!("fail_write_into_info_file"))?;
         let pos = self
             .m_file
             .stream_position()

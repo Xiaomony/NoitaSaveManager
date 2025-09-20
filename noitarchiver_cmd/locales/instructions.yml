@@ -1,0 +1,178 @@
+_version: 2
+
+instruction:
+  zh-CN: |
+    ------------------------------------------------------------------------------------------------------------------------
+    本程序gitHub主页及更详细的readme文档：https://github.com/Xiaomony/NoitArchiver-Rust_ver.
+    注意事项：
+        1. 本程序运行时会在程序所在目录下建立一个Archives文件夹用于存储日志文件和保存的存档，请勿删除(若删除，则相当于恢复程序第一次运行的状态)
+        2. 建议将程序放在磁盘中的某个文件夹下，再发送到桌面快捷方式使用(避免程序在桌面创建Archive文件夹后被误删)
+        3. 请在Noita主界面有"继续"这一选项时读取存档，若没有则请先"新游戏"后再关闭游戏读档，重新打开后再点击"继续"
+        4. 建议关闭Steam云存档
+        5. 请在Noita正常保存、关闭后再进行存档
+            (游戏进行中存档的话保存的是Noita的自动存档，可能是几分钟前的存档，并非保存时的存档)
+        6. 游戏进行中请勿读取存档
+        7. 随着游戏的进行，每次存档所用的时间和占用的空间也会不断增大，请耐心等待
+        8. 本程序的命令行版本支持，传入命令行参数
+        9. 命令行版本与GUI版本可以共用一个Archives文件夹，但千万不要同时运行两个版本的程序
+        10. 使用此程序启动Noita会较Steam启动更快，但需要先使用命令设置noita.exe所在的路径
+        11. 使用此程序启动Noita时，如果在Steam未启动时使用此命令，会无法加载Steam中的模组和存档
+        12. 查看noita路径：Steam库中Noita界面 → 右边的小齿轮图标 → 管理 → 浏览本地文件
+    ------------------------------------------------------------------------------------------------------------------------
+    命令说明：
+        1.使用 "help 命令"(help 与命令见用空格分隔) 查看某条命令的说明及用法
+        2.新版本的命令有两种使用方式：命令参数模式和普通模式
+
+            - 命令参数模式：使用类似命令行的方法进行操作，如
+                    save 存档1 存档备注
+                在输入命令的同时将其参数一同输入，每个参数用空格隔开，如果存档名、存档备注等任何参数中含有空格，请用  英文引号（不要用中文引号）  将参数括起来
+                    save "存档 1" "存档  备注"
+                每个命令的命令参数模式的格式不同，请用  help+命令  的形式查看某条命令的说明及用法
+
+            - 普通模式：先输入命令，再根据程序的提示输入参数，如
+                    >>>save
+                    请输入存档名(直接换行则取消保存):存档 1
+                    请输入存档备注(直接换行则不填):存档备注
+                    保存成功
+    ------------------------------------------------------------------------------------------------------------------------
+        3.使用lock命令收藏的存档不可进行任何修改，请先使用unlock取消对其收藏才能修改
+  zh-TW: |
+    ------------------------------------------------------------------------------------------------------------------------
+    本程式gitHub主頁及更詳細的readme文件：https://github.com/Xiaomony/NoitArchiver-Rust_ver.
+    注意事項：
+        1. 本程式執行時會在程式所在目錄下建立一個Archives資料夾用於儲存日誌檔案和儲存的存檔，請勿刪除(若刪除，則相當於恢復程式第一次執行的狀態)
+        2. 建議將程式放在磁碟中的某個資料夾下，再傳送到桌面捷徑使用(避免程式在桌面建立Archive資料夾後被誤刪)
+        3. 請在Noita主介面有"繼續"這一選項時讀取存檔，若沒有則請先"新遊戲"後再關閉遊戲讀檔，重新開啟後再點選"繼續"
+        4. 建議關閉Steam雲端存檔
+        5. 請在Noita正常儲存、關閉後再進行存檔
+            (遊戲進行中存檔的話儲存的是Noita的自動存檔，可能是幾分鐘前的存檔，並非儲存時的存檔)
+        6. 遊戲進行中請勿讀取存檔
+        7. 隨著遊戲的進行，每次存檔所用的時間和佔用的空間也會不斷增大，請耐心等待
+        8. 本程式的命令列版本支援傳入命令列參數
+        9. 命令列版本與GUI版本可以共用一個Archives資料夾，但千萬不要同時執行兩個版本的程式
+        10. 使用此程式啟動Noita會較Steam啟動更快，但需要先使用命令設定noita.exe所在的路徑
+        11. 使用此程式啟動Noita時，如果在Steam未啟動時使用此命令，會無法載入Steam中的模組和存檔
+        12. 查看noita路徑：Steam庫中Noita介面 → 右邊的小齒輪圖示 → 管理 → 瀏覽本機檔案
+    ------------------------------------------------------------------------------------------------------------------------
+    命令說明：
+        1.使用 "help 命令"(help 與命令見用空格分隔) 查看某條命令的說明及用法
+        2.新版本的命令有兩種使用方式：命令參數模式和普通模式
+
+            - 命令參數模式：使用類似命令列的方法進行操作，如
+                    save 存檔1 存檔備註
+                在輸入命令的同時將其參數一同輸入，每個參數用空格隔開，如果存檔名、存檔備註等任何參數中含有空格，請用  英文引號（不要用中文引號）  將參數括起來
+                    save "存檔 1" "存檔  備註"
+                每個命令的命令參數模式的格式不同，請用  help+命令  的形式查看某條命令的說明及用法
+
+            - 普通模式：先輸入命令，再根據程式的提示輸入參數，如
+                    >>>save
+                    請輸入存檔名(直接換行則取消儲存):存檔 1
+                    請輸入存檔備註(直接換行則不填):存檔備註
+                    儲存成功
+    ------------------------------------------------------------------------------------------------------------------------
+        3.使用lock命令收藏的存檔不可進行任何修改，請先使用unlock取消對其收藏才能修改
+  en-US: |
+    ------------------------------------------------------------------------------------------------------------------------
+    GitHub repository and detailed README: https://github.com/Xiaomony/NoitArchiver-Rust_ver.
+    Important Notes:
+        1. This program creates an "Archives" folder in its directory to store log files and saved archives. Do not delete this folder (deleting it will reset the program to its initial state)
+        2. It is recommended to place the program in a folder on your disk and create a desktop shortcut (to avoid accidental deletion of the Archive folder created on the desktop)
+        3. Load archives only when the "Continue" option is available on the Noita main menu. If not, start a "New Game", then close the game and load the archive, reopening it and clicking "Continue"
+        4. It is recommended to disable Steam Cloud saves
+        5. Only archive when Noita has been properly saved and closed
+            (Archiving during gameplay will save Noita's auto-save, which may be from several minutes ago, not the current state)
+        6. Do not load archives during gameplay
+        7. As the game progresses, the time and space required for each archive will increase significantly. Please be patient
+        8. The command-line version of this program supports command-line arguments
+        9. The command-line and GUI versions can share the same Archives folder, but never run both versions simultaneously
+        10. Launching Noita through this program is faster than via Steam, but you must first set the path to noita.exe using the appropriate command
+        11. If Steam is not running when you launch Noita through this program, Steam mods and cloud saves will not be loaded
+        12. To find the Noita path: In your Steam library, go to Noita → click the gear icon → Manage → Browse local files
+    ------------------------------------------------------------------------------------------------------------------------
+    Command Instructions:
+        1. Use "help [command]" (separate help and command with a space) to view the description and usage of a specific command
+        2. The new version of commands supports two usage modes: command parameter mode and normal mode
+
+            - Command parameter mode: Operate using a command-line like approach, e.g.
+                    save archive1 "archive note"
+                Input the command along with its parameters, separating each parameter with a space. If any parameter (archive name, note, etc.) contains spaces, enclose it in English quotation marks (do not use Chinese quotation marks)
+                    save "archive 1" "archive  note"
+                The format of command parameter mode varies for each command. Use "help [command]" to view the description and usage of a specific command
+
+            - Normal mode: First input the command, then follow the program's prompts to input parameters, e.g.
+                    >>>save
+                    Please input archive name (press Enter to cancel): archive 1
+                    Please input archive note (press Enter to leave blank): archive note
+                    Archive saved successfully
+    ------------------------------------------------------------------------------------------------------------------------
+        3. Archives locked with the lock command cannot be modified. Use unlock to remove the lock before making changes
+  en-GB: |
+    ------------------------------------------------------------------------------------------------------------------------
+    GitHub repository and detailed README: https://github.com/Xiaomony/NoitArchiver-Rust_ver.
+    Important Notes:
+        1. This program creates an "Archives" folder in its directory to store log files and saved archives. Do not delete this folder (deleting it will reset the program to its initial state)
+        2. It is recommended to place the program in a folder on your disk and create a desktop shortcut (to avoid accidental deletion of the Archive folder created on the desktop)
+        3. Load archives only when the "Continue" option is available on the Noita main menu. If not, start a "New Game", then close the game and load the archive, reopening it and clicking "Continue"
+        4. It is recommended to disable Steam Cloud saves
+        5. Only archive when Noita has been properly saved and closed
+            (Archiving during gameplay will save Noita's auto-save, which may be from several minutes ago, not the current state)
+        6. Do not load archives during gameplay
+        7. As the game progresses, the time and space required for each archive will increase significantly. Please be patient
+        8. The command-line version of this program supports command-line arguments
+        9. The command-line and GUI versions can share the same Archives folder, but never run both versions simultaneously
+        10. Launching Noita through this program is faster than via Steam, but you must first set the path to noita.exe using the appropriate command
+        11. If Steam is not running when you launch Noita through this program, Steam mods and cloud saves will not be loaded
+        12. To find the Noita path: In your Steam library, go to Noita → click the gear icon → Manage → Browse local files
+    ------------------------------------------------------------------------------------------------------------------------
+    Command Instructions:
+        1. Use "help [command]" (separate help and command with a space) to view the description and usage of a specific command
+        2. The new version of commands supports two usage modes: command parameter mode and normal mode
+
+            - Command parameter mode: Operate using a command-line like approach, e.g.
+                    save archive1 "archive note"
+                Input the command along with its parameters, separating each parameter with a space. If any parameter (archive name, note, etc.) contains spaces, enclose it in English quotation marks (do not use Chinese quotation marks)
+                    save "archive 1" "archive  note"
+                The format of command parameter mode varies for each command. Use "help [command]" to view the description and usage of a specific command
+
+            - Normal mode: First input the command, then follow the program's prompts to input parameters, e.g.
+                    >>>save
+                    Please input archive name (press Enter to cancel): archive 1
+                    Please input archive note (press Enter to leave blank): archive note
+                    Archive saved successfully
+    ------------------------------------------------------------------------------------------------------------------------
+        3. Archives locked with the lock command cannot be modified. Use unlock to remove the lock before making changes
+  ja-JP: |
+    ------------------------------------------------------------------------------------------------------------------------
+    本プログラムのGitHubリポジトリと詳細なREADME：https://github.com/Xiaomony/NoitArchiver-Rust_ver.
+    重要な注意事項：
+        1. このプログラムは、ログファイルと保存されたアーカイブを格納するために「Archives」フォルダをプログラムのディレクトリに作成します。このフォルダを削除しないでください（削除するとプログラムが初期状態にリセットされます）
+        2. プログラムをディスク上のフォルダに配置し、デスクトップショートカットを作成することをお勧めします（デスクトップに作成されたArchiveフォルダが誤って削除されるのを防ぐため）
+        3. Noitaのメインメニューに「続ける」オプションが表示されている場合にのみアーカイブを読み込んでください。表示されていない場合は、「新しいゲーム」を開始し、ゲームを閉じてアーカイブを読み込み、再起動して「続ける」をクリックしてください
+        4. Steamクラウドセーブを無効にすることをお勧めします
+        5. Noitaが正常に保存され、閉じられた後にのみアーカイブを作成してください
+            （ゲームプレイ中にアーカイブを作成すると、Noitaの自動セーブが保存されます。これは現在の状態ではなく、数分前の状態である可能性があります）
+        6. ゲームプレイ中にアーカイブを読み込まないでください
+        7. ゲームが進行するにつれて、各アーカイブに必要な時間とスペースが大幅に増加します。しばらくお待ちください
+        8. このプログラムのコマンドラインバージョンは、コマンドライン引数をサポートしています
+        9. コマンドライン版とGUI版は同じArchivesフォルダを共有できますが、両方のバージョンを同時に実行しないでください
+        10. このプログラムを通じてNoitaを起動するとSteam経由より高速ですが、まず適切なコマンドを使用してnoita.exeへのパスを設定する必要があります
+        11. Steamが実行されていない状態でこのプログラムを通じてNoitaを起動すると、SteamのMODとクラウドセーブは読み込まれません
+        12. Noitaのパスを見つける方法：SteamライブラリでNoitaを選択 → 歯車アイコンをクリック → 管理 → ローカルファイルを閲覧
+    ------------------------------------------------------------------------------------------------------------------------
+    コマンド説明：
+        1. 「help [コマンド]」（helpとコマンドをスペースで区切る）を使用して、特定のコマンドの説明と使用方法を表示します
+        2. 新しいバージョンのコマンドは2つの使用モードをサポートしています：コマンドパラメータモードと通常モード
+
+            - コマンドパラメータモード：コマンドラインのようなアプローチを使用して操作します。例：
+                    save アーカイブ1 "アーカイブのメモ"
+                コマンドとそのパラメータを同時に入力し、各パラメータをスペースで区切ります。パラメータ（アーカイブ名、メモなど）にスペースが含まれている場合は、英語の引用符（中国語の引用符は使用しないでください）で囲んでください
+                    save "アーカイブ 1" "アーカイブ  メモ"
+                コマンドパラメータモードの形式はコマンドごとに異なります。特定のコマンドの説明と使用方法を表示するには「help [コマンド]」を使用してください
+
+            - 通常モード：まずコマンドを入力し、プログラムのプロンプトに従ってパラメータを入力します。例：
+                    >>>save
+                    アーカイブ名を入力（Enterでキャンセル）：アーカイブ 1
+                    アーカイブのメモを入力（Enterで空白のまま）：アーカイブのメモ
+                    アーカイブが正常に保存されました
+    ------------------------------------------------------------------------------------------------------------------------
+        3. lockコマンドでロックされたアーカイブは変更できません。変更する前にunlockを使用してロックを解除してください

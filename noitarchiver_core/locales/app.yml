@@ -1,5 +1,20 @@
 _version: 2
 
+# date time format
+date_format:
+  zh-CN: "%Y年%m月%d日"
+  zh-TW: "%Y年%m月%d日"
+  en-US: "%Y-%m-%d"
+  en-GB: "%d/%m/%Y"
+  ja-JP: "%Y年%m月%d日"
+
+time_format:
+  zh-CN: "%H时%M分%S秒"
+  zh-TW: "%H時%M分%S秒"
+  en-US: "%I:%M:%S %p"
+  en-GB: "%H:%M:%S"
+  ja-JP: "%H時%M分%S秒"
+
 # arch_infos.rs
 locked_untouchable_msg:
   zh-CN: 已锁定的存档无法进行操作

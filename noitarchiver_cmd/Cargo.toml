@@ -1,9 +1,11 @@
 [package]
 name = "noitarchiver_cmd"
-version = "0.1.0"
-edition = "2024"
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
 colored = "3.0.0"
 noitarchiver_core = { path = "../noitarchiver_core/" }
 regex = "1.11.2"
+rust-i18n = { workspace = true }
+unicode-width = "0.2.1"

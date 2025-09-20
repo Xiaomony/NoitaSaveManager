@@ -53,12 +53,12 @@ impl<Opm: OutputManager> Core<Opm> {
 
     #[inline]
     fn get_data() -> String {
-        Local::now().format("%Y-%m-%d").to_string()
+        Local::now().format(&t!("date_format")).to_string()
     }
 
     #[inline]
     fn get_time() -> String {
-        Local::now().format("%H:%M:%S").to_string()
+        Local::now().format(&t!("time_format")).to_string()
     }
 
     #[inline]

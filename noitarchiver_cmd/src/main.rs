@@ -1,3 +1,10 @@
+#[macro_use]
+extern crate rust_i18n;
+i18n!(
+    "locales",
+    fallback = ["en-US", "en-GB", "zh-CN", "zh-TW", "ja-JP"]
+);
+
 mod cmdline_output;
 mod command_parser;
 
@@ -23,8 +30,7 @@ fn process() -> NAComResult {
                 }
             }
             Ok(false) => break,
-            Ok(true) => {
-            }
+            Ok(true) => {}
         }
     }
     Ok(())
@@ -42,8 +48,9 @@ fn main() {
             source = err.source();
             CMDOPT.debug(format!("\t{}\n", err));
         }
+        println!("\n\n");
         CMDOPT
-            .getline("\n\nPress enter to exit...".to_string())
+            .getline(t!("msg.press_enter_to_exit").to_string())
             .unwrap();
     }
 }
