@@ -1,6 +1,6 @@
 [workspace]
-members = [ "noitarchiver_cmd","noitarchiver_core"]
 resolver = "2"
+members = ["noitarchiver_cmd", "noitarchiver_core"]
 
 [workspace.package]
 version = "4.0.0"
@@ -9,3 +9,4 @@ edition = "2024"
 
 [workspace.dependencies]
 rust-i18n = "3.1.5"
+

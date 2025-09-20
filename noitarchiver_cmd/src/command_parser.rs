@@ -1,17 +1,20 @@
 use std::{
     collections::BTreeSet,
-    sync::{Arc, Mutex, MutexGuard},
+    sync::{Arc, Condvar, Mutex},
+    thread::{self, JoinHandle},
+    time::Duration,
 };
 
-use super::cmdline_output::CmdlineOutput;
+use super::cmdline_output::*;
 use super::CMDOPT;
 use colored::Colorize;
 use noitarchiver_core::{
     output_manager::OutputManager, throw, Core, NAResult, NAchError, ResultExt,
 };
 use regex::Regex;
+use rustyline::ExternalPrinter;
 
-type CallBack<'a> = fn(&CommandParser<'a>, MutexGuard<'_, CmdCore>, Vec<String>) -> NAResult<bool>;
+type CallBack<'a> = fn(&CommandParser<'a>, &mut CmdCore, Vec<String>) -> NAResult<bool>;
 type CmdCore = Core<CmdlineOutput>;
 
 const TITLE: &str = concat!("NoitArhiver  v", env!("CARGO_PKG_VERSION"));
@@ -22,10 +25,17 @@ struct Command<'a> {
     cmd_manual: String,
     callback: CallBack<'a>,
 }
+struct SsaveKit {
+    m_ssave_thread: Option<JoinHandle<()>>,
+    m_auto_save_flag: Arc<Mutex<bool>>,
+    m_condvar: Arc<Condvar>,
+    m_rustyline_reader: rustyline::DefaultEditor,
+}
 
 pub struct CommandParser<'a> {
     commands: Vec<Command<'a>>,
     m_core: Arc<Mutex<CmdCore>>,
+    m_ssave_kit: Arc<Mutex<SsaveKit>>,
 }
 
 impl<'a> CommandParser<'a> {
@@ -33,14 +43,19 @@ impl<'a> CommandParser<'a> {
         let mut new = Self {
             commands: Vec::new(),
             m_core: Arc::new(Mutex::new(Core::new(CMDOPT)?)),
+            m_ssave_kit: Arc::new(Mutex::new(SsaveKit {
+                m_ssave_thread: None,
+                m_auto_save_flag: Arc::new(Mutex::new(false)),
+                m_condvar: Arc::new(Condvar::new()),
+                m_rustyline_reader: rustyline::DefaultEditor::new().unwrap(),
+            })),
         };
         rust_i18n::set_locale(
             new.m_core
                 .lock()
-                .explain(&t!("err.fail_get_core_lock"))?
+                .explain(&t!("err.fail_get_mutex_lock"))?
                 .get_locale(),
         );
-        // rust_i18n::set_locale("ja-JP");
 
         // BASIC COMMAND
         new.add_command(&["help", "h"], &t!("exp.help"), &t!("man.help"), Self::help);
@@ -84,10 +99,10 @@ impl<'a> CommandParser<'a> {
             Self::overwrite,
         );
         new.add_command(
-            &["ssave", "ss"],
-            &t!("exp.ssave"),
-            &t!("man.ssave"),
-            Self::scheduled_save,
+            &["asave", "as"],
+            &t!("exp.asave"),
+            &t!("man.asave"),
+            Self::auto_save,
         );
 
         // LOAD
@@ -173,11 +188,14 @@ impl<'a> CommandParser<'a> {
     }
 
     pub fn next_command(&mut self) -> NAResult<bool> {
-        let core = self.m_core.lock().explain(&t!("err.fail_get_core_lock"))?;
-
-        // print ">>>" seperately to avoid it to be printed in blue
-        print!(">>>");
-        let line = CMDOPT.getline(String::new())?;
+        let line = self
+            .m_ssave_kit
+            .lock()
+            .unwrap()
+            .m_rustyline_reader
+            .readline(">>>")
+            .unwrap();
+        let core = &mut *self.m_core.lock().explain(&t!("err.fail_get_mutex_lock"))?;
         let re = Regex::new(r#""([^"]*)"|(\S+)"#).explain(&t!("err.fail_init_regex"))?;
         let mut parts: Vec<String> = re
             .captures_iter(&line)
@@ -206,7 +224,7 @@ impl<'a> CommandParser<'a> {
         }
     }
 
-    fn help(&self, mut _core: MutexGuard<'_, CmdCore>, parameter: Vec<String>) -> NAResult<bool> {
+    fn help(&self, _core: &mut CmdCore, parameter: Vec<String>) -> NAResult<bool> {
         if parameter.is_empty() {
             CMDOPT.log(t!("instruction").to_string());
         } else if let Some(item) = self.commands.iter().find(|item| {
@@ -247,7 +265,7 @@ impl<'a> CommandParser<'a> {
                     item.cmd_name[1].bright_yellow()
                 )
             );
-            super::cmdline_output::print_with_pad(&item.cmd_explanation, 22);
+            print_with_pad(&item.cmd_explanation, 22);
             match index + 1 {
                 3 | 8 | 11 | 14 | 16 => println!(),
                 5 | 9 | 18 => println!("\n"),
@@ -258,25 +276,21 @@ impl<'a> CommandParser<'a> {
         CmdlineOutput::flush();
     }
 
-    fn clear(&self, mut _core: MutexGuard<'_, CmdCore>, _parameter: Vec<String>) -> NAResult<bool> {
+    fn clear(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         self.cls();
         Ok(true)
     }
 
-    fn quit(&self, mut _core: MutexGuard<'_, CmdCore>, _parameter: Vec<String>) -> NAResult<bool> {
+    fn quit(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         Ok(false)
     }
 
-    fn startgame(&self, core: MutexGuard<'_, CmdCore>, _parameter: Vec<String>) -> NAResult<bool> {
+    fn startgame(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         core.startgame()?;
         Ok(true)
     }
 
-    fn set_noita_path(
-        &self,
-        mut core: MutexGuard<'_, CmdCore>,
-        mut parameter: Vec<String>,
-    ) -> NAResult<bool> {
+    fn set_noita_path(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NAResult<bool> {
         core.set_noita_path(if parameter.is_empty() {
             let path = CMDOPT.input(t!("prompt.noita_path").to_string())?;
             if path.is_empty() {
@@ -291,11 +305,7 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn save(
-        &self,
-        mut core: MutexGuard<'_, CmdCore>,
-        mut parameter: Vec<String>,
-    ) -> NAResult<bool> {
+    fn save(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NAResult<bool> {
         let name = if parameter.is_empty() {
             CMDOPT.input(t!("prompt.save_name").to_string())?
         } else {
@@ -316,36 +326,132 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn quick_save(
-        &self,
-        mut core: MutexGuard<'_, CmdCore>,
-        _parameter: Vec<String>,
-    ) -> NAResult<bool> {
-        core.quick_save()?;
+    fn quick_save(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
+        core.quick_save(false)?;
         CMDOPT.succeed();
         Ok(true)
     }
 
-    fn overwrite(
-        &self,
-        mut core: MutexGuard<'_, CmdCore>,
-        _parameter: Vec<String>,
-    ) -> NAResult<bool> {
+    fn overwrite(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         core.overwrite_save()?;
         CMDOPT.succeed();
         Ok(true)
     }
 
-    // TODO: scheduled_save
-    fn scheduled_save(
-        &self,
-        _core: MutexGuard<'_, CmdCore>,
-        _parameter: Vec<String>,
-    ) -> NAResult<bool> {
+    fn auto_save(&self, _core: &mut CmdCore, mut parameter: Vec<String>) -> NAResult<bool> {
+        let Ok(time_interval) = (if parameter.is_empty() {
+            CMDOPT
+                .input(t!("prompt.auto_save_interval").to_string())?
+                .parse::<u64>()
+        }else {
+            parameter.remove(0).parse::<u64>()
+        })
+        else {
+            CMDOPT.cancel();
+            return Ok(true);
+        };
+
+        let Ok(max_auto_archives) = (if parameter.is_empty() {
+            CMDOPT
+                .input(t!("prompt.auto_save_max_archives").to_string())?
+                .parse::<usize>()
+        }else {
+            parameter.remove(0).parse::<usize>()
+        })
+        else {
+            CMDOPT.cancel();
+            return Ok(true);
+        };
+        if max_auto_archives == 0 {
+            CMDOPT.cancel();
+            return Ok(true);
+        }
+
+        // core function of auto_save
+        let mut kit = self
+            .m_ssave_kit
+            .lock()
+            .explain(&t!("err.fail_get_mutex_lock"))
+            .unwrap();
+        if let Some(previous_handle) = kit.m_ssave_thread.take() {
+            let mut flag = kit
+                .m_auto_save_flag
+                .lock()
+                .explain(&t!("err.fail_get_mutex_lock"))
+                .unwrap();
+            *flag = false;
+            kit.m_condvar.notify_all();
+            drop(flag);
+            previous_handle.join().unwrap();
+        };
+        if time_interval != 0 {
+            let core_ref = self.m_core.clone();
+            let ref_condvar = kit.m_condvar.clone();
+            let ref_flag = kit.m_auto_save_flag.clone();
+            *kit.m_auto_save_flag
+                .lock()
+                .explain(&t!("err.fail_get_mutex_lock"))
+                .unwrap() = true;
+            let mut printer = kit.m_rustyline_reader.create_external_printer().unwrap();
+
+            let handle = thread::spawn(move || loop {
+                let flag = ref_flag
+                    .lock()
+                    .explain(&t!("err.fail_get_mutex_lock"))
+                    .unwrap();
+                let result = ref_condvar
+                    .wait_timeout(flag, Duration::from_secs(time_interval))
+                    .explain(&t!("err.fail_get_mutex_lock"))
+                    .unwrap();
+                if !*result.0 {
+                    return;
+                }
+
+                let mut core = core_ref
+                    .lock()
+                    .explain(&t!("err.fail_get_mutex_lock"))
+                    .unwrap();
+                printer
+                    .print(
+                        format_with_pad_centered(&t!("msg.auto_saving"), 69)
+                            .bright_yellow()
+                            .bold()
+                            .to_string(),
+                    )
+                    .unwrap();
+                let (removed, latest) = core.auto_save(max_auto_archives).unwrap();
+                if let Some(removed_arch) = removed {
+                    printer
+                        .print(
+                            format!("{}\n\t{}", t!("msg.auto_save_delete_old"), removed_arch)
+                                .cyan()
+                                .to_string(),
+                        )
+                        .unwrap();
+                }
+                printer
+                    .print(
+                        format!("{}\n\t{}", t!("msg.auto_save_new"), latest)
+                            .cyan()
+                            .to_string(),
+                    )
+                    .unwrap();
+                printer
+                    .print(
+                        format_with_pad_centered(&t!("msg.success"), 69)
+                            .green()
+                            .to_string(),
+                    )
+                    .unwrap();
+            });
+            kit.m_ssave_thread = Some(handle);
+        } else {
+            CMDOPT.log_green(t!("msg.auto_save_stop").to_string() + "\n");
+        }
         Ok(true)
     }
 
-    fn load(&self, core: MutexGuard<'_, CmdCore>, mut parameter: Vec<String>) -> NAResult<bool> {
+    fn load(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NAResult<bool> {
         if parameter.is_empty() {
             parameter.push(CMDOPT.input(t!("prompt.load_index").to_string())?);
         }
@@ -363,26 +469,23 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn quick_load(&self, core: MutexGuard<'_, CmdCore>, _parameter: Vec<String>) -> NAResult<bool> {
+    fn quick_load(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         core.quick_load()?;
         CMDOPT.succeed();
         Ok(true)
     }
 
-    fn print_log(&self, core: MutexGuard<'_, CmdCore>, start: usize) {
+    fn print_log(&self, core: &mut CmdCore, start: usize) {
+        if core.get_arch_infos().archives.is_empty() {
+            CMDOPT.log(t!("msg.no_archive").to_string() + "\n");
+            return;
+        }
         CMDOPT.log(t!("msg.locked_archive_in_green").to_string() + "\n");
         core.get_arch_infos().archives[start..]
             .iter()
             .enumerate()
             .for_each(|(index, item)| {
-                let arch_log = format!(
-                    "[{}] {}  {}\t{}\t\t\t{}\n",
-                    index + 1 + start,
-                    item.get_data(),
-                    item.get_time(),
-                    item.get_name(),
-                    item.get_note()
-                );
+                let arch_log = format!("[{}] {}\n", index + 1 + start, item);
                 if item.is_locked() {
                     CMDOPT.log_green(arch_log);
                 } else {
@@ -390,22 +493,18 @@ impl<'a> CommandParser<'a> {
                 }
             });
     }
-    fn log(&self, core: MutexGuard<'_, CmdCore>, _parameter: Vec<String>) -> NAResult<bool> {
+    fn log(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         self.print_log(core, 0);
         Ok(true)
     }
 
-    fn short_log(&self, core: MutexGuard<'_, CmdCore>, _parameter: Vec<String>) -> NAResult<bool> {
+    fn short_log(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         let start = std::cmp::max(core.get_arch_infos().archives.len() as isize - 6, 0) as usize;
         self.print_log(core, start);
         Ok(true)
     }
 
-    fn modify_archive(
-        &self,
-        mut core: MutexGuard<'_, CmdCore>,
-        mut parameter: Vec<String>,
-    ) -> NAResult<bool> {
+    fn modify_archive(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NAResult<bool> {
         let index_str = if parameter.is_empty() {
             CMDOPT.input(t!("prompt.modarch_index").to_string())?
         } else {
@@ -469,11 +568,7 @@ impl<'a> CommandParser<'a> {
         Ok(indexes.into_iter().collect())
     }
 
-    fn delete(
-        &self,
-        mut core: MutexGuard<'_, CmdCore>,
-        mut parameter: Vec<String>,
-    ) -> NAResult<bool> {
+    fn delete(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NAResult<bool> {
         if parameter.is_empty() {
             parameter.push(CMDOPT.input(t!("prompt.delete_index").to_string())?);
         }
@@ -486,16 +581,12 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn quick_delete(
-        &self,
-        mut core: MutexGuard<'_, CmdCore>,
-        _parameter: Vec<String>,
-    ) -> NAResult<bool> {
+    fn quick_delete(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         core.quick_delete_archive()?;
         Ok(true)
     }
 
-    fn lock(&self, mut core: MutexGuard<'_, CmdCore>, parameter: Vec<String>) -> NAResult<bool> {
+    fn lock(&self, core: &mut CmdCore, parameter: Vec<String>) -> NAResult<bool> {
         let indexes = Self::get_indexes_by_parameter(if parameter.is_empty() {
             CMDOPT
                 .input(t!("prompt.lock_index").to_string())?
@@ -513,7 +604,7 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn unlock(&self, mut core: MutexGuard<'_, CmdCore>, parameter: Vec<String>) -> NAResult<bool> {
+    fn unlock(&self, core: &mut CmdCore, parameter: Vec<String>) -> NAResult<bool> {
         let indexes = Self::get_indexes_by_parameter(if parameter.is_empty() {
             CMDOPT
                 .input(t!("prompt.unlock_index").to_string())?
@@ -531,7 +622,7 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn usage(&self, _core: MutexGuard<'_, CmdCore>, _parameter: Vec<String>) -> NAResult<bool> {
+    fn usage(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NAResult<bool> {
         let usage = Core::<CmdlineOutput>::usage_by_mb()?;
         if usage > 1024.0 {
             CMDOPT.log(format!("{:.2} GB\n", usage / 1024.0));

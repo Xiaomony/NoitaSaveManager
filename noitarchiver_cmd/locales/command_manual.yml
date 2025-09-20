@@ -121,17 +121,27 @@ man.overwrite:
   ja-JP: |
     - overwrite                         最新のアーカイブを上書き保存
 
-man.ssave:
+man.asave:
   zh-CN: |
-    - ssave [时间间隔]                  设定定时存档时间间隔
+    - asave [时间间隔] [最多存档数]     设定自动存档时间间隔（分钟）
+    ## 自动存档将以 as_ 开头，且超过最大存档数时将会删除最旧的存档
+    ## Noita的自动存档时间间隔为3分钟，因此时间间隔不应该少于3分钟
   zh-TW: |
-    - ssave [時間間隔]                  設定定時存檔時間間隔
+    - asave [時間間隔] [最多存檔數]     設定自動存檔時間間隔（分鐘）
+    ## 自動存檔將以 as_ 開頭，且超過最大存檔數時將會刪除最舊的存檔
+    ## Noita的自動存檔時間間隔為3分鐘，因此時間間隔不應該少於3分鐘
   en-US: |
-    - ssave [time interval]             Set scheduled save interval
+    - asave [time interval] [max archives]     Set automatic save interval (in minutes)
+    ## Automatic saves will start with as_ prefix, and the oldest archives will be deleted when exceeding the maximum count
+    ## Noita's auto-save interval is 3 minutes, so the interval should not be less than 3 minutes
   en-GB: |
-    - ssave [time interval]             Set scheduled save interval
+    - asave [time interval] [max archives]     Set automatic save interval (in minutes)
+    ## Automatic saves will start with as_ prefix, and the oldest archives will be deleted when exceeding the maximum count
+    ## Noita's auto-save interval is 3 minutes, so the interval should not be less than 3 minutes
   ja-JP: |
-    - ssave [時間間隔]                  スケジュール保存の間隔を設定
+    - asave [時間間隔] [最大アーカイブ数]     自動保存の間隔を設定（分単位）
+    ## 自動保存は as_ で始まり、最大数を超えると最も古いアーカイブが削除されます
+    ## Noitaの自動保存間隔は3分なので、間隔は3分未満にしないでください
 
 man.load:
   zh-CN: |

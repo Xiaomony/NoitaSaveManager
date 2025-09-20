@@ -1,7 +1,7 @@
 _version: 2
 
 # error
-err.fail_get_core_lock:
+err.fail_get_mutex_lock:
   zh-CN: 数据竞争失败（无法获取互斥体）
   zh-TW: 資料競爭失敗（無法取得互斥鎖）
   en-US: Fail to get mutex lock
@@ -59,6 +59,20 @@ prompt.save_note:
   en-GB: input the archive note(can be blank)
   ja-JP: アーカイブの備考を入力（空欄可）
 
+prompt.auto_save_interval:
+  zh-CN: 请输入时间间隔（分钟，直接回车取消，输入0停止自动保存）
+  zh-TW: 請輸入時間間隔（分鐘，直接按Enter取消，輸入0停止自動保存）
+  en-US: Please input time interval in minutes (leave blank to cancel, input 0 to stop automatic saving)
+  en-GB: Please input time interval in minutes (leave blank to cancel, input 0 to stop automatic saving)
+  ja-JP: 時間間隔を分単位で入力してください（キャンセルするにはEnterを押してください、0を入力すると自動保存を停止します）
+
+prompt.auto_save_max_archives:
+  zh-CN: 请输入最大存档数（直接回车或输入0取消）
+  zh-TW: 請輸入最大存檔數（直接按Enter或輸入0取消）
+  en-US: Please input maximum number of archives (press Enter or input 0 to cancel)
+  en-GB: Please input maximum number of archives (press Enter or input 0 to cancel)
+  ja-JP: 最大アーカイブ数を入力してください（Enterを押すか0を入力するとキャンセルします）
+
 prompt.load_index:
   zh-CN: 输入要加载的存档序号（直接回车以取消）
   zh-TW: 輸入要載入的存檔序號（直接按Enter取消）
@@ -109,6 +123,13 @@ prompt.unlock_index:
   ja-JP: アンロックするアーカイブのインデックスを入力（キャンセルするにはEnterを押してください）
 
 # common message
+msg.no_archive:
+  zh-CN: 无存档
+  zh-TW: 無存檔
+  en-US: No archives available
+  en-GB: No archives available
+  ja-JP: アーカイブがありません
+
 msg.locked_archive_in_green:
   zh-CN: 绿色为被锁定的存档
   zh-TW: 綠色為被鎖定的存檔
@@ -157,3 +178,31 @@ msg.aliases:
   en-US: Aliases
   en-GB: Aliases
   ja-JP: エイリアス
+
+msg.auto_saving:
+  zh-CN: 正在自动保存
+  zh-TW: 正在自動保存
+  en-US: Automatically saving
+  en-GB: Automatically saving
+  ja-JP: 自動保存中
+
+msg.auto_save_stop:
+  zh-CN: 已停止自动存档
+  zh-TW: 已停止自動存檔
+  en-US: Auto save stopped
+  en-GB: Auto save stopped
+  ja-JP: 自動保存を停止しました
+
+msg.auto_save_delete_old:
+  zh-CN: 由于超出最大自动存档量，已删除
+  zh-TW: 由於超出最大自動存檔量，已刪除
+  en-US: Due to exceeding maximum auto save limit, Deleted
+  en-GB: Due to exceeding maximum auto save limit, Deleted
+  ja-JP: 最大自動保存数を超えたため削除しました
+
+msg.auto_save_new:
+  zh-CN: 已自动存档
+  zh-TW: 已自動存檔
+  en-US: Auto save
+  en-GB: Auto save
+  ja-JP: 自動保存しました

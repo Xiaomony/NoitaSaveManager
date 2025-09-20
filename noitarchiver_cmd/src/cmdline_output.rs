@@ -7,6 +7,18 @@ use noitarchiver_core::{
 
 use colored::Colorize;
 
+// this function is for auto_save
+pub fn format_with_pad_centered(s: &str, width: usize) -> String {
+    let w = unicode_width::UnicodeWidthStr::width(s);
+
+    if w >= width {
+        s.to_string()
+    } else {
+        let n = width - w;
+        format!("{}{s}{}", "-".repeat(n / 2), "-".repeat(n / 2 + n % 2))
+    }
+}
+
 pub fn print_with_pad(s: &str, width: usize) {
     let w = unicode_width::UnicodeWidthStr::width(s);
     if w >= width {

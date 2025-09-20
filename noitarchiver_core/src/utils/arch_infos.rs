@@ -3,12 +3,12 @@ use super::error::*;
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct SingleArch {
-    m_data: String,
-    m_time: String,
-    m_name: String,
-    m_note: String,
+    pub m_data: String,
+    pub m_time: String,
+    pub m_name: String,
+    pub m_note: String,
     m_islocked: bool,
 }
 
@@ -91,6 +91,19 @@ impl SingleArch {
         } else {
             Ok(())
         }
+    }
+}
+
+impl std::fmt::Display for SingleArch {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}  {}\t{}\t\t\t{}",
+            self.get_data(),
+            self.get_time(),
+            self.get_name(),
+            self.get_note()
+        )
     }
 }
 

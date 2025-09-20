@@ -56,12 +56,12 @@ exp.overwrite:
   en-GB: overwrite the latest
   ja-JP: 上書き保存
 
-exp.ssave:
-  zh-CN: 定时存档
-  zh-TW: 定時存檔
-  en-US: scheduled save
-  en-GB: scheduled save
-  ja-JP: スケジュール保存
+exp.asave:
+  zh-CN: 自动存档
+  zh-TW: 自動存檔
+  en-US: auto save
+  en-GB: auto save
+  ja-JP: 自動保存
 
 exp.load:
   zh-CN: 加载存档

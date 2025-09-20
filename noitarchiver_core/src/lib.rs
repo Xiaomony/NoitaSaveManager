@@ -121,7 +121,7 @@ impl<Opm: OutputManager> Core<Opm> {
         Ok(())
     }
 
-    pub fn quick_save(&mut self) -> NAComResult {
+    pub fn quick_save(&mut self, is_auto_save: bool) -> NAComResult {
         let now = Local::now();
         let hash = |mut src: u32, hashed: &mut String| {
             src %= 100;
@@ -139,7 +139,7 @@ impl<Opm: OutputManager> Core<Opm> {
             }
         };
 
-        let mut name = String::from("qsave_");
+        let mut name = String::from(if is_auto_save { "as_" } else { "qs_" });
 
         hash((now.year() % 100) as u32, &mut name);
         hash(now.month(), &mut name);
@@ -178,6 +178,34 @@ impl<Opm: OutputManager> Core<Opm> {
                 operation = t!("overwrite_operation")
             ))
         }
+    }
+
+    pub fn auto_save(
+        &mut self,
+        max_auto_archives: usize,
+    ) -> NAResult<(Option<SingleArch>, SingleArch)> {
+        let archives = &mut self.m_info.archives;
+        let mut removed_arch = None;
+        let auto_archive_count = archives
+            .iter()
+            .filter(|&item| item.get_name().starts_with("as_"))
+            .count();
+        if auto_archive_count >= max_auto_archives {
+            let index = archives
+                .iter()
+                .position(|item| item.get_name().starts_with("as_"))
+                .unwrap();
+            self.m_file_operator
+                .remove_archive(archives[index].get_name())
+                .explain(&t!("delete_archive_fail"))?;
+            removed_arch = Some(archives.remove(index));
+        }
+        self.quick_save(true)?;
+        self.m_file_operator
+            .write_infos(&self.m_info)
+            .explain(&t!("fail_modify_info_after_delete"))?;
+        let latest = self.m_info.archives.last().unwrap();
+        Ok((removed_arch, (latest.clone())))
     }
 
     pub fn load_archive(&self, index: usize) -> NAComResult {

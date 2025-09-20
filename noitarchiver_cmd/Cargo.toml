@@ -1,11 +1,17 @@
 [package]
 name = "noitarchiver_cmd"
 version.workspace = true
+authors.workspace = true
 edition.workspace = true
+build = "build.rs"
 
 [dependencies]
 colored = "3.0.0"
 noitarchiver_core = { path = "../noitarchiver_core/" }
 regex = "1.11.2"
 rust-i18n = { workspace = true }
+rustyline = "17.0.1"
 unicode-width = "0.2.1"
+
+[build-dependencies]
+winres = "0.1.12"
