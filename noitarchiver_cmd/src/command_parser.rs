@@ -240,7 +240,7 @@ impl<'a> CommandParser<'a> {
             ));
             if item.cmd_name.len() >= 2 {
                 for i in 2..item.cmd_name.len() {
-                    CMDOPT.log_green(format!(" or {}", item.cmd_name[i]));
+                    CMDOPT.log_green(format!(" / {}", item.cmd_name[i]));
                 }
             }
             CMDOPT.log_green(format!("{: >20}\n", item.cmd_explanation));
@@ -339,7 +339,7 @@ impl<'a> CommandParser<'a> {
     }
 
     fn auto_save(&self, _core: &mut CmdCore, mut parameter: Vec<String>) -> NAResult<bool> {
-        let Ok(time_interval) = (if parameter.is_empty() {
+        let Ok(mut time_interval) = (if parameter.is_empty() {
             CMDOPT
                 .input(t!("prompt.auto_save_interval").to_string())?
                 .parse::<u64>()
@@ -366,6 +366,8 @@ impl<'a> CommandParser<'a> {
             CMDOPT.cancel();
             return Ok(true);
         }
+
+        time_interval *= 60;
 
         // core function of auto_save
         let mut kit = self
