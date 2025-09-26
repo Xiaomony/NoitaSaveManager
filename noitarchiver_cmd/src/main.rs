@@ -12,7 +12,7 @@ use std::error::Error;
 
 use cmdline_output::CmdlineOutput;
 use command_parser::CommandParser;
-use noitarchiver_core::{output_manager::OutputManager, NAComResult};
+use noitarchiver_core::{NAComResult, output_manager::OutputManager};
 
 const CMDOPT: CmdlineOutput = CmdlineOutput {};
 

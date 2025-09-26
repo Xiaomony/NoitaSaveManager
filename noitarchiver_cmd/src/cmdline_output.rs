@@ -1,8 +1,8 @@
 use std::io::{self, Write};
 
 use noitarchiver_core::{
-    output_manager::{self, OutputManager},
     NAResult, ResultExt,
+    output_manager::{self, OutputManager},
 };
 
 use colored::Colorize;

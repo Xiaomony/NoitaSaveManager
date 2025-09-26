@@ -1,7 +1,6 @@
 [package]
 name = "noitarchiver_core"
 version.workspace = true
-authors.workspace = true
 edition.workspace = true
 
 [dependencies]

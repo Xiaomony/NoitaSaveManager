@@ -2,7 +2,7 @@ mod utils;
 
 use utils::arch_infos::{AllInfos, SingleArch};
 pub use utils::error::*;
-use utils::file_operator::{FileOperator, ARCH_FOLDER_PATH};
+use utils::file_operator::{ARCH_FOLDER_PATH, FileOperator};
 pub use utils::output_manager;
 use utils::output_manager::OutputManager;
 
@@ -34,6 +34,7 @@ impl<Opm: OutputManager> Core<Opm> {
                 "zh-TW" | "zh-HK" | "zh-MO" | "zh-Hant" => "zh-TW",
                 "en-GB" | "en-AU" | "en-NZ" | "en-IN" | "en-ZA" | "en-HK" | "en-SG" | "en-IE"
                 | "en-PK" | "en-MT" | "en-MY" | "en-NG" => "en-GB",
+                "ja-JP" => "ja-JP",
                 _ => "en-US",
             }
         };
@@ -82,7 +83,7 @@ impl<Opm: OutputManager> Core<Opm> {
             return throw(&t!("please_set_noita_path"));
         } else {
             self.m_opm
-                .warning(t!("start_without_steam_warning").to_string());
+                .warning(t!("start_without_steam_warning").to_string() + "\n");
             Command::new(noipath)
                 .creation_flags(0x00000008) // run noita in detached process
                 .current_dir(noipath.parent().unwrap())
@@ -268,15 +269,16 @@ impl<Opm: OutputManager> Core<Opm> {
 
         let mut filtered_indexes = Vec::<usize>::new();
         for index in indexes {
-            if let Some(item) = self.m_info.archives.get(index) &&
-                let Ok(()) = item.protect() {
-                    confirm_msg += &format!(
-                        "[{}]  {}\t\t{}\n",
-                        index + 1,
-                        item.get_name(),
-                        item.get_note()
-                    );
-                    filtered_indexes.push(index);
+            if let Some(item) = self.m_info.archives.get(index)
+                && let Ok(()) = item.protect()
+            {
+                confirm_msg += &format!(
+                    "[{}]  {}\t\t{}\n",
+                    index + 1,
+                    item.get_name(),
+                    item.get_note()
+                );
+                filtered_indexes.push(index);
             }
         }
         if filtered_indexes.is_empty() {

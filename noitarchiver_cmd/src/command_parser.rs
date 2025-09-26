@@ -5,11 +5,11 @@ use std::{
     time::Duration,
 };
 
-use super::cmdline_output::*;
 use super::CMDOPT;
+use super::cmdline_output::*;
 use colored::Colorize;
 use noitarchiver_core::{
-    output_manager::OutputManager, throw, Core, NAResult, NAchError, ResultExt,
+    Core, NAResult, NAchError, ResultExt, output_manager::OutputManager, throw,
 };
 use regex::Regex;
 use rustyline::ExternalPrinter;
@@ -343,10 +343,9 @@ impl<'a> CommandParser<'a> {
             CMDOPT
                 .input(t!("prompt.auto_save_interval").to_string())?
                 .parse::<u64>()
-        }else {
+        } else {
             parameter.remove(0).parse::<u64>()
-        })
-        else {
+        }) else {
             CMDOPT.cancel();
             return Ok(true);
         };
@@ -355,10 +354,9 @@ impl<'a> CommandParser<'a> {
             CMDOPT
                 .input(t!("prompt.auto_save_max_archives").to_string())?
                 .parse::<usize>()
-        }else {
+        } else {
             parameter.remove(0).parse::<usize>()
-        })
-        else {
+        }) else {
             CMDOPT.cancel();
             return Ok(true);
         };
@@ -396,55 +394,57 @@ impl<'a> CommandParser<'a> {
                 .unwrap() = true;
             let mut printer = kit.m_rustyline_reader.create_external_printer().unwrap();
 
-            let handle = thread::spawn(move || loop {
-                let flag = ref_flag
-                    .lock()
-                    .explain(&t!("err.fail_get_mutex_lock"))
-                    .unwrap();
-                let result = ref_condvar
-                    .wait_timeout(flag, Duration::from_secs(time_interval))
-                    .explain(&t!("err.fail_get_mutex_lock"))
-                    .unwrap();
-                if !*result.0 {
-                    return;
-                }
+            let handle = thread::spawn(move || {
+                loop {
+                    let flag = ref_flag
+                        .lock()
+                        .explain(&t!("err.fail_get_mutex_lock"))
+                        .unwrap();
+                    let result = ref_condvar
+                        .wait_timeout(flag, Duration::from_secs(time_interval))
+                        .explain(&t!("err.fail_get_mutex_lock"))
+                        .unwrap();
+                    if !*result.0 {
+                        return;
+                    }
 
-                let mut core = core_ref
-                    .lock()
-                    .explain(&t!("err.fail_get_mutex_lock"))
-                    .unwrap();
-                printer
-                    .print(
-                        format_with_pad_centered(&t!("msg.auto_saving"), 69)
-                            .bright_yellow()
-                            .bold()
-                            .to_string(),
-                    )
-                    .unwrap();
-                let (removed, latest) = core.auto_save(max_auto_archives).unwrap();
-                if let Some(removed_arch) = removed {
+                    let mut core = core_ref
+                        .lock()
+                        .explain(&t!("err.fail_get_mutex_lock"))
+                        .unwrap();
                     printer
                         .print(
-                            format!("{}\n\t{}", t!("msg.auto_save_delete_old"), removed_arch)
+                            format_with_pad_centered(&t!("msg.auto_saving"), 69)
+                                .bright_yellow()
+                                .bold()
+                                .to_string(),
+                        )
+                        .unwrap();
+                    let (removed, latest) = core.auto_save(max_auto_archives).unwrap();
+                    if let Some(removed_arch) = removed {
+                        printer
+                            .print(
+                                format!("{}\n\t{}", t!("msg.auto_save_delete_old"), removed_arch)
+                                    .cyan()
+                                    .to_string(),
+                            )
+                            .unwrap();
+                    }
+                    printer
+                        .print(
+                            format!("{}\n\t{}", t!("msg.auto_save_new"), latest)
                                 .cyan()
                                 .to_string(),
                         )
                         .unwrap();
+                    printer
+                        .print(
+                            format_with_pad_centered(&t!("msg.success"), 69)
+                                .green()
+                                .to_string(),
+                        )
+                        .unwrap();
                 }
-                printer
-                    .print(
-                        format!("{}\n\t{}", t!("msg.auto_save_new"), latest)
-                            .cyan()
-                            .to_string(),
-                    )
-                    .unwrap();
-                printer
-                    .print(
-                        format_with_pad_centered(&t!("msg.success"), 69)
-                            .green()
-                            .to_string(),
-                    )
-                    .unwrap();
             });
             kit.m_ssave_thread = Some(handle);
         } else {
@@ -523,21 +523,13 @@ impl<'a> CommandParser<'a> {
 
         let new_name = if parameter.is_empty() {
             let temp = CMDOPT.input(t!("prompt.modarch_name").to_string())?;
-            if temp.is_empty() {
-                None
-            } else {
-                Some(temp)
-            }
+            if temp.is_empty() { None } else { Some(temp) }
         } else {
             Some(parameter.remove(0))
         };
         let new_note = if parameter.is_empty() {
             let temp = CMDOPT.input(t!("prompt.modarch_note").to_string())?;
-            if temp.is_empty() {
-                None
-            } else {
-                Some(temp)
-            }
+            if temp.is_empty() { None } else { Some(temp) }
         } else {
             Some(parameter.remove(0))
         };

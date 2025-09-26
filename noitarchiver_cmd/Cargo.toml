@@ -1,7 +1,6 @@
 [package]
 name = "noitarchiver_cmd"
 version.workspace = true
-authors.workspace = true
 edition.workspace = true
 build = "build.rs"
 
