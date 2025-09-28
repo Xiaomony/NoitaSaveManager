@@ -1,6 +1,10 @@
 [workspace]
 resolver = "2"
-members = ["noitarchiver_cmd", "noitarchiver_core"]
+members = [
+  "./noitarchiver_gui/src-tauri/",
+  "noitarchiver_cmd",
+  "noitarchiver_core",
+]
 
 [workspace.package]
 version = "4.0.0"

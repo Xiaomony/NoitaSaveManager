@@ -36,15 +36,15 @@
 1. 命令的输入可以使用全写，也可以使用缩写(括号里的)
 
 2. 命令有两种使用方式：命令参数模式和普通模式
-
     - 命令参数模式：使用类似命令行的方法进行操作，如
-        `save 存档1 存档备注`
+      `save 存档1 存档备注`
 
-        在输入命令的同时将其参数一同输入，每个参数用空格隔开，如果存档名、存档备注等任何参数中含有空格，请用  **_英文引号_**（不要用 **_中文引号_** ）  将参数括起来
+        在输入命令的同时将其参数一同输入，每个参数用空格隔开，如果存档名、存档备注等任何参数中含有空格，请用 **_英文引号_**（不要用 **_中文引号_** ） 将参数括起来
 
         `save "存档 1" "存档  备注"`
 
-        每个命令的命令参数模式的格式不同，请用  `help+命令`  的形式查看某条命令的说明及用法
+        每个命令的命令参数模式的格式不同，请用 `help+命令` 的形式查看某条命令的说明及用法
+
     - 普通模式：先输入命令，再根据程序的提示输入参数，如
 
         ```bash
@@ -56,9 +56,9 @@
 
 3. 使用`lock`命令收藏的存档 **不可进行任何修改** ，请先使用`unlock`取消对其收藏才能修改
 
-4. 使用  `help+命令`  的形式查看某条命令的说明及用法
+4. 使用 `help+命令` 的形式查看某条命令的说明及用法
 
-5. `del`和`lock`、`unlock`命令可以**批量操作**，具体可使用  `help del`  查看用法
+5. `del`和`lock`、`unlock`命令可以**批量操作**，具体可使用 `help del` 查看用法
 
 ## 存档信息文件
 
@@ -89,24 +89,24 @@
 
 ## 命令列表
 
-|命令|含义|简写|说明|
-|:------:|:---:|:---:|:---:|
-|help||h|使用教程及帮助说明|
-|clear||cls|清屏|
-|quit||q 或 exit|退出|
-|startgame||sg|启动Noita|
-|setpath||sp|设置noita.exe的路径|
-|save||s|保存|
-|qsave|quick save|qs|快速保存（无需填写存档名称和备注，存档名会自动生成）|
-|overwrite||ow 或 rsave 或 rs|覆盖最新存档（存档名与备注不变，存档时间更新）|
-|asave|auto save|as|自动存档|
-|load||l|加载|
-|qload|quick load|ql|加载最新存档|
-|list||ls 或 log 或 lg|存档列表|
-|slist|short list|sl 或 slog|近几次存档列表|
-|modarch|modify archive|ma|修改存档信息|
-|delete||d|删除|
-|qdelete|quick deletex|qd|删除最新存档|
-|lock||lc 或 f|锁定存档|
-|unlock||ul 或 uf|解锁存档|
-|usage||use|查看磁盘用量|
+|   命令    |      含义      |       简写        |                         说明                         |
+| :-------: | :------------: | :---------------: | :--------------------------------------------------: |
+|   help    |                |         h         |                  使用教程及帮助说明                  |
+|   clear   |                |        cls        |                         清屏                         |
+|   quit    |                |     q 或 exit     |                         退出                         |
+| startgame |                |        sg         |                      启动Noita                       |
+|  setpath  |                |        sp         |                 设置noita.exe的路径                  |
+|   save    |                |         s         |                         保存                         |
+|   qsave   |   quick save   |        qs         | 快速保存（无需填写存档名称和备注，存档名会自动生成） |
+| overwrite |                | ow 或 rsave 或 rs |    覆盖最新存档（存档名与备注不变，存档时间更新）    |
+|   asave   |   auto save    |        as         |                       自动存档                       |
+|   load    |                |         l         |                         加载                         |
+|   qload   |   quick load   |        ql         |                     加载最新存档                     |
+|   list    |                |  ls 或 log 或 lg  |                       存档列表                       |
+|   slist   |   short list   |    sl 或 slog     |                    近几次存档列表                    |
+|  modarch  | modify archive |        ma         |                     修改存档信息                     |
+|  delete   |                |         d         |                         删除                         |
+|  qdelete  | quick deletex  |        qd         |                     删除最新存档                     |
+|   lock    |                |      lc 或 f      |                       锁定存档                       |
+|  unlock   |                |     ul 或 uf      |                       解锁存档                       |
+|   usage   |                |        use        |                     查看磁盘用量                     |
