@@ -1,0 +1,54 @@
+html,
+body {
+    background: transparent;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Consolas;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    height: 90%;
+    margin: 0;
+    padding: 30px 40px;
+}
+
+.pane {
+    border: 3px solid;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+#cmd_pane {
+    flex: 2;
+}
+
+#saves_pane {
+    flex: 5;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color: #9bacb0;
+    }
+    .pane {
+        background: rgba(35, 35, 38, 0.42);
+        transition:
+            background 0.3s ease,
+            filter 0.3s ease;
+    }
+    .pane:hover {
+        background: rgba(35, 35, 38, 0.224);
+        filter: drop-shadow(5px 5px 4px #78787c);
+    }
+}

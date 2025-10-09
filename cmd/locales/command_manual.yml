@@ -1,0 +1,279 @@
+_version: 2
+
+man.help:
+  zh-CN: |
+    - help [命令(全称或简写)]           查看命令用法
+    - help                              查看此程序帮助说明
+  zh-TW: |
+    - help [命令(全稱或簡寫)]           查看命令用法
+    - help                              查看此程式幫助說明
+  en-US: |
+    - help [command or alias]           View command usage
+    - help                              Show this help message
+  en-GB: |
+    - help [command or alias]           View command usage
+    - help                              Show this help message
+  ja-JP: |
+    - help [コマンドまたはエイリアス]   コマンドの使用方法を表示
+    - help                              このヘルプメッセージを表示
+
+man.clear:
+  zh-CN: |
+    - clear                             清除屏幕
+  zh-TW: |
+    - clear                             清除螢幕
+  en-US: |
+    - clear                             Clear screen
+  en-GB: |
+    - clear                             Clear screen
+  ja-JP: |
+    - clear                             画面をクリア
+
+man.quit:
+  zh-CN: |
+    - quit                              退出程序
+  zh-TW: |
+    - quit                              結束程式
+  en-US: |
+    - quit                              Exit the application
+  en-GB: |
+    - quit                              Exit the application
+  ja-JP: |
+    - quit                              アプリケーションを終了
+
+man.startgame:
+  zh-CN: |
+    - startgame                         启动noita
+    ## 使用此程序启动Noita会较Steam启动更快
+    ## 使用此命令前确保使用setpath命令设置了正确的"noita.exe"的路径
+    ## 查看noita路径：Steam库中Noita界面 → 右边的小齿轮图标 → 管理 → 浏览本地文件
+    ## 使用此程序启动Noita时，如果在Steam未启动时使用此命令，会无法加载Steam中的模组和存档
+  zh-TW: |
+    - startgame                         啟動noita
+    ## 使用此程式啟動Noita會比Steam啟動更快
+    ## 使用此命令前確保使用setpath命令設定了正確的"noita.exe"的路徑
+    ## 查看noita路徑：Steam庫中Noita介面 → 右邊的小齒輪圖示 → 管理 → 瀏覽本機檔案
+    ## 使用此程式啟動Noita時，如果在Steam未啟動時使用此命令，會無法載入Steam中的模組和存檔
+  en-US: |
+    - startgame                         Start Noita
+    ## Launching Noita through this program is faster than via Steam
+    ## Before using this command, ensure you've set the correct path to "noita.exe" using the setpath command
+    ## To find the Noita path: In your Steam library, go to Noita → click the gear icon → Manage → Browse local files
+    ## If Steam is not running when you launch Noita through this program, Steam mods and cloud saves will not be loaded
+  en-GB: |
+    - startgame                         Start Noita
+    ## Launching Noita through this program is faster than via Steam
+    ## Before using this command, ensure you've set the correct path to "noita.exe" using the setpath command
+    ## To find the Noita path: In your Steam library, go to Noita → click the gear icon → Manage → Browse local files
+    ## If Steam is not running when you launch Noita through this program, Steam mods and cloud saves will not be loaded
+  ja-JP: |
+    - startgame                         Noitaを起動
+    ## このプログラムからNoitaを起動すると、Steam経由より高速です
+    ## このコマンドを使用する前に、setpathコマンドで正しい"noita.exe"のパスを設定してください
+    ## Noitaのパスを見つける方法：SteamライブラリでNoitaを選択 → 歯車アイコンをクリック → 管理 → ローカルファイルを閲覧
+    ## Steamが実行されていない状態でこのプログラムからNoitaを起動すると、SteamのMODとクラウドセーブは読み込まれません
+
+man.setpath:
+  zh-CN: |
+    - setpath [path]                    设置noita.exe的路径
+  zh-TW: |
+    - setpath [path]                    設定noita.exe的路徑
+  en-US: |
+    - setpath [path]                    Set the path to noita.exe
+  en-GB: |
+    - setpath [path]                    Set the path to noita.exe
+  ja-JP: |
+    - setpath [path]                    noita.exeのパスを設定
+
+man.save:
+  zh-CN: |
+    - save [存档名] [存档备注]          存档(存档名或备注包含空格时，可以用英文引号 " 包裹)
+  zh-TW: |
+    - save [存檔名] [存檔備註]          存檔(存檔名或備註包含空格時，可以用英文引號 " 包裹)
+  en-US: |
+    - save [save name] [save note]      Save the save (use quotes " if name or note contains spaces)
+  en-GB: |
+    - save [save name] [save note]      Save the save (use quotes " if name or note contains spaces)
+  ja-JP: |
+    - save [アーカイブ名] [メモ]        アーカイブを保存 (名前にスペースが含まれる場合は引用符 " を使用)
+
+man.qsave:
+  zh-CN: |
+    - qsave                             快速存档(基于当前的时间生成一个存档名，以qs开头)
+  zh-TW: |
+    - qsave                             快速存檔(基於當前的時間產生一個存檔名，以qs開頭)
+  en-US: |
+    - qsave                             Quick save (generates a name based on current time, prefixed with 'qs')
+  en-GB: |
+    - qsave                             Quick save (generates a name based on current time, prefixed with 'qs')
+  ja-JP: |
+    - qsave                             クイックセーブ (現在時刻に基づいて'qs'で始まる名前を生成)
+
+man.overwrite:
+  zh-CN: |
+    - overwrite                         覆盖式存档(覆盖最新的存档)
+  zh-TW: |
+    - overwrite                         覆蓋式存檔(覆蓋最新的存檔)
+  en-US: |
+    - overwrite                         Overwrite the latest save
+  en-GB: |
+    - overwrite                         Overwrite the latest save
+  ja-JP: |
+    - overwrite                         最新のアーカイブを上書き保存
+
+man.asave:
+  zh-CN: |
+    - asave [时间间隔] [最多存档数]     设定自动存档时间间隔（分钟）
+    ## 自动存档将以 as_ 开头，且超过最大存档数时将会删除最旧的存档
+    ## Noita的自动存档时间间隔为3分钟，因此时间间隔不应该少于3分钟
+  zh-TW: |
+    - asave [時間間隔] [最多存檔數]     設定自動存檔時間間隔（分鐘）
+    ## 自動存檔將以 as_ 開頭，且超過最大存檔數時將會刪除最舊的存檔
+    ## Noita的自動存檔時間間隔為3分鐘，因此時間間隔不應該少於3分鐘
+  en-US: |
+    - asave [time interval] [max saves]     Set automatic save interval (in minutes)
+    ## Automatic saves will start with as_ prefix, and the oldest saves will be deleted when exceeding the maximum count
+    ## Noita's auto-save interval is 3 minutes, so the interval should not be less than 3 minutes
+  en-GB: |
+    - asave [time interval] [max saves]     Set automatic save interval (in minutes)
+    ## Automatic saves will start with as_ prefix, and the oldest saves will be deleted when exceeding the maximum count
+    ## Noita's auto-save interval is 3 minutes, so the interval should not be less than 3 minutes
+  ja-JP: |
+    - asave [時間間隔] [最大アーカイブ数]     自動保存の間隔を設定（分単位）
+    ## 自動保存は as_ で始まり、最大数を超えると最も古いアーカイブが削除されます
+    ## Noitaの自動保存間隔は3分なので、間隔は3分未満にしないでください
+
+man.load:
+  zh-CN: |
+    - load [存档序号]                   加载存档
+  zh-TW: |
+    - load [存檔序號]                   載入存檔
+  en-US: |
+    - load [save index]                 Load an save
+  en-GB: |
+    - load [save index]                 Load an save
+  ja-JP: |
+    - load [アーカイブ番号]             アーカイブを読み込み
+
+man.qload:
+  zh-CN: |
+    - qload                             加载最新存档
+  zh-TW: |
+    - qload                             載入最新存檔
+  en-US: |
+    - qload                             Load the latest save
+  en-GB: |
+    - qload                             Load the latest save
+  ja-JP: |
+    - qload                             最新のアーカイブを読み込み
+
+man.list:
+  zh-CN: |
+    - list                              存档列表
+  zh-TW: |
+    - list                              存檔列表
+  en-US: |
+    - list                              Show saved saves
+  en-GB: |
+    - list                              Show saved saves
+  ja-JP: |
+    - list                              保存されたアーカイブを表示
+
+man.slist:
+  zh-CN: |
+    - slist                             近几次存档列表
+  zh-TW: |
+    - slist                             近幾次存檔列表
+  en-US: |
+    - slist                             Show recent saves
+  en-GB: |
+    - slist                             Show recent saves
+  ja-JP: |
+    - slist                             最近のアーカイブを表示
+
+man.modify:
+  zh-CN: |
+    - modify [新存档名] [新存档备注]   修改存档信息(存档名或备注包含空格时，可以用英文引号 " 包裹)
+  zh-TW: |
+    - modify [新存檔名] [新存檔備註]   修改存檔資訊(存檔名或備註包含空格時，可以用英文引號 " 包裹)
+  en-US: |
+    - modify [new name] [new note]     Modify save info (use quotes " if name or note contains spaces)
+  en-GB: |
+    - modify [new name] [new note]     Modify save info (use quotes " if name or note contains spaces)
+  ja-JP: |
+    - modify [新しい名前] [新しいメモ]  アーカイブ情報を変更 (名前にスペースが含まれる場合は引用符 " を使用)
+
+man.delete:
+  zh-CN: |
+    - delete [存档序号]                 删除存档
+    ## 存档序号的表达方式如下所示
+    ## delete 1-3 4,6,8 10
+    ## 即 a-b表示从a到b，a,b,c表示a、b、c三个独立的存档，单独的a表示a一个存档
+  zh-TW: |
+    - delete [存檔序號]                 刪除存檔
+    ## 存檔序號的表達方式如下所示
+    ## delete 1-3 4,6,8 10
+    ## 即 a-b表示從a到b，a,b,c表示a、b、c三個獨立的存檔，單獨的a表示a一個存檔
+  en-US: |
+    - delete [save indexes]          Delete save(s)
+    ## Save indexes can be specified in the following formats:
+    ## delete 1-3 4,6,8 10
+    ## Where a-b means from a to b, a,b,c means separate saves a, b and c, and a single number means just that save
+  en-GB: |
+    - delete [save indexes]          Delete save(s)
+    ## Save indexes can be specified in the following formats:
+    ## delete 1-3 4,6,8 10
+    ## Where a-b means from a to b, a,b,c means separate saves a, b and c, and a single number means just that save
+  ja-JP: |
+    - delete [アーカイブ番号]           アーカイブを削除
+    ## アーカイブ番号は以下の形式で指定できます：
+    ## delete 1-3 4,6,8 10
+    ## a-bはaからbまで、a,b,cは個別のアーカイブa、b、cを意味し、単一の数字はそのアーカイブのみを意味します
+
+man.qdelete:
+  zh-CN: |
+    - qdelete                           删除最新存档
+  zh-TW: |
+    - qdelete                           刪除最新存檔
+  en-US: |
+    - qdelete                           Delete the latest save
+  en-GB: |
+    - qdelete                           Delete the latest save
+  ja-JP: |
+    - qdelete                           最新のアーカイブを削除
+
+man.lock:
+  zh-CN: |
+    - lock [存档序号]                   锁定存档(存档序号的表达方式和delete一样)
+  zh-TW: |
+    - lock [存檔序號]                   鎖定存檔(存檔序號的表達方式和delete一樣)
+  en-US: |
+    - lock [save indexes]               Lock save(s) (index format same as delete command)
+  en-GB: |
+    - lock [save indexes]               Lock save(s) (index format same as delete command)
+  ja-JP: |
+    - lock [アーカイブ番号]             アーカイブをロック (番号の形式はdeleteコマンドと同じ)
+
+man.unlock:
+  zh-CN: |
+    - unlock [存档序号]                 解锁存档(存档序号的表达方式和delete一样)
+  zh-TW: |
+    - unlock [存檔序號]                 解鎖存檔(存檔序號的表達方式和delete一樣)
+  en-US: |
+    - unlock [save indexes]             Unlock save(s) (index format same as delete command)
+  en-GB: |
+    - unlock [save indexes]             Unlock save(s) (index format same as delete command)
+  ja-JP: |
+    - unlock [アーカイブ番号]           アーカイブのロックを解除 (番号の形式はdeleteコマンドと同じ)
+
+man.usage:
+  zh-CN: |
+    - usage                             查看磁盘占用
+  zh-TW: |
+    - usage                             查看磁碟使用量
+  en-US: |
+    - usage                             Check disk usage
+  en-GB: |
+    - usage                             Check disk usage
+  ja-JP: |
+    - usage                             ディスク使用量を確認

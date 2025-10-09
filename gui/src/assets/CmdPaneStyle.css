@@ -1,0 +1,44 @@
+#cmd_pane {
+    display: grid;
+    gap: 15px;
+    padding: 15px;
+    grid-template-columns: 1fr 3fr 3fr 1fr;
+    justify-items: center;
+
+    grid-template-areas:
+        "A D D ."
+        "B E F H"
+        "C G G .";
+
+    button {
+        width: 100%;
+    }
+
+    .button_container {
+        border: none;
+        border-radius: 15px;
+        background-color: rgba(210, 253, 205, 0.1);
+
+        display: grid;
+        gap: 15px;
+        justify-items: center;
+        align-items: center;
+        padding: 0px 15px;
+    }
+
+    #buttons_save {
+        width: 90%;
+        grid-template-columns: 1fr 3fr 3fr 3fr 3fr 1fr;
+    }
+
+    #buttons_load,
+    #buttons_delete {
+        width: 90%;
+        grid-template-columns: 1fr 4fr 4fr;
+    }
+
+    #buttons_modify {
+        width: 65%;
+        grid-template-columns: 1fr 3fr 3fr 3fr;
+    }
+}

@@ -1,0 +1,208 @@
+_version: 2
+
+# error
+err.fail_get_mutex_lock:
+  zh-CN: 数据竞争失败（无法获取互斥体）
+  zh-TW: 資料競爭失敗（無法取得互斥鎖）
+  en-US: Fail to get mutex lock
+  en-GB: Fail to get mutex lock
+  ja-JP: ミューテックスロックの取得に失敗
+
+err.fail_init_regex:
+  zh-CN: 初始化正则表达式失败
+  zh-TW: 初始化正規表示式失敗
+  en-US: Fail to initialize the regex to parse the command
+  en-GB: Fail to initialize the regex to parse the command
+  ja-JP: コマンド解析用正規表現の初期化に失敗
+
+err.fail_to_input:
+  zh-CN: 无法获取输入
+  zh-TW: 無法取得輸入
+  en-US: Fail to get input
+  en-GB: Fail to get input
+  ja-JP: 入力の取得に失敗
+
+# warning
+warn.incorrect_cmd_format:
+  zh-CN: 命令格式不正确
+  zh-TW: 命令格式不正確
+  en-US: Incorrect command format
+  en-GB: Incorrect command format
+  ja-JP: コマンド形式が不正です
+
+warn.invalid_index:
+  zh-CN: 无效序号
+  zh-TW: 無效序號
+  en-US: Invalid index
+  en-GB: Invalid index
+  ja-JP: 無効なインデックス
+
+# input prompt
+prompt.noita_path:
+  zh-CN: 请输入"noita.exe"的路径（直接回车以取消，路径要以noita.exe结尾）
+  zh-TW: 請輸入"noita.exe"的路徑（直接按Enter取消，路徑要以noita.exe結尾）
+  en-US: Please input the path of "noita.exe"(leave blank to cancel, the path must end with "noita.exe")
+  en-GB: Please input the path of "noita.exe"(leave blank to cancel, the path must end with "noita.exe")
+  ja-JP: '"noita.exe"のパスを入力してください（キャンセルするにはEnterを押してください。パスはnoita.exeで終わる必要があります）'
+
+prompt.save_name:
+  zh-CN: 输入存档名（直接回车以取消）
+  zh-TW: 輸入存檔名（直接按Enter取消）
+  en-US: input the save name(leave blank to cancel)
+  en-GB: input the save name(leave blank to cancel)
+  ja-JP: アーカイブ名を入力（キャンセルするにはEnterを押してください）
+
+prompt.save_note:
+  zh-CN: 输入存档备注（可以为空）
+  zh-TW: 輸入存檔備註（可以為空）
+  en-US: input the save note(can be blank)
+  en-GB: input the save note(can be blank)
+  ja-JP: アーカイブの備考を入力（空欄可）
+
+prompt.auto_save_interval:
+  zh-CN: 请输入时间间隔（分钟，直接回车取消，输入0停止自动保存）
+  zh-TW: 請輸入時間間隔（分鐘，直接按Enter取消，輸入0停止自動保存）
+  en-US: Please input time interval in minutes (leave blank to cancel, input 0 to stop automatic saving)
+  en-GB: Please input time interval in minutes (leave blank to cancel, input 0 to stop automatic saving)
+  ja-JP: 時間間隔を分単位で入力してください（キャンセルするにはEnterを押してください、0を入力すると自動保存を停止します）
+
+prompt.auto_save_max_saves:
+  zh-CN: 请输入最大存档数（直接回车或输入0取消）
+  zh-TW: 請輸入最大存檔數（直接按Enter或輸入0取消）
+  en-US: Please input maximum number of saves (press Enter or input 0 to cancel)
+  en-GB: Please input maximum number of saves (press Enter or input 0 to cancel)
+  ja-JP: 最大アーカイブ数を入力してください（Enterを押すか0を入力するとキャンセルします）
+
+prompt.load_index:
+  zh-CN: 输入要加载的存档序号（直接回车以取消）
+  zh-TW: 輸入要載入的存檔序號（直接按Enter取消）
+  en-US: Please input the index of the save you want to load(leave blank to cancel)
+  en-GB: Please input the index of the save you want to load(leave blank to cancel)
+  ja-JP: 読み込むアーカイブのインデックスを入力（キャンセルするにはEnterを押してください）
+
+prompt.modify_index:
+  zh-CN: 输入要修改的存档序号（直接回车以取消）
+  zh-TW: 輸入要修改的存檔序號（直接按Enter取消）
+  en-US: input the index of the save you want to modify(leave blank to cancel)
+  en-GB: input the index of the save you want to modify(leave blank to cancel)
+  ja-JP: 変更するアーカイブのインデックスを入力（キャンセルするにはEnterを押してください）
+
+prompt.modify_name:
+  zh-CN: 输入新存档名（直接回车将保持原有存档名）
+  zh-TW: 輸入新存檔名（直接按Enter將保持原有存檔名）
+  en-US: input the new save name(leave blank to keep the previous one)
+  en-GB: input the new save name(leave blank to keep the previous one)
+  ja-JP: 新しいアーカイブ名を入力（Enterを押すと元の名前を保持）
+
+prompt.modify_note:
+  zh-CN: 输入新存档备注（直接回车将保持原有存档备注）
+  zh-TW: 輸入新存檔備註（直接按Enter將保持原有存檔備註）
+  en-US: input the new save note(leave blank to keep the previous one)
+  en-GB: input the new save note(leave blank to keep the previous one)
+  ja-JP: 新しいアーカイブの備考を入力（Enterを押すと元の備考を保持）
+
+prompt.delete_index:
+  zh-CN: 输入要删除的存档序号（直接回车以取消）
+  zh-TW: 輸入要刪除的存檔序號（直接按Enter取消）
+  en-US: Please input the indexes of the saves you want to delete(leave blank to cancel)
+  en-GB: Please input the indexes of the saves you want to delete(leave blank to cancel)
+  ja-JP: 削除するアーカイブのインデックスを入力（キャンセルするにはEnterを押してください）
+
+prompt.lock_index:
+  zh-CN: 输入要锁定的存档序号（直接回车以取消）
+  zh-TW: 輸入要鎖定的存檔序號（直接按Enter取消）
+  en-US: Please input the index of the save you want to lock(leave blank to cancel)
+  en-GB: Please input the index of the save you want to lock(leave blank to cancel)
+  ja-JP: ロックするアーカイブのインデックスを入力（キャンセルするにはEnterを押してください）
+
+prompt.unlock_index:
+  zh-CN: 输入要解锁的存档序号（直接回车以取消）
+  zh-TW: 輸入要解鎖的存檔序號（直接按Enter取消）
+  en-US: Please input the index of the save you want to unlock(leave blank to cancel)
+  en-GB: Please input the index of the save you want to unlock(leave blank to cancel)
+  ja-JP: アンロックするアーカイブのインデックスを入力（キャンセルするにはEnterを押してください）
+
+# common message
+msg.no_save:
+  zh-CN: 无存档
+  zh-TW: 無存檔
+  en-US: No saves available
+  en-GB: No saves available
+  ja-JP: アーカイブがありません
+
+msg.locked_save_in_green:
+  zh-CN: 绿色为被锁定的存档
+  zh-TW: 綠色為被鎖定的存檔
+  en-US: Locked saves will be displayed in green
+  en-GB: Locked saves will be displayed in green
+  ja-JP: ロックされたアーカイブは緑色で表示されます
+
+msg.press_enter_to_exit:
+  zh-CN: 回车以退出
+  zh-TW: 按Enter退出
+  en-US: Press enter to exit...
+  en-GB: Press enter to exit...
+  ja-JP: Enterを押して終了...
+
+msg.success:
+  zh-CN: 成功
+  zh-TW: 成功
+  en-US: Succeed
+  en-GB: Succeed
+  ja-JP: 成功
+
+msg.cancel:
+  zh-CN: 取消
+  zh-TW: 取消
+  en-US: Canceled
+  en-GB: Cancelled
+  ja-JP: キャンセル
+
+msg.confirm:
+  zh-CN: 请确认
+  zh-TW: 請確認
+  en-US: Please confirm
+  en-GB: Please confirm
+  ja-JP: 確認してください
+
+msg.fail_confirm:
+  zh-CN: 确认时出现错误
+  zh-TW: 確認時出現錯誤
+  en-US: Fail while confirming
+  en-GB: Fail while confirming
+  ja-JP: 確認中にエラーが発生
+
+msg.aliases:
+  zh-CN: 简写
+  zh-TW: 簡寫
+  en-US: Aliases
+  en-GB: Aliases
+  ja-JP: エイリアス
+
+msg.auto_saving:
+  zh-CN: 正在自动保存
+  zh-TW: 正在自動保存
+  en-US: Automatically saving
+  en-GB: Automatically saving
+  ja-JP: 自動保存中
+
+msg.auto_save_stop:
+  zh-CN: 已停止自动存档
+  zh-TW: 已停止自動存檔
+  en-US: Auto save stopped
+  en-GB: Auto save stopped
+  ja-JP: 自動保存を停止しました
+
+msg.auto_save_delete_old:
+  zh-CN: 由于超出最大自动存档量，已删除
+  zh-TW: 由於超出最大自動存檔量，已刪除
+  en-US: Due to exceeding maximum auto save limit, Deleted
+  en-GB: Due to exceeding maximum auto save limit, Deleted
+  ja-JP: 最大自動保存数を超えたため削除しました
+
+msg.auto_save_new:
+  zh-CN: 已自动存档
+  zh-TW: 已自動存檔
+  en-US: Auto save
+  en-GB: Auto save
+  ja-JP: 自動保存しました

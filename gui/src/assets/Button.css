@@ -1,0 +1,36 @@
+button {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 9999px;
+    height: 100%;
+    cursor: pointer;
+    transition:
+        all 0.3s ease,
+        background 0.7s ease,
+        box-shadow 0.7s ease;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background: transparent;
+}
+
+button:active {
+    transition: all 0.2s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    button {
+        color: antiquewhite;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow:
+            0 4px 30px rgba(0, 0, 0, 0.1),
+            inset 2px 2px 10px rgba(255, 255, 255, 0.3),
+            inset -2px -2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+        /* color: black; */
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(163, 224, 220, 0.3);
+    }
+}

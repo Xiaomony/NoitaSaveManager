@@ -1,9 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
-  "./noitarchiver_gui/src-tauri/",
-  "noitarchiver_cmd",
-  "noitarchiver_core",
+  "./gui/src-tauri/",
+  "cmd",
+  "core",
 ]
 
 [workspace.package]
