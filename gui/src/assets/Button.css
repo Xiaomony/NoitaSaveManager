@@ -1,5 +1,5 @@
 button {
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid;
     border-radius: 9999px;
     height: 100%;
     cursor: pointer;
@@ -10,7 +10,7 @@ button {
 }
 
 button:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
     background: transparent;
 }
 
@@ -20,6 +20,7 @@ button:active {
 
 @media (prefers-color-scheme: dark) {
     button {
+        border-color: rgba(255, 255, 255, 0.3);
         color: antiquewhite;
         background: rgba(255, 255, 255, 0.15);
         box-shadow:
@@ -29,7 +30,6 @@ button:active {
     }
 
     button:active {
-        /* color: black; */
         background: rgba(255, 255, 255, 0.2);
         box-shadow: 0 0 20px rgba(163, 224, 220, 0.3);
     }

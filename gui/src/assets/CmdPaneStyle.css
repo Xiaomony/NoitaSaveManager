@@ -2,13 +2,13 @@
     display: grid;
     gap: 15px;
     padding: 15px;
-    grid-template-columns: 1fr 3fr 3fr 1fr;
+    grid-template-columns: 2fr 3fr 3fr;
     justify-items: center;
 
     grid-template-areas:
-        "A D D ."
-        "B E F H"
-        "C G G .";
+        "A D D"
+        "A E F"
+        "A G G";
 
     button {
         width: 100%;
@@ -17,13 +17,19 @@
     .button_container {
         border: none;
         border-radius: 15px;
-        background-color: rgba(210, 253, 205, 0.1);
 
         display: grid;
         gap: 15px;
         justify-items: center;
         align-items: center;
         padding: 0px 15px;
+    }
+
+    #buttons_utils {
+        width: 90%;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-auto-flow: column;
     }
 
     #buttons_save {
@@ -40,5 +46,11 @@
     #buttons_modify {
         width: 65%;
         grid-template-columns: 1fr 3fr 3fr 3fr;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .button_container {
+        background-color: rgba(210, 253, 205, 0.1);
     }
 }

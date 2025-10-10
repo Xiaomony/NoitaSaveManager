@@ -18,9 +18,11 @@ body {
     flex-direction: column;
     gap: 30px;
 
-    height: 90%;
+    height: 92%;
     margin: 0;
     padding: 30px 40px;
+
+    position: relative;
 }
 
 .pane {
@@ -45,10 +47,13 @@ body {
         background: rgba(35, 35, 38, 0.42);
         transition:
             background 0.3s ease,
-            filter 0.3s ease;
+            box-shadow 0.3s ease;
     }
     .pane:hover {
         background: rgba(35, 35, 38, 0.224);
-        filter: drop-shadow(5px 5px 4px #78787c);
+        box-shadow:
+            inset -5px -5px 10px rgba(0, 0, 0, 0.2),
+            inset 5px 5px 10px rgba(255, 255, 255, 0.2),
+            10px 10px 10px rgba(0, 0, 0, 0.3);
     }
 }

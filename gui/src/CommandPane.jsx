@@ -3,27 +3,18 @@ import "./assets/CmdPaneStyle.css";
 function CommandPane(props) {
     return (
         <div className={props.className} id="cmd_pane">
-            <button
-                type="button"
-                id="button_log_history"
+            <div
+                id="buttons_utils"
+                className="button_container"
                 style={{ gridArea: "A" }}
             >
-                Log History
-            </button>
-            <button
-                type="button"
-                id="button_start_noita"
-                style={{ gridArea: "B" }}
-            >
-                Start Noita
-            </button>
-            <button
-                type="button"
-                id="button_set_path"
-                style={{ gridArea: "C" }}
-            >
-                Set Noita Path
-            </button>
+                <button type="button">Start Noita</button>
+                <button type="button">Set Noita Path</button>
+                <button type="button">Usage</button>
+                <button type="button">Log History</button>
+                <button type="button">Instructions</button>
+                <button type="button">GitHub Link</button>
+            </div>
 
             <div
                 id="buttons_save"
@@ -31,18 +22,10 @@ function CommandPane(props) {
                 style={{ gridArea: "D" }}
             >
                 <span>Save</span>
-                <button type="button" id="button_save">
-                    Save
-                </button>
-                <button type="button" id="button_qsave">
-                    Quick Save
-                </button>
-                <button type="button" id="button_overwrite">
-                    Overwrite
-                </button>
-                <button type="button" id="button_autosave">
-                    Auto Save
-                </button>
+                <button type="button">Save</button>
+                <button type="button">Quick Save</button>
+                <button type="button">Overwrite</button>
+                <button type="button">Auto Save</button>
             </div>
 
             <div
@@ -51,12 +34,8 @@ function CommandPane(props) {
                 style={{ gridArea: "E" }}
             >
                 <span>Load</span>
-                <button type="button" id="button_load">
-                    Load
-                </button>
-                <button type="button" id="button_qload">
-                    Quick Load
-                </button>
+                <button type="button">Load</button>
+                <button type="button">Quick Load</button>
             </div>
 
             <div
@@ -65,12 +44,8 @@ function CommandPane(props) {
                 style={{ gridArea: "F" }}
             >
                 <span>Delete</span>
-                <button type="button" id="button_delete">
-                    Delete
-                </button>
-                <button type="button" id="button_qdelete">
-                    Quick Delete
-                </button>
+                <button type="button">Delete</button>
+                <button type="button">Quick Delete</button>
             </div>
 
             <div
@@ -79,20 +54,10 @@ function CommandPane(props) {
                 style={{ gridArea: "G" }}
             >
                 <span>Modify</span>
-                <button type="button" id="button_lock">
-                    Lock
-                </button>
-                <button type="button" id="button_unlock">
-                    Unlock
-                </button>
-                <button type="button" id="button_modify">
-                    Modify
-                </button>
+                <button type="button">Lock</button>
+                <button type="button">Unlock</button>
+                <button type="button">Modify</button>
             </div>
-
-            <button type="button" id="button_usage" style={{ gridArea: "H" }}>
-                Usage
-            </button>
         </div>
     );
 }
