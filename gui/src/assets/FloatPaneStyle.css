@@ -43,3 +43,8 @@
     flex-direction: column;
     gap: 10px;
 }
+
+.msgbox:active {
+    transform: translate(5px, 5px) scale(0.95);
+    transition: transform 0.1s ease;
+}

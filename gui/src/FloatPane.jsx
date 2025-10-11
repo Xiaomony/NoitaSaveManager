@@ -8,7 +8,7 @@ function FloatPane(props) {
     };
 
     return (
-        <div className="float_pane">
+        <div className={`${props.className || ""} float_pane`}>
             <p className="float_pane_title" style={style}>
                 {props.title}
             </p>

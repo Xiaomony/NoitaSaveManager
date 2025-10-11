@@ -1,4 +1,9 @@
 import "./assets/CmdPaneStyle.css";
+import { pushMsg } from "./MsgStack.jsx";
+
+function cmd_save() {
+    pushMsg(Math.random(), 1);
+}
 
 function CommandPane(props) {
     return (
@@ -22,7 +27,9 @@ function CommandPane(props) {
                 style={{ gridArea: "D" }}
             >
                 <span>Save</span>
-                <button type="button">Save</button>
+                <button type="button" onClick={cmd_save}>
+                    Save
+                </button>
                 <button type="button">Quick Save</button>
                 <button type="button">Overwrite</button>
                 <button type="button">Auto Save</button>

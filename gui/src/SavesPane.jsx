@@ -1,18 +1,6 @@
 import "./assets/TableStyle.css";
-import { getStack } from "./MsgStack.jsx";
 
 function SavesPane(props) {
-    const [stack, setStack] = getStack();
-    const btn_callback = () => {
-        setStack([
-            ...stack,
-            {
-                content: "soasdfasdf",
-                is_showing: true,
-                log_grade: 1,
-            },
-        ]);
-    };
     return (
         <div className={props.className} id="saves_pane">
             <table className="saves_table">
@@ -28,9 +16,6 @@ function SavesPane(props) {
                 </thead>
                 <tbody></tbody>
             </table>
-            <button type="button" onClick={btn_callback}>
-                aaa
-            </button>
         </div>
     );
 }
