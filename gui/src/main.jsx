@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./msgListener.jsx";
 
 // import { useState } from "react";
 // import { invoke } from "@tauri-apps/api/core";

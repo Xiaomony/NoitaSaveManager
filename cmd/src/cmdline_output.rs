@@ -42,6 +42,14 @@ impl CmdlineOutput {
     pub fn cancel(&self) {
         self.log(t!("msg.cancel").to_string() + "\n");
     }
+    pub fn getline(&self, input_msg: String) -> NSResult<String> {
+        self.log(input_msg);
+        let mut input = String::new();
+        io::stdin()
+            .read_line(&mut input)
+            .explain_fatal(&t!("err.fail_to_input"))?;
+        Ok(input.trim().to_string())
+    }
 
     // input string after printing "prompt + :"
     pub fn input(&self, mut msg: String) -> NSResult<String> {
@@ -74,15 +82,6 @@ impl output_manager::OutputManager for CmdlineOutput {
     fn debug(&self, msg: String) {
         print!("{}", format!("[DEBUG] {msg}").purple());
         Self::flush();
-    }
-
-    fn getline(&self, input_msg: String) -> NSResult<String> {
-        self.log(input_msg);
-        let mut input = String::new();
-        io::stdin()
-            .read_line(&mut input)
-            .explain_fatal(&t!("err.fail_to_input"))?;
-        Ok(input.trim().to_string())
     }
 
     fn confirm(&self, msg: String) -> NSResult<bool> {

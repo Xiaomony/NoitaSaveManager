@@ -1,5 +1,6 @@
 use std::sync::PoisonError;
 
+use serde::{Serialize, ser::SerializeStruct};
 use serde_json;
 
 pub type NSComResult = Result<(), NSError>;
@@ -169,5 +170,19 @@ impl From<regex::Error> for NSError {
             m_err_type: ErrorType::Regex(value),
             m_isfatal: true,
         }
+    }
+}
+
+// ------------------- Serialize (for backend-frontend communication of GUI Application) ----------------
+impl Serialize for NSError {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        let mut s = serializer.serialize_struct("NSError", 3)?;
+        s.serialize_field("type", &self.m_err_type.to_string())?;
+        s.serialize_field("explanation", &self.m_explanation)?;
+        s.serialize_field("isfatal", &self.m_isfatal)?;
+        s.end()
     }
 }

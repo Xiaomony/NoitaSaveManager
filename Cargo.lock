@@ -2300,6 +2300,7 @@ dependencies = [
 name = "noita_save_manager_gui"
 version = "4.0.0"
 dependencies = [
+ "noita_save_manager_core",
  "serde",
  "serde_json",
  "tauri",

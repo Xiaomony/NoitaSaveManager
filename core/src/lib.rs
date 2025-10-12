@@ -4,7 +4,7 @@ pub use utils::error::*;
 use utils::file_operator::{FileOperator, SAVE_FOLDER_PATH};
 pub use utils::output_manager;
 use utils::output_manager::OutputManager;
-use utils::save_infos::{AllInfos, SingleSave};
+pub use utils::save_infos::{AllInfos, SingleSave};
 
 // third-party imports
 use chrono::{Datelike, Local, Timelike};
@@ -19,6 +19,7 @@ use std::os::windows::process::CommandExt;
 use std::path::Path;
 use std::process::Command;
 
+#[derive(Debug)]
 pub struct Core<Opm: OutputManager> {
     m_file_operator: FileOperator,
     m_info: AllInfos,
@@ -53,7 +54,7 @@ impl<Opm: OutputManager> Core<Opm> {
     }
 
     #[inline]
-    fn get_data() -> String {
+    fn get_date() -> String {
         Local::now().format(&t!("date_format")).to_string()
     }
 
@@ -113,7 +114,7 @@ impl<Opm: OutputManager> Core<Opm> {
 
         self.m_file_operator.save(&save_name)?;
         self.m_info.saves.push(SingleSave::new(
-            Self::get_data(),
+            Self::get_date(),
             Self::get_time(),
             save_name,
             save_note,
@@ -168,7 +169,7 @@ impl<Opm: OutputManager> Core<Opm> {
             self.m_file_operator.remove_save(name)?;
             self.m_file_operator.save(name)?;
 
-            save.modify_data(Self::get_data());
+            save.modify_date(Self::get_date());
             save.modify_time(Self::get_time());
 
             self.write_infos()?;

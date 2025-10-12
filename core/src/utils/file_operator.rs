@@ -11,6 +11,7 @@ pub const SAVE_FOLDER_PATH: &str = r".\Saves\";
 const SAVE_INFO_PATH: &str = r".\Saves\infos.json";
 const NOITA_SAVE_PATH_POSTFIX: &str = r"Appdata\LocalLow\Nolla_Games_Noita\save00";
 
+#[derive(Debug)]
 pub struct FileOperator {
     m_file: fs::File,
     m_noita_save_path: PathBuf,

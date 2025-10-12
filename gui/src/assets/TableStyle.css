@@ -1,8 +1,12 @@
 .saves_table {
     border-collapse: collapse;
     width: 100%;
+    table-layout: fixed;
     th,
     td {
         border: 1px solid;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }

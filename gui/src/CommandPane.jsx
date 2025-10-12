@@ -1,13 +1,24 @@
 import "./assets/CmdPaneStyle.css";
-import { pushMsg } from "./MsgStack.jsx";
 import { getGlobals } from "./Globals.jsx";
-
-function cmd_save() {
-    pushMsg(Math.random(), 1);
-}
+import { invoke } from "@tauri-apps/api/core";
+import { add_listeners } from "./msgListener.jsx";
 
 function CommandPane(props) {
-    const [[, ,], [stackState, setStackState]] = getGlobals();
+    const {
+        msg_stack_utils: { pushMsg },
+        stack_state_utils: { stackState, setStackState },
+        save_info_utils: { update_save_infos },
+    } = getGlobals();
+
+    function error_handle(error) {
+        pushMsg(error.explanation, error.isfatal ? 1 : 2);
+    }
+    function cmd_save() {
+        invoke("cmd_save", { name: "aaa", note: "bbb" }).catch(error_handle);
+        update_save_infos();
+    }
+    add_listeners(pushMsg);
+
     return (
         <div
             className={`${props.className || ""} ${stackState ? "disabled" : ""}`}

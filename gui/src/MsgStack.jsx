@@ -1,44 +1,6 @@
 import FloatPane from "./FloatPane.jsx";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-    msg_stack,
-    setMsgStack,
-    // stack_state,
-    // setStackState,
-    getGlobals,
-    clearMsgStack,
-    setStackState,
-} from "./Globals.jsx";
-
-function msgBoxDisappear(id, is_delete) {
-    setMsgStack((msg_stack) => {
-        if (is_delete) {
-            return msg_stack.filter((item) => item.msg_id != id);
-        } else {
-            return msg_stack.map((item) =>
-                item.msg_id == id ? { ...item, is_showing: false } : item,
-            );
-        }
-    });
-}
-
-let msg_id = 0;
-
-export function pushMsg(content, log_grade) {
-    setMsgStack([
-        ...msg_stack,
-        {
-            content: content,
-            is_showing: true,
-            log_grade: log_grade,
-            msg_id: msg_id,
-        },
-    ]);
-
-    setTimeout(msgBoxDisappear, 5000, msg_id);
-
-    msg_id++;
-}
+import { getGlobals } from "./Globals.jsx";
 
 /*
 message object:
@@ -51,7 +13,10 @@ message object:
  */
 
 export default function MsgStack() {
-    const [[stack, ,], [stackState, ,]] = getGlobals();
+    const {
+        msg_stack_utils: { stack, setMsgStack, msgBoxDisappear },
+        stack_state_utils: { stackState, setStackState },
+    } = getGlobals();
     function msg_mapper(item) {
         let color = null;
         let title = null;
@@ -77,6 +42,7 @@ export default function MsgStack() {
                 color = "#c678dd";
                 break;
         }
+        const crr_state = stackState;
         return (
             <motion.div
                 key={item.msg_id}
@@ -94,8 +60,8 @@ export default function MsgStack() {
                 dragConstraints={{ left: 0, right: 200 }}
                 dragElastic={0.3}
                 onDragEnd={(_, info) => {
-                    if (info.offset.x > 30) {
-                        msgBoxDisappear(item.msg_id, stackState);
+                    if (info.offset.x > 10) {
+                        msgBoxDisappear(item.msg_id, crr_state);
                     }
                 }}
             >
@@ -136,7 +102,7 @@ export default function MsgStack() {
                         <button
                             type="button"
                             style={{ width: "45%", height: "50px" }}
-                            onClick={clearMsgStack}
+                            onClick={() => setMsgStack([])}
                         >
                             Clear History
                         </button>
@@ -148,7 +114,14 @@ export default function MsgStack() {
                             Close
                         </button>
                     </div>
-                    {messages.length == 0 ? <p>No history</p> : messages}
+                    {messages.length == 0 ? (
+                        <p>No history</p>
+                    ) : (
+                        <>
+                            <p>向右拖动以删除某条消息</p>
+                            {messages}
+                        </>
+                    )}
                 </motion.div>
             ) : (
                 <div className="msg_stack">

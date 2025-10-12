@@ -3,25 +3,25 @@ use super::error::*;
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct SingleSave {
-    pub m_data: String,
+    pub m_date: String,
     pub m_time: String,
     pub m_name: String,
     pub m_note: String,
     m_islocked: bool,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct AllInfos {
     noita_exe_path: PathBuf,
     pub saves: Vec<SingleSave>,
 }
 
 impl SingleSave {
-    pub fn new(data: String, time: String, name: String, note: String) -> Self {
+    pub fn new(date: String, time: String, name: String, note: String) -> Self {
         Self {
-            m_data: data,
+            m_date: date,
             m_time: time,
             m_name: name,
             m_note: note,
@@ -30,8 +30,8 @@ impl SingleSave {
     }
 
     #[inline]
-    pub fn modify_data(&mut self, new_data: String) {
-        self.m_data = new_data;
+    pub fn modify_date(&mut self, new_date: String) {
+        self.m_date = new_date;
     }
 
     #[inline]
@@ -60,8 +60,8 @@ impl SingleSave {
     }
 
     #[inline]
-    pub fn get_data(&self) -> &str {
-        &self.m_data
+    pub fn get_date(&self) -> &str {
+        &self.m_date
     }
 
     #[inline]
@@ -99,7 +99,7 @@ impl std::fmt::Display for SingleSave {
         write!(
             f,
             "{}  {}\t{}\t\t\t{}",
-            self.get_data(),
+            self.get_date(),
             self.get_time(),
             self.get_name(),
             self.get_note()
