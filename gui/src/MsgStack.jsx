@@ -16,6 +16,7 @@ export default function MsgStack() {
     const {
         msg_stack_utils: { stack, setMsgStack, msgBoxDisappear },
         stack_state_utils: { stackState, setStackState },
+        bkg_disability_utils: { setBkgDisability },
     } = getGlobals();
     function msg_mapper(item) {
         let color = null;
@@ -82,7 +83,7 @@ export default function MsgStack() {
         <AnimatePresence>
             {stackState ? (
                 <motion.div
-                    className="log_history_stack pane"
+                    className="centered_floating_pane pane"
                     key={-1}
                     initial={{ y: +500, opacity: 0 }}
                     animate={{ x: "-50%", y: "-50%", opacity: 1 }}
@@ -109,7 +110,10 @@ export default function MsgStack() {
                         <button
                             type="button"
                             style={{ width: "45%", height: "50px" }}
-                            onClick={() => setStackState(false)}
+                            onClick={() => {
+                                setStackState(false);
+                                setBkgDisability(false);
+                            }}
                         >
                             Close
                         </button>

@@ -1,10 +1,7 @@
-use std::sync::MutexGuard;
-
-use noita_save_manager_core::{Core, NSComResult, NSResult, SingleSave, throw};
-
-use crate::gui_output::GuiOutput;
-
 use super::CORE;
+use crate::gui_output::GuiOutput;
+use noita_save_manager_core::{Core, NSComResult, NSResult, SingleSave, throw};
+use std::sync::MutexGuard;
 
 fn get_core<'a>() -> NSResult<MutexGuard<'a, Core<GuiOutput>>> {
     let Ok(core) = CORE.get().unwrap().try_lock() else {
@@ -16,6 +13,17 @@ fn get_core<'a>() -> NSResult<MutexGuard<'a, Core<GuiOutput>>> {
 #[tauri::command]
 pub fn get_saves() -> NSResult<Vec<SingleSave>> {
     Ok(get_core()?.get_save_infos().saves.clone())
+}
+
+#[tauri::command]
+pub fn cmd_startgame() -> NSComResult {
+    let core = get_core()?;
+    core.startgame()
+}
+
+#[tauri::command]
+pub fn cmd_usage() -> NSResult<f64> {
+    Core::<GuiOutput>::usage_by_mb()
 }
 
 #[tauri::command]

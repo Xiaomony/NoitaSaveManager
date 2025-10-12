@@ -31,7 +31,12 @@ fn main() {
             window.set_effects(EffectsBuilder::new().effect(Effect::Acrylic).build())?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![cmd_save, get_saves])
+        .invoke_handler(tauri::generate_handler![
+            get_saves,
+            cmd_startgame,
+            cmd_usage,
+            cmd_save,
+        ])
         .plugin(tauri_plugin_opener::init())
         .run(tauri::generate_context!())
         .expect("error while starting application");

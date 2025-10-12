@@ -3,17 +3,15 @@ import { getGlobals } from "./Globals.jsx";
 
 function SavesPane(props) {
     const {
-        stack_state_utils: { stackState },
         save_info_utils: { saveInfos },
+        bkg_disability_utils: { isBkgDisabled },
     } = getGlobals();
-
-    console.log(saveInfos);
 
     return (
         <div
-            className={`${props.className || ""} ${stackState ? "disabled" : ""}`}
+            className={`${props.className || ""} ${isBkgDisabled ? "disabled" : ""}`}
             id="saves_pane"
-            style={{ filter: stackState ? "blur(5px)" : null }}
+            // style={{ filter: stackState ? "blur(5px)" : null }}
         >
             <table className="saves_table">
                 <caption>Saves Information</caption>
@@ -35,7 +33,7 @@ function SavesPane(props) {
                 </thead>
                 <tbody>
                     {saveInfos.map((save) => (
-                        <tr>
+                        <tr key={save.m_name}>
                             <th scope="col">
                                 <input type="checkbox" />
                             </th>

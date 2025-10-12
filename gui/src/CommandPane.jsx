@@ -8,10 +8,27 @@ function CommandPane(props) {
         msg_stack_utils: { pushMsg },
         stack_state_utils: { stackState, setStackState },
         save_info_utils: { update_save_infos },
+        bkg_disability_utils: { isBkgDisabled, setBkgDisability },
     } = getGlobals();
 
     function error_handle(error) {
         pushMsg(error.explanation, error.isfatal ? 1 : 2);
+    }
+
+    function cmd_startgame() {
+        invoke("cmd_startgame").catch(error_handle);
+    }
+
+    function cmd_usage() {
+        invoke("cmd_usage")
+            .then((usage) => {
+                const msg =
+                    usage <= 1024
+                        ? `${usage.toFixed(2)} MB`
+                        : `${(usage / 1024).toFixed(2)} GB`;
+                pushMsg(msg, 4);
+            })
+            .catch(error_handle());
     }
     function cmd_save() {
         invoke("cmd_save", { name: "aaa", note: "bbb" }).catch(error_handle);
@@ -21,21 +38,28 @@ function CommandPane(props) {
 
     return (
         <div
-            className={`${props.className || ""} ${stackState ? "disabled" : ""}`}
+            className={`${props.className || ""} ${isBkgDisabled ? "disabled" : ""}`}
             id="cmd_pane"
-            style={{ filter: stackState ? "blur(5px)" : null }}
+            // style={{ filter: stackState ? "blur(5px)" : null }}
         >
             <div
                 id="buttons_utils"
                 className="button_container"
                 style={{ gridArea: "A" }}
             >
-                <button type="button">Start Noita</button>
+                <button type="button" onClick={cmd_startgame}>
+                    Start Noita
+                </button>
                 <button type="button">Set Noita Path</button>
-                <button type="button">Usage</button>
+                <button type="button" onClick={cmd_usage}>
+                    Usage
+                </button>
                 <button
                     type="button"
-                    onClick={() => setStackState(!stackState)}
+                    onClick={() => {
+                        setStackState(!stackState);
+                        setBkgDisability(true);
+                    }}
                 >
                     Log History
                 </button>

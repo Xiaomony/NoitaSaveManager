@@ -29,6 +29,7 @@ body {
 
 .disabled {
     pointer-events: none;
+    filter: blur(5px);
 }
 
 .pane {

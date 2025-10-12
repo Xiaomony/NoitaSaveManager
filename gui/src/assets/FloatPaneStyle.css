@@ -44,7 +44,7 @@
     gap: 10px;
 }
 
-.log_history_stack {
+.centered_floating_pane {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -61,7 +61,7 @@
     backdrop-filter: blur(50px);
 }
 
-.log_history_stack::-webkit-scrollbar {
+.centered_floating_pane::-webkit-scrollbar {
     display: none;
 }
 

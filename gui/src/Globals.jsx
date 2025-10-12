@@ -8,8 +8,9 @@ export function GlobalProvider({ children }) {
     // true: open log history
     const [stackState, setStackState] = useState(false);
     const [saveInfos, setInfos] = useState([]);
+    const [msgId, setMsgId] = useState(0);
+    const [isBkgDisabled, setBkgDisability] = useState(false);
 
-    const [msg_id, setMsgId] = useState(0);
     function msgBoxDisappear(id, is_delete) {
         setMsgStack((msg_stack) => {
             if (is_delete) {
@@ -28,13 +29,13 @@ export function GlobalProvider({ children }) {
                 content: content,
                 is_showing: true,
                 log_grade: log_grade,
-                msg_id: msg_id,
+                msg_id: msgId,
             },
         ]);
 
-        setTimeout(msgBoxDisappear, 2000, msg_id, false);
+        setTimeout(msgBoxDisappear, 2000, msgId, false);
 
-        setMsgId(msg_id + 1);
+        setMsgId(msgId + 1);
     }
 
     async function update_save_infos() {
@@ -59,6 +60,10 @@ export function GlobalProvider({ children }) {
                 save_info_utils: {
                     saveInfos,
                     update_save_infos,
+                },
+                bkg_disability_utils: {
+                    isBkgDisabled,
+                    setBkgDisability,
                 },
             }}
         >
