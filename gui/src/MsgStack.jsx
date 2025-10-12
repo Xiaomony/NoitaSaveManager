@@ -1,32 +1,28 @@
-import { createContext, useContext, useState } from "react";
 import FloatPane from "./FloatPane.jsx";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+    msg_stack,
+    setMsgStack,
+    // stack_state,
+    // setStackState,
+    getGlobals,
+    clearMsgStack,
+    setStackState,
+} from "./Globals.jsx";
 
-const stackHandle = createContext(null);
-export let msg_stack = null;
-export let setMsgStack = null;
+function msgBoxDisappear(id, is_delete) {
+    setMsgStack((msg_stack) => {
+        if (is_delete) {
+            return msg_stack.filter((item) => item.msg_id != id);
+        } else {
+            return msg_stack.map((item) =>
+                item.msg_id == id ? { ...item, is_showing: false } : item,
+            );
+        }
+    });
+}
+
 let msg_id = 0;
-
-export function StackProvider({ children }) {
-    [msg_stack, setMsgStack] = useState([]);
-    return (
-        <stackHandle.Provider value={[msg_stack, setMsgStack]}>
-            {children}
-        </stackHandle.Provider>
-    );
-}
-
-export function getStack() {
-    return useContext(stackHandle);
-}
-
-function msgBoxDisappear(id) {
-    setMsgStack((msg_stack) =>
-        msg_stack.map((item) =>
-            item.msg_id == id ? { ...item, is_showing: false } : item,
-        ),
-    );
-}
 
 export function pushMsg(content, log_grade) {
     setMsgStack([
@@ -55,65 +51,110 @@ message object:
  */
 
 export default function MsgStack() {
-    const [stack, _] = getStack();
-    const messages = stack
-        .filter((item) => item.is_showing)
-        .map((item) => {
-            let color = null;
-            let title = null;
-            switch (item.log_grade) {
-                case 1:
-                    title = "[FATAL]";
-                    color = "#e06c75";
-                    break;
-                case 2:
-                    title = "[WARNING]";
-                    color = "#e5c07b";
-                    break;
-                case 3:
-                    title = "[LOG]";
-                    color = "#56b6c2";
-                    break;
-                case 4:
-                    title = "[LOG]";
-                    color = "#98c379";
-                    break;
-                case 5:
-                    title = "[DEBUG]";
-                    color = "#c678dd";
-                    break;
-            }
-            return (
+    const [[stack, ,], [stackState, ,]] = getGlobals();
+    function msg_mapper(item) {
+        let color = null;
+        let title = null;
+        switch (item.log_grade) {
+            case 1:
+                title = "[FATAL]";
+                color = "#e06c75";
+                break;
+            case 2:
+                title = "[WARNING]";
+                color = "#e5c07b";
+                break;
+            case 3:
+                title = "[LOG]";
+                color = "#56b6c2";
+                break;
+            case 4:
+                title = "[LOG]";
+                color = "#98c379";
+                break;
+            case 5:
+                title = "[DEBUG]";
+                color = "#c678dd";
+                break;
+        }
+        return (
+            <motion.div
+                key={item.msg_id}
+                layout
+                initial={{ x: 200, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 200, opacity: 0 }}
+                transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20,
+                    layout: { duration: 0.3 },
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 200 }}
+                dragElastic={0.3}
+                onDragEnd={(_, info) => {
+                    if (info.offset.x > 30) {
+                        msgBoxDisappear(item.msg_id, stackState);
+                    }
+                }}
+            >
+                <FloatPane className="msgbox" title={title} color={color}>
+                    {item.content}
+                </FloatPane>
+            </motion.div>
+        );
+    }
+    const messages = stackState
+        ? stack.map(msg_mapper)
+        : stack.filter((item) => item.is_showing).map(msg_mapper);
+    if (stackState) {
+        messages.reverse();
+    }
+
+    return (
+        <AnimatePresence>
+            {stackState ? (
                 <motion.div
-                    key={item.msg_id}
-                    layout
-                    initial={{ x: 200, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: 200, opacity: 0 }}
+                    className="log_history_stack pane"
+                    key={-1}
+                    initial={{ y: +500, opacity: 0 }}
+                    animate={{ x: "-50%", y: "-50%", opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{
                         type: "spring",
                         stiffness: 300,
                         damping: 20,
-                        layout: { duration: 0.3 },
-                    }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 200 }}
-                    dragElastic={0.3}
-                    onDragEnd={(_, info) => {
-                        if (info.offset.x > 30) {
-                            msgBoxDisappear(item.msg_id);
-                        }
                     }}
                 >
-                    <FloatPane className="msgbox" title={title} color={color}>
-                        {item.content}
-                    </FloatPane>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-evenly",
+                        }}
+                    >
+                        <button
+                            type="button"
+                            style={{ width: "45%", height: "50px" }}
+                            onClick={clearMsgStack}
+                        >
+                            Clear History
+                        </button>
+                        <button
+                            type="button"
+                            style={{ width: "45%", height: "50px" }}
+                            onClick={() => setStackState(false)}
+                        >
+                            Close
+                        </button>
+                    </div>
+                    {messages.length == 0 ? <p>No history</p> : messages}
                 </motion.div>
-            );
-        });
-    return (
-        <div className="msg_stack">
-            <AnimatePresence initial={false}>{messages}</AnimatePresence>
-        </div>
+            ) : (
+                <div className="msg_stack">
+                    <AnimatePresence>{messages}</AnimatePresence>
+                </div>
+            )}
+        </AnimatePresence>
     );
 }

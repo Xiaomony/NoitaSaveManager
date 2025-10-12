@@ -27,6 +27,10 @@ body {
     position: relative;
 }
 
+.disabled {
+    pointer-events: none;
+}
+
 .pane {
     border: 3px solid;
     border-radius: 15px;

@@ -1,13 +1,19 @@
 import "./assets/CmdPaneStyle.css";
 import { pushMsg } from "./MsgStack.jsx";
+import { getGlobals } from "./Globals.jsx";
 
 function cmd_save() {
     pushMsg(Math.random(), 1);
 }
 
 function CommandPane(props) {
+    const [[, ,], [stackState, setStackState]] = getGlobals();
     return (
-        <div className={props.className} id="cmd_pane">
+        <div
+            className={`${props.className || ""} ${stackState ? "disabled" : ""}`}
+            id="cmd_pane"
+            style={{ filter: stackState ? "blur(5px)" : null }}
+        >
             <div
                 id="buttons_utils"
                 className="button_container"
@@ -16,7 +22,12 @@ function CommandPane(props) {
                 <button type="button">Start Noita</button>
                 <button type="button">Set Noita Path</button>
                 <button type="button">Usage</button>
-                <button type="button">Log History</button>
+                <button
+                    type="button"
+                    onClick={() => setStackState(!stackState)}
+                >
+                    Log History
+                </button>
                 <button type="button">Instructions</button>
                 <button type="button">GitHub Link</button>
             </div>

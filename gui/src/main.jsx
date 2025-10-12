@@ -8,17 +8,16 @@ import "./assets/Style.css";
 import "./assets/Button.css";
 import CommandPane from "./CommandPane.jsx";
 import SavesPane from "./SavesPane.jsx";
-import MsgStack, { StackProvider } from "./MsgStack.jsx";
+import MsgStack from "./MsgStack.jsx";
+import { GlobalProvider } from "./Globals.jsx";
 
 function App() {
     return (
-        <>
-            <StackProvider>
-                <CommandPane className="pane" />
-                <SavesPane className="pane" />
-                <MsgStack />
-            </StackProvider>
-        </>
+        <GlobalProvider>
+            <CommandPane className="pane" />
+            <SavesPane className="pane" />
+            <MsgStack />
+        </GlobalProvider>
     );
 }
 

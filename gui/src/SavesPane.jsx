@@ -1,8 +1,14 @@
 import "./assets/TableStyle.css";
+import { getGlobals } from "./Globals.jsx";
 
 function SavesPane(props) {
+    const [[, ,], [stackState, ,]] = getGlobals();
     return (
-        <div className={props.className} id="saves_pane">
+        <div
+            className={`${props.className || ""} ${stackState ? "disabled" : ""}`}
+            id="saves_pane"
+            style={{ filter: stackState ? "blur(5px)" : null }}
+        >
             <table className="saves_table">
                 <caption>Saves Information</caption>
                 <thead>
