@@ -46,6 +46,18 @@ body {
     flex: 5;
 }
 
+.query_window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-height: 90%;
+    min-width: 40%;
+    min-height: 100px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         color: #9bacb0;

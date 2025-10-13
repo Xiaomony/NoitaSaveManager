@@ -1,40 +1,13 @@
 import "./assets/CmdPaneStyle.css";
+import useButtonCb from "./ButtonCallbacks.jsx";
 import { getGlobals } from "./Globals.jsx";
-import { invoke } from "@tauri-apps/api/core";
-import { add_listeners } from "./msgListener.jsx";
 
 function CommandPane(props) {
     const {
-        msg_stack_utils: { pushMsg },
-        stack_state_utils: { stackState, setStackState },
-        save_info_utils: { update_save_infos },
-        bkg_disability_utils: { isBkgDisabled, setBkgDisability },
+        bkg_disability_utils: { isBkgDisabled },
     } = getGlobals();
-
-    function error_handle(error) {
-        pushMsg(error.explanation, error.isfatal ? 1 : 2);
-    }
-
-    function cmd_startgame() {
-        invoke("cmd_startgame").catch(error_handle);
-    }
-
-    function cmd_usage() {
-        invoke("cmd_usage")
-            .then((usage) => {
-                const msg =
-                    usage <= 1024
-                        ? `${usage.toFixed(2)} MB`
-                        : `${(usage / 1024).toFixed(2)} GB`;
-                pushMsg(msg, 4);
-            })
-            .catch(error_handle());
-    }
-    function cmd_save() {
-        invoke("cmd_save", { name: "aaa", note: "bbb" }).catch(error_handle);
-        update_save_infos();
-    }
-    add_listeners(pushMsg);
+    const { cmd_startgame, cmd_setpath, cmd_usage, cmd_log_history, cmd_save } =
+        useButtonCb();
 
     return (
         <div
@@ -50,17 +23,13 @@ function CommandPane(props) {
                 <button type="button" onClick={cmd_startgame}>
                     Start Noita
                 </button>
-                <button type="button">Set Noita Path</button>
+                <button type="button" onClick={cmd_setpath}>
+                    Set Noita Path
+                </button>
                 <button type="button" onClick={cmd_usage}>
                     Usage
                 </button>
-                <button
-                    type="button"
-                    onClick={() => {
-                        setStackState(!stackState);
-                        setBkgDisability(true);
-                    }}
-                >
+                <button type="button" onClick={cmd_log_history}>
                     Log History
                 </button>
                 <button type="button">Instructions</button>

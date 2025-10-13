@@ -1,6 +1,6 @@
 /* float pane */
 
-.float_pane {
+.message_pane {
     border: 1px solid;
     border-radius: 20px;
 
@@ -8,19 +8,19 @@
     min-height: 100px;
 }
 
-.float_pane_title {
+.message_pane_title {
     font-weight: bold;
     font-size: 1.2em;
     margin: 0;
     padding: 10px 0 0 15px;
 }
 
-.float_pane_content {
+.message_pane_content {
     margin: 5px 0 0 15px;
 }
 
 @media (prefers-color-scheme: dark) {
-    .float_pane {
+    .message_pane {
         background: rgba(65, 65, 65, 0.9);
         box-shadow:
             inset -5px -5px 10px rgba(0, 0, 0, 0.2),
@@ -28,6 +28,9 @@
             10px 10px 10px rgba(0, 0, 0, 0.3);
 
         border-color: #9bacb0;
+    }
+    .message_pane_title {
+        color: #56b6c2;
     }
 }
 

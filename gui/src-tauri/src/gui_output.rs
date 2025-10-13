@@ -26,7 +26,7 @@ impl GuiOutput {
         APP_HANDLE
             .get()
             .unwrap()
-            .emit("warning", OutputPayload::new(grade, msg))
+            .emit("backend_log", OutputPayload::new(grade, msg))
             .unwrap();
     }
 }

@@ -1,4 +1,4 @@
-import FloatPane from "./FloatPane.jsx";
+import MessagePane, { CenteredFloatingPane } from "./MessagePane.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { getGlobals } from "./Globals.jsx";
 
@@ -7,7 +7,7 @@ message object:
 {
     content: "",
     is_displaying: bool,
-    log_grade: 1 2 3 4 5,        // fatal  warning  log  log_green  debug
+    log_grade: 1 2 3 4 5,        // fatal  warning  log_green  log  debug
     msg_id: 0 1 3 4 ...
 }
  */
@@ -32,11 +32,11 @@ export default function MsgStack() {
                 break;
             case 3:
                 title = "[LOG]";
-                color = "#56b6c2";
+                color = "#98c379";
                 break;
             case 4:
                 title = "[LOG]";
-                color = "#98c379";
+                color = "#56b6c2";
                 break;
             case 5:
                 title = "[DEBUG]";
@@ -66,9 +66,9 @@ export default function MsgStack() {
                     }
                 }}
             >
-                <FloatPane className="msgbox" title={title} color={color}>
+                <MessagePane className="msgbox" title={title} color={color}>
                     {item.content}
-                </FloatPane>
+                </MessagePane>
             </motion.div>
         );
     }
@@ -82,18 +82,7 @@ export default function MsgStack() {
     return (
         <AnimatePresence>
             {stackState ? (
-                <motion.div
-                    className="centered_floating_pane pane"
-                    key={-1}
-                    initial={{ y: +500, opacity: 0 }}
-                    animate={{ x: "-50%", y: "-50%", opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 20,
-                    }}
-                >
+                <CenteredFloatingPane key={-1}>
                     <div
                         style={{
                             display: "flex",
@@ -126,7 +115,7 @@ export default function MsgStack() {
                             {messages}
                         </>
                     )}
-                </motion.div>
+                </CenteredFloatingPane>
             ) : (
                 <div className="msg_stack">
                     <AnimatePresence>{messages}</AnimatePresence>

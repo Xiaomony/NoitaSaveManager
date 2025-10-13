@@ -1,5 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import { createContext, useContext, useState } from "react";
+import "./assets/MessagePaneStyle.css";
 
 const Globals = createContext(null);
 
@@ -10,6 +12,10 @@ export function GlobalProvider({ children }) {
     const [saveInfos, setInfos] = useState([]);
     const [msgId, setMsgId] = useState(0);
     const [isBkgDisabled, setBkgDisability] = useState(false);
+    const [queryWindowState, setQueryWindowState] = useState({
+        enabled: false,
+        child: null,
+    });
 
     function msgBoxDisappear(id, is_delete) {
         setMsgStack((msg_stack) => {
@@ -37,9 +43,32 @@ export function GlobalProvider({ children }) {
 
         setMsgId(msgId + 1);
     }
+    listen("backend_log", (event) => {
+        pushMsg(event.payload.message, event.payload.log_grade);
+    });
 
     async function update_save_infos() {
         setInfos(await invoke("get_saves"));
+    }
+
+    function enableQueryWindow(title, children) {
+        setQueryWindowState({
+            enabled: true,
+            child: (
+                <>
+                    <p className="message_pane_title">{title}</p>
+                    {children}
+                </>
+            ),
+        });
+        setBkgDisability(true);
+    }
+    function disableQueryWindow() {
+        setQueryWindowState({
+            enabled: false,
+            child: null,
+        });
+        setBkgDisability(false);
     }
 
     update_save_infos();
@@ -64,6 +93,12 @@ export function GlobalProvider({ children }) {
                 bkg_disability_utils: {
                     isBkgDisabled,
                     setBkgDisability,
+                },
+                query_window_utils: {
+                    queryWindowState,
+                    setQueryWindowState,
+                    enableQueryWindow,
+                    disableQueryWindow,
                 },
             }}
         >

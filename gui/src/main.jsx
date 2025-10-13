@@ -1,29 +1,36 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./msgListener.jsx";
-
-// import { useState } from "react";
-// import { invoke } from "@tauri-apps/api/core";
 
 import "./assets/Style.css";
 import "./assets/Button.css";
 import CommandPane from "./CommandPane.jsx";
 import SavesPane from "./SavesPane.jsx";
 import MsgStack from "./MsgStack.jsx";
-import { GlobalProvider } from "./Globals.jsx";
+import { GlobalProvider, getGlobals } from "./Globals.jsx";
+import { CenteredFloatingPane } from "./MessagePane.jsx";
 
 function App() {
+    const {
+        query_window_utils: { queryWindowState },
+    } = getGlobals();
     return (
-        <GlobalProvider>
+        <>
             <CommandPane className="pane" />
             <SavesPane className="pane" />
+            {queryWindowState.enabled ? (
+                <CenteredFloatingPane key={-2}>
+                    {queryWindowState.child}
+                </CenteredFloatingPane>
+            ) : null}
             <MsgStack />
-        </GlobalProvider>
+        </>
     );
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <App />
+        <GlobalProvider>
+            <App />
+        </GlobalProvider>
     </React.StrictMode>,
 );
