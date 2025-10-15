@@ -10,3 +10,14 @@
         white-space: nowrap;
     }
 }
+
+.locked_save {
+    font-style: italic;
+    background: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+    .locked_save {
+        background-color: rgba(210, 253, 205, 0.1);
+    }
+}

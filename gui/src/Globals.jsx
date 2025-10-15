@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useRef } from "react";
 import "./assets/MessagePaneStyle.css";
 
 const Globals = createContext(null);
@@ -16,6 +16,7 @@ export function GlobalProvider({ children }) {
         enabled: false,
         child: null,
     });
+    const saveCheckboxState = useRef([]);
 
     function msgBoxDisappear(id, is_delete) {
         setMsgStack((msg_stack) => {
@@ -71,8 +72,13 @@ export function GlobalProvider({ children }) {
         setBkgDisability(false);
     }
 
-    update_save_infos();
+    function getCheckedSaveIndexs() {
+        return saveCheckboxState.current
+            .map((ref, index) => (ref.checked ? index : null))
+            .filter((index) => index !== null);
+    }
 
+    update_save_infos();
     return (
         <Globals.Provider
             value={{
@@ -99,6 +105,10 @@ export function GlobalProvider({ children }) {
                     setQueryWindowState,
                     enableQueryWindow,
                     disableQueryWindow,
+                },
+                save_checkbox_utils: {
+                    saveCheckboxState,
+                    getCheckedSaveIndexs,
                 },
             }}
         >

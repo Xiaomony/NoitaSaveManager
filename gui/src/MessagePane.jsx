@@ -21,19 +21,22 @@ function MessagePane(props) {
 export function CenteredFloatingPane(props) {
     return (
         <AnimatePresence>
-            <motion.div
-                className="centered_floating_pane pane"
-                initial={{ y: +500, opacity: 0 }}
-                animate={{ x: "-50%", y: "-50%", opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 20,
-                }}
-            >
-                {props.children}
-            </motion.div>
+            {props.display ? (
+                <motion.div
+                    className="centered_floating_pane pane"
+                    initial={{ y: +500, opacity: 0 }}
+                    animate={{ x: "-50%", y: "-50%", opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                    }}
+                    key={props.key}
+                >
+                    {props.children}
+                </motion.div>
+            ) : null}
         </AnimatePresence>
     );
 }

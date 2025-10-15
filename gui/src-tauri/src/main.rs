@@ -33,9 +33,18 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             get_saves,
+            // Utils
             cmd_startgame,
+            cmd_setpath,
             cmd_usage,
+            // Save
             cmd_save,
+            cmd_qsave,
+            cmd_overwrite,
+            // Delete
+            cmd_delete,
+            // Modify
+            cmd_modify
         ])
         .plugin(tauri_plugin_opener::init())
         .run(tauri::generate_context!())

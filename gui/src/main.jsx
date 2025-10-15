@@ -17,11 +17,9 @@ function App() {
         <>
             <CommandPane className="pane" />
             <SavesPane className="pane" />
-            {queryWindowState.enabled ? (
-                <CenteredFloatingPane key={-2}>
-                    {queryWindowState.child}
-                </CenteredFloatingPane>
-            ) : null}
+            <CenteredFloatingPane display={queryWindowState.enabled}>
+                {queryWindowState.child}
+            </CenteredFloatingPane>
             <MsgStack />
         </>
     );

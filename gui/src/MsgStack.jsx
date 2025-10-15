@@ -80,47 +80,48 @@ export default function MsgStack() {
     }
 
     return (
-        <AnimatePresence>
-            {stackState ? (
-                <CenteredFloatingPane key={-1}>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-evenly",
+        <>
+            <CenteredFloatingPane key={-1} display={stackState}>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-evenly",
+                    }}
+                >
+                    <button
+                        type="button"
+                        style={{ width: "45%", height: "50px" }}
+                        onClick={() => setMsgStack([])}
+                    >
+                        Clear History
+                    </button>
+                    <button
+                        type="button"
+                        style={{ width: "45%", height: "50px" }}
+                        onClick={() => {
+                            setStackState(false);
+                            setBkgDisability(false);
                         }}
                     >
-                        <button
-                            type="button"
-                            style={{ width: "45%", height: "50px" }}
-                            onClick={() => setMsgStack([])}
-                        >
-                            Clear History
-                        </button>
-                        <button
-                            type="button"
-                            style={{ width: "45%", height: "50px" }}
-                            onClick={() => {
-                                setStackState(false);
-                                setBkgDisability(false);
-                            }}
-                        >
-                            Close
-                        </button>
-                    </div>
-                    {messages.length == 0 ? (
-                        <p>No history</p>
-                    ) : (
-                        <>
-                            <p>向右拖动以删除某条消息</p>
-                            {messages}
-                        </>
-                    )}
-                </CenteredFloatingPane>
-            ) : (
+                        Close
+                    </button>
+                </div>
+                {messages.length == 0 ? (
+                    <p>No history</p>
+                ) : (
+                    <>
+                        <p style={{ textAlign: "center" }}>
+                            向右拖动以删除某条消息
+                        </p>
+                        {messages}
+                    </>
+                )}
+            </CenteredFloatingPane>
+            {stackState ? null : (
                 <div className="msg_stack">
                     <AnimatePresence>{messages}</AnimatePresence>
                 </div>
             )}
-        </AnimatePresence>
+        </>
     );
 }

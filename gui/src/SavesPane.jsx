@@ -5,13 +5,13 @@ function SavesPane(props) {
     const {
         save_info_utils: { saveInfos },
         bkg_disability_utils: { isBkgDisabled },
+        save_checkbox_utils: { saveCheckboxState },
     } = getGlobals();
 
     return (
         <div
             className={`${props.className || ""} ${isBkgDisabled ? "disabled" : ""}`}
             id="saves_pane"
-            // style={{ filter: stackState ? "blur(5px)" : null }}
         >
             <table className="saves_table">
                 <caption>Saves Information</caption>
@@ -32,17 +32,29 @@ function SavesPane(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {saveInfos.map((save) => (
-                        <tr key={save.m_name}>
-                            <th scope="col">
-                                <input type="checkbox" />
-                            </th>
-                            <th scope="col">{save.m_date}</th>
-                            <th scope="col">{save.m_time}</th>
-                            <th scope="col">{save.m_name}</th>
-                            <th scope="col">{save.m_note}</th>
-                        </tr>
-                    ))}
+                    {saveInfos.map((save, i) => {
+                        return (
+                            <tr
+                                key={save.m_name}
+                                className={
+                                    save.m_islocked ? "locked_save" : null
+                                }
+                            >
+                                <th scope="col">
+                                    <input
+                                        type="checkbox"
+                                        ref={(el) => {
+                                            saveCheckboxState.current[i] = el;
+                                        }}
+                                    />
+                                </th>
+                                <th scope="col">{save.m_date}</th>
+                                <th scope="col">{save.m_time}</th>
+                                <th scope="col">{save.m_name}</th>
+                                <th scope="col">{save.m_note}</th>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         </div>

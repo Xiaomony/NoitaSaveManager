@@ -18,6 +18,12 @@ button:active {
     transition: all 0.2s ease;
 }
 
+input[type="text"] {
+    border: none;
+    border-radius: 10px;
+    height: 40px;
+}
+
 @media (prefers-color-scheme: dark) {
     button {
         border-color: rgba(255, 255, 255, 0.3);
@@ -32,5 +38,10 @@ button:active {
     button:active {
         background: rgba(255, 255, 255, 0.2);
         box-shadow: 0 0 20px rgba(163, 224, 220, 0.3);
+    }
+
+    input[type="text"] {
+        background: rgba(200, 200, 200, 0.5);
+        filter: drop-shadow(5px 5px 5px white);
     }
 }

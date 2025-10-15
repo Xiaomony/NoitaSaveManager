@@ -6,14 +6,21 @@ function CommandPane(props) {
     const {
         bkg_disability_utils: { isBkgDisabled },
     } = getGlobals();
-    const { cmd_startgame, cmd_setpath, cmd_usage, cmd_log_history, cmd_save } =
-        useButtonCb();
+    const {
+        cmd_startgame,
+        cmd_setpath,
+        cmd_usage,
+        cmd_log_history,
+        cmd_save,
+        cmd_qsave,
+        cmd_overwrite,
+        cmd_modify,
+    } = useButtonCb();
 
     return (
         <div
             className={`${props.className || ""} ${isBkgDisabled ? "disabled" : ""}`}
             id="cmd_pane"
-            // style={{ filter: stackState ? "blur(5px)" : null }}
         >
             <div
                 id="buttons_utils"
@@ -45,8 +52,12 @@ function CommandPane(props) {
                 <button type="button" onClick={cmd_save}>
                     Save
                 </button>
-                <button type="button">Quick Save</button>
-                <button type="button">Overwrite</button>
+                <button type="button" onClick={cmd_qsave}>
+                    Quick Save
+                </button>
+                <button type="button" onClick={cmd_overwrite}>
+                    Overwrite
+                </button>
                 <button type="button">Auto Save</button>
             </div>
 
@@ -78,7 +89,9 @@ function CommandPane(props) {
                 <span>Modify</span>
                 <button type="button">Lock</button>
                 <button type="button">Unlock</button>
-                <button type="button">Modify</button>
+                <button type="button" onClick={cmd_modify}>
+                    Modify
+                </button>
             </div>
         </div>
     );

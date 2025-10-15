@@ -52,9 +52,11 @@ export default function useButtonCb() {
         save_info_utils: { update_save_infos },
         bkg_disability_utils: { setBkgDisability },
         query_window_utils: { enableQueryWindow },
+        save_checkbox_utils: { getCheckedSaveIndexs },
     } = getGlobals();
     function error_handle(error) {
-        pushMsg(error.explanation, error.isfatal ? 1 : 2);
+        console.log(error);
+        pushMsg(error, error.isfatal ? 1 : 2);
     }
 
     function cmd_startgame() {
@@ -67,10 +69,17 @@ export default function useButtonCb() {
             "Set noita.exe path",
             <>
                 <input
+                    type="text"
                     ref={noitaPathRef}
                     placeholder="Input the path of noita.exe(end with 'noita.exe')"
                 />
-                <OkCancleKit />
+                <OkCancleKit
+                    okCallback={() => {
+                        invoke("cmd_setpath", {
+                            newPath: noitaPathRef.current.value,
+                        }).catch(error_handle);
+                    }}
+                />
             </>,
         );
     }
@@ -84,7 +93,7 @@ export default function useButtonCb() {
                         : `${(usage / 1024).toFixed(2)} GB`;
                 pushMsg(msg, 4);
             })
-            .catch(error_handle());
+            .catch(error_handle);
     }
 
     function cmd_log_history() {
@@ -92,9 +101,80 @@ export default function useButtonCb() {
         setBkgDisability(true);
     }
 
+    const saveNameRef = useRef(null);
+    const saveNoteRef = useRef(null);
     function cmd_save() {
-        invoke("cmd_save", { name: "aaa", note: "bbb" }).catch(error_handle);
+        enableQueryWindow(
+            "Save",
+            <>
+                <input
+                    type="text"
+                    ref={saveNameRef}
+                    placeholder="Save name(can't be empty)"
+                />
+                <input
+                    type="text"
+                    ref={saveNoteRef}
+                    placeholder="Save note(can be empty)"
+                />
+                <OkCancleKit
+                    okCallback={() => {
+                        invoke("cmd_save", {
+                            name: saveNameRef.current.value,
+                            note: saveNoteRef.current.value,
+                        }).catch(error_handle);
+                    }}
+                />
+            </>,
+        );
         update_save_infos();
+    }
+
+    function cmd_qsave() {
+        invoke("cmd_qsave").catch(error_handle);
+        update_save_infos();
+    }
+
+    function cmd_overwrite() {
+        invoke("cmd_overwrite").catch(error_handle);
+    }
+
+    const newSaveNameRef = useRef(null);
+    const newSaveNoteRef = useRef(null);
+    function cmd_modify() {
+        const indexs = getCheckedSaveIndexs();
+        if (indexs.length == 0) {
+            pushMsg("please choose a save", 2);
+        } else if (indexs.length > 1) {
+            pushMsg("please choose only one save", 2);
+        } else {
+            enableQueryWindow(
+                "Modify",
+                <>
+                    <input
+                        type="text"
+                        ref={newSaveNameRef}
+                        placeholder="new save name(leave empty to keep the previous)"
+                    />
+                    <input
+                        type="text"
+                        ref={newSaveNoteRef}
+                        placeholder="new save note(leave empty to keep the previous)"
+                    />
+                    <OkCancleKit
+                        okCallback={() => {
+                            invoke("cmd_modify", {
+                                index: indexs[0],
+                                newName: newSaveNameRef.current.value,
+                                newNote: newSaveNoteRef.current.value,
+                            }).catch(error_handle);
+                        }}
+                    />
+                </>,
+            );
+
+            update_save_infos();
+        }
     }
 
     return {
@@ -103,5 +183,8 @@ export default function useButtonCb() {
         cmd_usage,
         cmd_log_history,
         cmd_save,
+        cmd_qsave,
+        cmd_overwrite,
+        cmd_modify,
     };
 }

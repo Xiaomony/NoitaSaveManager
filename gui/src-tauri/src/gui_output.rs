@@ -53,6 +53,6 @@ impl OutputManager for GuiOutput {
     }
 
     fn confirm(&self, _msg: String) -> noita_save_manager_core::NSResult<bool> {
-        todo!()
+        Ok(true)
     }
 }
