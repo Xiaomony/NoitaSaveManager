@@ -139,12 +139,26 @@ export default function useButtonCb() {
         invoke("cmd_overwrite").catch(error_handle);
     }
 
+    function cmd_qdelete() {
+        invoke("cmd_qdelete").catch(error_handle);
+    }
+
+    function cmd_modify_lock(operate) {
+        const indexs = getCheckedSaveIndexs();
+        if (indexs.length == 0) {
+            pushMsg("please choose at least one save", 2);
+        } else {
+            invoke("cmd_modify_lock", { indexs: indexs, operate });
+            update_save_infos();
+        }
+    }
+
     const newSaveNameRef = useRef(null);
     const newSaveNoteRef = useRef(null);
     function cmd_modify() {
         const indexs = getCheckedSaveIndexs();
         if (indexs.length == 0) {
-            pushMsg("please choose a save", 2);
+            pushMsg("please choose at least one save", 2);
         } else if (indexs.length > 1) {
             pushMsg("please choose only one save", 2);
         } else {
@@ -185,6 +199,8 @@ export default function useButtonCb() {
         cmd_save,
         cmd_qsave,
         cmd_overwrite,
+        cmd_qdelete,
+        cmd_modify_lock,
         cmd_modify,
     };
 }

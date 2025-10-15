@@ -13,7 +13,12 @@ function MessagePane(props) {
             <p className="message_pane_title" style={style}>
                 {props.title}
             </p>
-            <p className="message_pane_content">{props.children}</p>
+            <p
+                className="message_pane_content"
+                style={{ whiteSpace: "pre-line" }}
+            >
+                {props.children}
+            </p>
         </div>
     );
 }

@@ -43,7 +43,9 @@ fn main() {
             cmd_overwrite,
             // Delete
             cmd_delete,
+            cmd_qdelete,
             // Modify
+            cmd_modify_lock,
             cmd_modify
         ])
         .plugin(tauri_plugin_opener::init())

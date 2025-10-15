@@ -1,10 +1,17 @@
 use super::CORE;
 use crate::gui_output::GuiOutput;
-use noita_save_manager_core::{Core, NSComResult, NSResult, SingleSave, throw};
+use noita_save_manager_core::{Core, NSComResult, NSError, NSResult, SingleSave, throw};
 use std::sync::MutexGuard;
 
 fn get_core<'a>() -> NSResult<MutexGuard<'a, Core<GuiOutput>>> {
-    let Ok(core) = CORE.get().unwrap().try_lock() else {
+    let Ok(core) = CORE
+        .get()
+        .ok_or(NSError::new(
+            "Fail to get mutex lock
+",
+        ))?
+        .try_lock()
+    else {
         return throw("backend buzy");
     };
     Ok(core)
@@ -54,6 +61,22 @@ pub fn cmd_overwrite() -> NSComResult {
 pub fn cmd_delete(indexs: Vec<usize>) -> NSComResult {
     let mut core = get_core()?;
     core.delete_saves(indexs)
+}
+
+#[tauri::command]
+pub fn cmd_qdelete() -> NSComResult {
+    let mut core = get_core()?;
+    core.quick_delete_save()
+}
+
+#[tauri::command]
+pub fn cmd_modify_lock(indexs: Vec<usize>, operate: bool) -> NSComResult {
+    let mut core = get_core()?;
+    if operate {
+        core.lock(indexs)
+    } else {
+        core.unlock(indexs)
+    }
 }
 
 #[tauri::command]

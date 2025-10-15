@@ -14,6 +14,8 @@ function CommandPane(props) {
         cmd_save,
         cmd_qsave,
         cmd_overwrite,
+        cmd_qdelete,
+        cmd_modify_lock,
         cmd_modify,
     } = useButtonCb();
 
@@ -78,7 +80,9 @@ function CommandPane(props) {
             >
                 <span>Delete</span>
                 <button type="button">Delete</button>
-                <button type="button">Quick Delete</button>
+                <button type="button" onClick={cmd_qdelete}>
+                    Quick Delete
+                </button>
             </div>
 
             <div
@@ -87,8 +91,22 @@ function CommandPane(props) {
                 style={{ gridArea: "G" }}
             >
                 <span>Modify</span>
-                <button type="button">Lock</button>
-                <button type="button">Unlock</button>
+                <button
+                    type="button"
+                    onClick={() => {
+                        cmd_modify_lock(true);
+                    }}
+                >
+                    Lock
+                </button>
+                <button
+                    type="button"
+                    onClick={() => {
+                        cmd_modify_lock(false);
+                    }}
+                >
+                    Unlock
+                </button>
                 <button type="button" onClick={cmd_modify}>
                     Modify
                 </button>

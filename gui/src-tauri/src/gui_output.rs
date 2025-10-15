@@ -53,6 +53,7 @@ impl OutputManager for GuiOutput {
     }
 
     fn confirm(&self, _msg: String) -> noita_save_manager_core::NSResult<bool> {
-        Ok(true)
+        GuiOutput::emit_message(5, "asdfasdasdfasdfdas".to_string());
+        Ok(false)
     }
 }
