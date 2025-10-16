@@ -23,7 +23,7 @@ impl OutputPayload {
 
 impl GuiOutput {
     fn emit_message(grade: u32, msg: String) {
-        println!("{grade} : {msg}");
+        println!("emit a msg");
         APP_HANDLE
             .get()
             .unwrap()

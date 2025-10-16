@@ -16,7 +16,7 @@
 }
 
 .message_pane_content {
-    margin: 5px 0 10px 15px;
+    margin: 5px 15px 10px 15px;
 }
 
 @media (prefers-color-scheme: dark) {

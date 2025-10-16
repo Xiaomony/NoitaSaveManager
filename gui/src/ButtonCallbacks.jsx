@@ -5,11 +5,15 @@ import { useRef } from "react";
 function OkCancleKit(props) {
     const {
         query_window_utils: { disableQueryWindow },
+        backend_state_utils: { setBackendState },
     } = getGlobals();
 
     const cancleCallback = props.cancleCallback
         ? props.cancleCallback
-        : disableQueryWindow;
+        : () => {
+              setBackendState(false);
+              disableQueryWindow();
+          };
 
     return (
         <div
@@ -57,6 +61,7 @@ export default function useButtonCb() {
     } = getGlobals();
     function error_handle(error) {
         const err_string = error.explanation.join("\n");
+        setBackendState(false);
         pushMsg(err_string, error.isfatal ? 1 : 2);
     }
 
@@ -140,8 +145,9 @@ export default function useButtonCb() {
                             invoke("cmd_save", {
                                 name: saveNameRef.current.value,
                                 note: saveNoteRef.current.value,
-                            }).catch(error_handle);
-                            update_save_infos();
+                            })
+                                .then(update_save_infos)
+                                .catch(error_handle);
                         }}
                     />
                 </>,
@@ -151,15 +157,13 @@ export default function useButtonCb() {
 
     function cmd_qsave() {
         if (check_backend_state()) {
-            invoke("cmd_qsave").catch(error_handle);
-            update_save_infos();
+            invoke("cmd_qsave").then(update_save_infos).catch(error_handle);
         }
     }
 
     function cmd_overwrite() {
         if (check_backend_state()) {
-            invoke("cmd_overwrite").catch(error_handle);
-            update_save_infos();
+            invoke("cmd_overwrite").then(update_save_infos).catch(error_handle);
         }
     }
 
@@ -188,15 +192,16 @@ export default function useButtonCb() {
             if (indexs.length == 0) {
                 pushMsg("please choose at least one save", 2);
             } else {
-                invoke("cmd_delete", { indexs: indexs }).catch(error_handle);
-                update_save_infos();
+                invoke("cmd_delete", { indexs: indexs })
+                    .then(update_save_infos)
+                    .catch(error_handle);
             }
         }
     }
 
     function cmd_qdelete() {
         if (check_backend_state()) {
-            invoke("cmd_qdelete").catch(error_handle);
+            invoke("cmd_qdelete").then(update_save_infos).catch(error_handle);
         }
     }
 
@@ -206,10 +211,9 @@ export default function useButtonCb() {
             if (indexs.length == 0) {
                 pushMsg("please choose at least one save", 2);
             } else {
-                invoke("cmd_modify_lock", { indexs: indexs, operate }).catch(
-                    error_handle,
-                );
-                update_save_infos();
+                invoke("cmd_modify_lock", { indexs: indexs, operate })
+                    .then(update_save_infos)
+                    .catch(error_handle);
             }
         }
     }
@@ -243,13 +247,13 @@ export default function useButtonCb() {
                                     index: indexs[0],
                                     newName: newSaveNameRef.current.value,
                                     newNote: newSaveNoteRef.current.value,
-                                }).catch(error_handle);
+                                })
+                                    .then(update_save_infos)
+                                    .catch(error_handle);
                             }}
                         />
                     </>,
                 );
-
-                update_save_infos();
             }
         }
     }

@@ -36,7 +36,7 @@ export function CenteredFloatingPane(props) {
                     stiffness: 300,
                     damping: 20,
                 }}
-                key={props.key}
+                key={props.animation_key}
             >
                 {props.children}
             </motion.div>

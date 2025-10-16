@@ -81,7 +81,7 @@ export default function MsgStack() {
 
     return (
         <>
-            <CenteredFloatingPane key={-1} display={stackState}>
+            <CenteredFloatingPane animation_key={-1} display={stackState}>
                 <div
                     style={{
                         display: "flex",

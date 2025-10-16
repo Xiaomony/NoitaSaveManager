@@ -14,7 +14,11 @@ function SavesPane(props) {
             id="saves_pane"
         >
             <table className="saves_table">
-                <caption>Saves Information</caption>
+                <caption>
+                    Saves Information
+                    <br />
+                    (Locked saves willed displayed in italic and bold)
+                </caption>
                 <colgroup>
                     <col style={{ width: "7%" }} />
                     <col style={{ width: "15%" }} />
@@ -39,19 +43,20 @@ function SavesPane(props) {
                                 className={
                                     save.m_islocked ? "locked_save" : null
                                 }
+                                onClick={() => console.log("aaa")}
                             >
-                                <th scope="col">
+                                <td scope="col">
                                     <input
                                         type="checkbox"
                                         ref={(el) => {
                                             saveCheckboxState.current[i] = el;
                                         }}
                                     />
-                                </th>
-                                <th scope="col">{save.m_date}</th>
-                                <th scope="col">{save.m_time}</th>
-                                <th scope="col">{save.m_name}</th>
-                                <th scope="col">{save.m_note}</th>
+                                </td>
+                                <td scope="col">{save.m_date}</td>
+                                <td scope="col">{save.m_time}</td>
+                                <td scope="col">{save.m_name}</td>
+                                <td scope="col">{save.m_note}</td>
                             </tr>
                         );
                     })}

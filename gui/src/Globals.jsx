@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { createContext, useContext, useState, useRef } from "react";
+import { createContext, useContext, useState, useRef, useEffect } from "react";
 import "./assets/MessagePaneStyle.css";
 
 const Globals = createContext(null);
@@ -10,7 +10,7 @@ export function GlobalProvider({ children }) {
     // true: open log history
     const [stackState, setStackState] = useState(false);
     const [saveInfos, setInfos] = useState([]);
-    const [msgId, setMsgId] = useState(0);
+    const msgIdRef = useRef(0);
     const [isBkgDisabled, setBkgDisability] = useState(false);
     const [queryWindowState, setQueryWindowState] = useState({
         enabled: false,
@@ -30,27 +30,17 @@ export function GlobalProvider({ children }) {
             }
         });
     }
+
     function pushMsg(content, log_grade) {
-        setMsgStack([
-            ...stack,
-            {
-                content: content,
-                is_showing: true,
-                log_grade: log_grade,
-                msg_id: msgId,
-            },
+        const id = msgIdRef.current++;
+
+        setMsgStack((prevStack) => [
+            ...prevStack,
+            { content, is_showing: true, log_grade, msg_id: id },
         ]);
 
-        setTimeout(msgBoxDisappear, 2000, msgId, false);
-        setMsgId(msgId + 1);
+        setTimeout(() => msgBoxDisappear(id, false), 2000);
     }
-    listen("backend_log", (event) => {
-        pushMsg(event.payload.message, event.payload.log_grade);
-    });
-
-    listen("release_backend_lock", () => {
-        setBackendState(false);
-    });
 
     async function update_save_infos() {
         setInfos(await invoke("get_saves"));
@@ -82,7 +72,25 @@ export function GlobalProvider({ children }) {
             .filter((index) => index !== null);
     }
 
-    update_save_infos();
+    useEffect(() => {
+        update_save_infos();
+
+        const unlistenBackendLog = listen("backend_log", (event) => {
+            pushMsg(event.payload.message, event.payload.log_grade);
+        });
+
+        const unlistenRelease = listen("release_backend_lock", () => {
+            setBackendState(false);
+        });
+
+        // React Strict Mode will cause the Components to be mounted twice
+        // which will register two listener
+        // So its necessary to clean the previous listeners with the following code:
+        return () => {
+            unlistenBackendLog.then((f) => f());
+            unlistenRelease.then((f) => f());
+        };
+    }, []);
     return (
         <Globals.Provider
             value={{

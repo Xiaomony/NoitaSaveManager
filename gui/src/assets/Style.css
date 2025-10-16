@@ -44,6 +44,12 @@ body {
 
 #saves_pane {
     flex: 5;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.pane::-webkit-scrollbar {
+    display: none;
 }
 
 .query_window {

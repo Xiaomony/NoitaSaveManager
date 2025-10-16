@@ -8,11 +8,13 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        text-align: center;
     }
 }
 
 .locked_save {
     font-style: italic;
+    font-weight: bold;
     background: transparent;
 }
 

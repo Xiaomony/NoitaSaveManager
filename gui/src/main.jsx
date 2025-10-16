@@ -10,7 +10,6 @@ import { GlobalProvider, getGlobals } from "./Globals.jsx";
 import { CenteredFloatingPane } from "./MessagePane.jsx";
 
 function App() {
-    console.log("rerender");
     const {
         query_window_utils: { queryWindowState },
     } = getGlobals();

@@ -312,7 +312,12 @@ impl<Opm: OutputManager> Core<Opm> {
 
     #[inline]
     pub fn quick_delete_save(&mut self) -> NSComResult {
-        self.delete_saves(vec![self.m_info.saves.len() - 1])
+        let index = if self.m_info.saves.is_empty() {
+            0
+        } else {
+            self.m_info.saves.len() - 1
+        };
+        self.delete_saves(vec![index])
     }
 
     pub fn lock(&mut self, indexes: Vec<usize>) -> NSComResult {
