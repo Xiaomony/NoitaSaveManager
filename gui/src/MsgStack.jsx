@@ -110,7 +110,7 @@ export default function MsgStack() {
                     <p>No history</p>
                 ) : (
                     <>
-                        <p style={{ textAlign: "center" }}>
+                        <p style={{ textAlign: "center", margin: 0 }}>
                             向右拖动以删除某条消息
                         </p>
                         {messages}

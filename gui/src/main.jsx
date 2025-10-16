@@ -10,6 +10,7 @@ import { GlobalProvider, getGlobals } from "./Globals.jsx";
 import { CenteredFloatingPane } from "./MessagePane.jsx";
 
 function App() {
+    console.log("rerender");
     const {
         query_window_utils: { queryWindowState },
     } = getGlobals();
@@ -17,7 +18,7 @@ function App() {
         <>
             <CommandPane className="pane" />
             <SavesPane className="pane" />
-            <CenteredFloatingPane display={queryWindowState.enabled}>
+            <CenteredFloatingPane key={-2} display={queryWindowState.enabled}>
                 {queryWindowState.child}
             </CenteredFloatingPane>
             <MsgStack />

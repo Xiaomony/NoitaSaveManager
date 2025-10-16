@@ -17,6 +17,7 @@ export function GlobalProvider({ children }) {
         child: null,
     });
     const saveCheckboxState = useRef([]);
+    const [backendLocked, setBackendState] = useState(false);
 
     function msgBoxDisappear(id, is_delete) {
         setMsgStack((msg_stack) => {
@@ -41,11 +42,14 @@ export function GlobalProvider({ children }) {
         ]);
 
         setTimeout(msgBoxDisappear, 2000, msgId, false);
-
         setMsgId(msgId + 1);
     }
     listen("backend_log", (event) => {
         pushMsg(event.payload.message, event.payload.log_grade);
+    });
+
+    listen("release_backend_lock", () => {
+        setBackendState(false);
     });
 
     async function update_save_infos() {
@@ -109,6 +113,10 @@ export function GlobalProvider({ children }) {
                 save_checkbox_utils: {
                     saveCheckboxState,
                     getCheckedSaveIndexs,
+                },
+                backend_state_utils: {
+                    backendLocked,
+                    setBackendState,
                 },
             }}
         >

@@ -7,14 +7,22 @@ function CommandPane(props) {
         bkg_disability_utils: { isBkgDisabled },
     } = getGlobals();
     const {
+        // Utils
         cmd_startgame,
         cmd_setpath,
         cmd_usage,
         cmd_log_history,
+        // Save
         cmd_save,
         cmd_qsave,
         cmd_overwrite,
+        // Load
+        cmd_load,
+        cmd_qload,
+        // Delete
+        cmd_delete,
         cmd_qdelete,
+        // Lock
         cmd_modify_lock,
         cmd_modify,
     } = useButtonCb();
@@ -69,8 +77,12 @@ function CommandPane(props) {
                 style={{ gridArea: "E" }}
             >
                 <span>Load</span>
-                <button type="button">Load</button>
-                <button type="button">Quick Load</button>
+                <button type="button" onClick={cmd_load}>
+                    Load
+                </button>
+                <button type="button" onClick={cmd_qload}>
+                    Quick Load
+                </button>
             </div>
 
             <div
@@ -79,7 +91,9 @@ function CommandPane(props) {
                 style={{ gridArea: "F" }}
             >
                 <span>Delete</span>
-                <button type="button">Delete</button>
+                <button type="button" onClick={cmd_delete}>
+                    Delete
+                </button>
                 <button type="button" onClick={cmd_qdelete}>
                     Quick Delete
                 </button>

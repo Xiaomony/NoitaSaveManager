@@ -23,6 +23,7 @@ impl OutputPayload {
 
 impl GuiOutput {
     fn emit_message(grade: u32, msg: String) {
+        println!("{grade} : {msg}");
         APP_HANDLE
             .get()
             .unwrap()
@@ -53,7 +54,6 @@ impl OutputManager for GuiOutput {
     }
 
     fn confirm(&self, _msg: String) -> noita_save_manager_core::NSResult<bool> {
-        GuiOutput::emit_message(5, "asdfasdasdfasdfdas".to_string());
-        Ok(false)
+        Ok(true)
     }
 }

@@ -41,6 +41,9 @@ fn main() {
             cmd_save,
             cmd_qsave,
             cmd_overwrite,
+            // Load
+            cmd_load,
+            cmd_qload,
             // Delete
             cmd_delete,
             cmd_qdelete,

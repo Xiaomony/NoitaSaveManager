@@ -53,47 +53,64 @@ export default function useButtonCb() {
         bkg_disability_utils: { setBkgDisability },
         query_window_utils: { enableQueryWindow },
         save_checkbox_utils: { getCheckedSaveIndexs },
+        backend_state_utils: { backendLocked, setBackendState },
     } = getGlobals();
     function error_handle(error) {
-        console.log(error);
-        pushMsg(error, error.isfatal ? 1 : 2);
+        const err_string = error.explanation.join("\n");
+        pushMsg(err_string, error.isfatal ? 1 : 2);
+    }
+
+    function check_backend_state() {
+        if (backendLocked) {
+            pushMsg("有操作正在进行", 2);
+            return false;
+        } else {
+            setBackendState(true);
+            return true;
+        }
     }
 
     function cmd_startgame() {
-        invoke("cmd_startgame").catch(error_handle);
+        if (check_backend_state()) {
+            invoke("cmd_startgame").catch(error_handle);
+        }
     }
 
     const noitaPathRef = useRef(null);
     function cmd_setpath() {
-        enableQueryWindow(
-            "Set noita.exe path",
-            <>
-                <input
-                    type="text"
-                    ref={noitaPathRef}
-                    placeholder="Input the path of noita.exe(end with 'noita.exe')"
-                />
-                <OkCancleKit
-                    okCallback={() => {
-                        invoke("cmd_setpath", {
-                            newPath: noitaPathRef.current.value,
-                        }).catch(error_handle);
-                    }}
-                />
-            </>,
-        );
+        if (check_backend_state()) {
+            enableQueryWindow(
+                "Set noita.exe path",
+                <>
+                    <input
+                        type="text"
+                        ref={noitaPathRef}
+                        placeholder="Input the path of noita.exe(end with 'noita.exe')"
+                    />
+                    <OkCancleKit
+                        okCallback={() => {
+                            invoke("cmd_setpath", {
+                                newPath: noitaPathRef.current.value,
+                            }).catch(error_handle);
+                        }}
+                    />
+                </>,
+            );
+        }
     }
 
     function cmd_usage() {
-        invoke("cmd_usage")
-            .then((usage) => {
-                const msg =
-                    usage <= 1024
-                        ? `${usage.toFixed(2)} MB`
-                        : `${(usage / 1024).toFixed(2)} GB`;
-                pushMsg(msg, 4);
-            })
-            .catch(error_handle);
+        if (check_backend_state()) {
+            invoke("cmd_usage")
+                .then((usage) => {
+                    const msg =
+                        usage <= 1024
+                            ? `${usage.toFixed(2)} MB`
+                            : `${(usage / 1024).toFixed(2)} GB`;
+                    pushMsg(msg, 4);
+                })
+                .catch(error_handle);
+        }
     }
 
     function cmd_log_history() {
@@ -104,102 +121,156 @@ export default function useButtonCb() {
     const saveNameRef = useRef(null);
     const saveNoteRef = useRef(null);
     function cmd_save() {
-        enableQueryWindow(
-            "Save",
-            <>
-                <input
-                    type="text"
-                    ref={saveNameRef}
-                    placeholder="Save name(can't be empty)"
-                />
-                <input
-                    type="text"
-                    ref={saveNoteRef}
-                    placeholder="Save note(can be empty)"
-                />
-                <OkCancleKit
-                    okCallback={() => {
-                        invoke("cmd_save", {
-                            name: saveNameRef.current.value,
-                            note: saveNoteRef.current.value,
-                        }).catch(error_handle);
-                    }}
-                />
-            </>,
-        );
-        update_save_infos();
+        if (check_backend_state()) {
+            enableQueryWindow(
+                "Save",
+                <>
+                    <input
+                        type="text"
+                        ref={saveNameRef}
+                        placeholder="Save name(can't be empty)"
+                    />
+                    <input
+                        type="text"
+                        ref={saveNoteRef}
+                        placeholder="Save note(can be empty)"
+                    />
+                    <OkCancleKit
+                        okCallback={() => {
+                            invoke("cmd_save", {
+                                name: saveNameRef.current.value,
+                                note: saveNoteRef.current.value,
+                            }).catch(error_handle);
+                            update_save_infos();
+                        }}
+                    />
+                </>,
+            );
+        }
     }
 
     function cmd_qsave() {
-        invoke("cmd_qsave").catch(error_handle);
-        update_save_infos();
+        if (check_backend_state()) {
+            invoke("cmd_qsave").catch(error_handle);
+            update_save_infos();
+        }
     }
 
     function cmd_overwrite() {
-        invoke("cmd_overwrite").catch(error_handle);
+        if (check_backend_state()) {
+            invoke("cmd_overwrite").catch(error_handle);
+            update_save_infos();
+        }
+    }
+
+    function cmd_load() {
+        if (check_backend_state()) {
+            const indexs = getCheckedSaveIndexs();
+            if (indexs.length == 0) {
+                pushMsg("please choose at least one save", 2);
+            } else if (indexs.length > 1) {
+                pushMsg("please choose only one save", 2);
+            } else {
+                invoke("cmd_load", { indexs: indexs[0] }).catch(error_handle);
+            }
+        }
+    }
+
+    function cmd_qload() {
+        if (check_backend_state()) {
+            invoke("cmd_load").catch(error_handle);
+        }
+    }
+
+    function cmd_delete() {
+        if (check_backend_state()) {
+            const indexs = getCheckedSaveIndexs();
+            if (indexs.length == 0) {
+                pushMsg("please choose at least one save", 2);
+            } else {
+                invoke("cmd_delete", { indexs: indexs }).catch(error_handle);
+                update_save_infos();
+            }
+        }
     }
 
     function cmd_qdelete() {
-        invoke("cmd_qdelete").catch(error_handle);
+        if (check_backend_state()) {
+            invoke("cmd_qdelete").catch(error_handle);
+        }
     }
 
     function cmd_modify_lock(operate) {
-        const indexs = getCheckedSaveIndexs();
-        if (indexs.length == 0) {
-            pushMsg("please choose at least one save", 2);
-        } else {
-            invoke("cmd_modify_lock", { indexs: indexs, operate });
-            update_save_infos();
+        if (check_backend_state()) {
+            const indexs = getCheckedSaveIndexs();
+            if (indexs.length == 0) {
+                pushMsg("please choose at least one save", 2);
+            } else {
+                invoke("cmd_modify_lock", { indexs: indexs, operate }).catch(
+                    error_handle,
+                );
+                update_save_infos();
+            }
         }
     }
 
     const newSaveNameRef = useRef(null);
     const newSaveNoteRef = useRef(null);
     function cmd_modify() {
-        const indexs = getCheckedSaveIndexs();
-        if (indexs.length == 0) {
-            pushMsg("please choose at least one save", 2);
-        } else if (indexs.length > 1) {
-            pushMsg("please choose only one save", 2);
-        } else {
-            enableQueryWindow(
-                "Modify",
-                <>
-                    <input
-                        type="text"
-                        ref={newSaveNameRef}
-                        placeholder="new save name(leave empty to keep the previous)"
-                    />
-                    <input
-                        type="text"
-                        ref={newSaveNoteRef}
-                        placeholder="new save note(leave empty to keep the previous)"
-                    />
-                    <OkCancleKit
-                        okCallback={() => {
-                            invoke("cmd_modify", {
-                                index: indexs[0],
-                                newName: newSaveNameRef.current.value,
-                                newNote: newSaveNoteRef.current.value,
-                            }).catch(error_handle);
-                        }}
-                    />
-                </>,
-            );
+        if (check_backend_state()) {
+            const indexs = getCheckedSaveIndexs();
+            if (indexs.length == 0) {
+                pushMsg("please choose at least one save", 2);
+            } else if (indexs.length > 1) {
+                pushMsg("please choose only one save", 2);
+            } else {
+                enableQueryWindow(
+                    "Modify",
+                    <>
+                        <input
+                            type="text"
+                            ref={newSaveNameRef}
+                            placeholder="new save name(leave empty to keep the previous)"
+                        />
+                        <input
+                            type="text"
+                            ref={newSaveNoteRef}
+                            placeholder="new save note(leave empty to keep the previous)"
+                        />
+                        <OkCancleKit
+                            okCallback={() => {
+                                invoke("cmd_modify", {
+                                    index: indexs[0],
+                                    newName: newSaveNameRef.current.value,
+                                    newNote: newSaveNoteRef.current.value,
+                                }).catch(error_handle);
+                            }}
+                        />
+                    </>,
+                );
 
-            update_save_infos();
+                update_save_infos();
+            }
         }
     }
 
     return {
+        // Utils
         cmd_startgame,
         cmd_setpath,
         cmd_usage,
         cmd_log_history,
+        // Save
         cmd_save,
         cmd_qsave,
         cmd_overwrite,
+        // Load
+        cmd_load,
+        cmd_qload,
+        // Delete
+        cmd_delete,
         cmd_qdelete,
+        // Lock
         cmd_modify_lock,
         cmd_modify,
     };
