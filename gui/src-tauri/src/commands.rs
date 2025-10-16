@@ -5,7 +5,6 @@ use std::sync::MutexGuard;
 use tauri::Emitter;
 
 fn release_backend_lock() {
-    println!("backend release");
     APP_HANDLE
         .get()
         .unwrap()

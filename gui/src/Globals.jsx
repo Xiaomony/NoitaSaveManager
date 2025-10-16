@@ -16,7 +16,7 @@ export function GlobalProvider({ children }) {
         enabled: false,
         child: null,
     });
-    const saveCheckboxState = useRef([]);
+    const [saveCheckboxState, setCheckboxState] = useState([]);
     const [backendLocked, setBackendState] = useState(false);
 
     function msgBoxDisappear(id, is_delete) {
@@ -67,8 +67,8 @@ export function GlobalProvider({ children }) {
     }
 
     function getCheckedSaveIndexs() {
-        return saveCheckboxState.current
-            .map((ref, index) => (ref.checked ? index : null))
+        return saveCheckboxState
+            .map((ref, index) => (ref ? index : null))
             .filter((index) => index !== null);
     }
 
@@ -120,6 +120,7 @@ export function GlobalProvider({ children }) {
                 },
                 save_checkbox_utils: {
                     saveCheckboxState,
+                    setCheckboxState,
                     getCheckedSaveIndexs,
                 },
                 backend_state_utils: {

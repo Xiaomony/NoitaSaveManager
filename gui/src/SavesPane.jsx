@@ -1,12 +1,34 @@
+import { useCallback } from "react";
 import "./assets/TableStyle.css";
 import { getGlobals } from "./Globals.jsx";
+
+function MyCheckbox({ checked }) {
+    return checked ? <span>✔</span> : null;
+}
 
 function SavesPane(props) {
     const {
         save_info_utils: { saveInfos },
         bkg_disability_utils: { isBkgDisabled },
-        save_checkbox_utils: { saveCheckboxState },
+        save_checkbox_utils: { saveCheckboxState, setCheckboxState },
     } = getGlobals();
+
+    // const toggleRow = useCallback(
+    //     (i) => {
+    //         setCheckboxState((state) => {
+    //             state[i] = state[i] === undefined ? true : !state[i];
+    //             return state;
+    //         });
+    //     },
+    //     [saveCheckboxState],
+    // );
+    const toggleRow = useCallback((i) => {
+        setCheckboxState((prev) => {
+            const newState = [...prev];
+            newState[i] = prev[i] === undefined ? true : !prev[i];
+            return newState;
+        });
+    }, []);
 
     return (
         <div
@@ -37,21 +59,18 @@ function SavesPane(props) {
                 </thead>
                 <tbody>
                     {saveInfos.map((save, i) => {
+                        const isSelected = saveCheckboxState[i];
                         return (
                             <tr
                                 key={save.m_name}
                                 className={
                                     save.m_islocked ? "locked_save" : null
                                 }
-                                onClick={() => console.log("aaa")}
+                                onClick={() => toggleRow(i)}
+                                style={{ cursor: "pointer" }}
                             >
                                 <td scope="col">
-                                    <input
-                                        type="checkbox"
-                                        ref={(el) => {
-                                            saveCheckboxState.current[i] = el;
-                                        }}
-                                    />
+                                    <MyCheckbox checked={isSelected} />
                                 </td>
                                 <td scope="col">{save.m_date}</td>
                                 <td scope="col">{save.m_time}</td>
