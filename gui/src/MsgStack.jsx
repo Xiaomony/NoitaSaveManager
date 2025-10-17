@@ -1,6 +1,7 @@
 import MessagePane, { CenteredFloatingPane } from "./MessagePane.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { getGlobals } from "./Globals.jsx";
+import { useTranslation } from "react-i18next";
 
 /*
 message object:
@@ -18,6 +19,8 @@ export default function MsgStack() {
         stack_state_utils: { stackState, setStackState },
         bkg_disability_utils: { setBkgDisability },
     } = getGlobals();
+    const { t } = useTranslation("common");
+
     function msg_mapper(item) {
         let color = null;
         let title = null;
@@ -93,7 +96,7 @@ export default function MsgStack() {
                         style={{ width: "45%", height: "50px" }}
                         onClick={() => setMsgStack([])}
                     >
-                        Clear History
+                        {t("msg_stack_clear")}
                     </button>
                     <button
                         type="button"
@@ -103,15 +106,17 @@ export default function MsgStack() {
                             setBkgDisability(false);
                         }}
                     >
-                        Close
+                        {t("msg_stack_close")}
                     </button>
                 </div>
                 {messages.length == 0 ? (
-                    <p>No history</p>
+                    <p style={{ textAlign: "center" }}>
+                        {t("msg_stack_no_history")}
+                    </p>
                 ) : (
                     <>
                         <p style={{ textAlign: "center", margin: 0 }}>
-                            向右拖动以删除某条消息
+                            {t("msg_stack_drag_right")}
                         </p>
                         {messages}
                     </>

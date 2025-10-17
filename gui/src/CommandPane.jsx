@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
 import "./assets/CmdPaneStyle.css";
 import useButtonCb from "./ButtonCallbacks.jsx";
 import { getGlobals } from "./Globals.jsx";
 
 function CommandPane(props) {
+    const { t } = useTranslation("CommandNames");
+
     const {
         bkg_disability_utils: { isBkgDisabled },
     } = getGlobals();
@@ -12,6 +15,7 @@ function CommandPane(props) {
         cmd_setpath,
         cmd_usage,
         cmd_log_history,
+        cmd_instruction,
         // Save
         cmd_save,
         cmd_qsave,
@@ -38,18 +42,20 @@ function CommandPane(props) {
                 style={{ gridArea: "A" }}
             >
                 <button type="button" onClick={cmd_startgame}>
-                    Start Noita
+                    {t("startgame")}
                 </button>
                 <button type="button" onClick={cmd_setpath}>
-                    Set Noita Path
+                    {t("setpath")}
                 </button>
                 <button type="button" onClick={cmd_usage}>
-                    Usage
+                    {t("usage")}
                 </button>
                 <button type="button" onClick={cmd_log_history}>
-                    Log History
+                    {t("loghistory")}
                 </button>
-                <button type="button">Instructions</button>
+                <button type="button" onClick={cmd_instruction}>
+                    {t("instruction")}
+                </button>
                 <button type="button">GitHub Link</button>
             </div>
 
@@ -58,17 +64,17 @@ function CommandPane(props) {
                 className="button_container"
                 style={{ gridArea: "D" }}
             >
-                <span>Save</span>
+                <span>{t("op_class.save")}</span>
                 <button type="button" onClick={cmd_save}>
-                    Save
+                    {t("save")}
                 </button>
                 <button type="button" onClick={cmd_qsave}>
-                    Quick Save
+                    {t("qsave")}
                 </button>
                 <button type="button" onClick={cmd_overwrite}>
-                    Overwrite
+                    {t("overwrite")}
                 </button>
-                <button type="button">Auto Save</button>
+                <button type="button">{t("autosave")}</button>
             </div>
 
             <div
@@ -76,12 +82,12 @@ function CommandPane(props) {
                 className="button_container"
                 style={{ gridArea: "E" }}
             >
-                <span>Load</span>
+                <span>{t("op_class.load")}</span>
                 <button type="button" onClick={cmd_load}>
-                    Load
+                    {t("load")}
                 </button>
                 <button type="button" onClick={cmd_qload}>
-                    Quick Load
+                    {t("qload")}
                 </button>
             </div>
 
@@ -90,12 +96,12 @@ function CommandPane(props) {
                 className="button_container"
                 style={{ gridArea: "F" }}
             >
-                <span>Delete</span>
+                <span>{t("op_class.delete")}</span>
                 <button type="button" onClick={cmd_delete}>
-                    Delete
+                    {t("delete")}
                 </button>
                 <button type="button" onClick={cmd_qdelete}>
-                    Quick Delete
+                    {t("qdelete")}
                 </button>
             </div>
 
@@ -104,14 +110,14 @@ function CommandPane(props) {
                 className="button_container"
                 style={{ gridArea: "G" }}
             >
-                <span>Modify</span>
+                <span>{t("op_class.modify")}</span>
                 <button
                     type="button"
                     onClick={() => {
                         cmd_modify_lock(true);
                     }}
                 >
-                    Lock
+                    {t("lock")}
                 </button>
                 <button
                     type="button"
@@ -119,10 +125,10 @@ function CommandPane(props) {
                         cmd_modify_lock(false);
                     }}
                 >
-                    Unlock
+                    {t("unlock")}
                 </button>
                 <button type="button" onClick={cmd_modify}>
-                    Modify
+                    {t("modify")}
                 </button>
             </div>
         </div>

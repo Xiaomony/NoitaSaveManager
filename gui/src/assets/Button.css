@@ -22,6 +22,7 @@ input[type="text"] {
     border: none;
     border-radius: 10px;
     height: 40px;
+    padding: 0 10px;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -9,6 +9,8 @@ import MsgStack from "./MsgStack.jsx";
 import { GlobalProvider, getGlobals } from "./Globals.jsx";
 import { CenteredFloatingPane } from "./MessagePane.jsx";
 
+import "./i18n.js";
+
 function App() {
     const {
         query_window_utils: { queryWindowState },

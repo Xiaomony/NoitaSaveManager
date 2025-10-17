@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import "./assets/TableStyle.css";
 import { getGlobals } from "./Globals.jsx";
+import { useTranslation } from "react-i18next";
 
 function MyCheckbox({ checked }) {
     return checked ? <span>✔</span> : null;
@@ -12,16 +13,8 @@ function SavesPane(props) {
         bkg_disability_utils: { isBkgDisabled },
         save_checkbox_utils: { saveCheckboxState, setCheckboxState },
     } = getGlobals();
+    const { t } = useTranslation("common");
 
-    // const toggleRow = useCallback(
-    //     (i) => {
-    //         setCheckboxState((state) => {
-    //             state[i] = state[i] === undefined ? true : !state[i];
-    //             return state;
-    //         });
-    //     },
-    //     [saveCheckboxState],
-    // );
     const toggleRow = useCallback((i) => {
         setCheckboxState((prev) => {
             const newState = [...prev];
@@ -37,9 +30,9 @@ function SavesPane(props) {
         >
             <table className="saves_table">
                 <caption>
-                    Saves Information
+                    {t("savepane.title")}
                     <br />
-                    (Locked saves willed displayed in italic and bold)
+                    {t("savepane.notification")}
                 </caption>
                 <colgroup>
                     <col style={{ width: "7%" }} />
@@ -50,11 +43,11 @@ function SavesPane(props) {
                 </colgroup>
                 <thead>
                     <tr>
-                        <th scope="col">Select</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Note</th>
+                        <th scope="col">{t("savepane.select")}</th>
+                        <th scope="col">{t("savepane.date")}</th>
+                        <th scope="col">{t("savepane.time")}</th>
+                        <th scope="col">{t("savepane.name")}</th>
+                        <th scope="col">{t("savepane.note")}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -24,6 +24,13 @@ fn get_core<'a>() -> NSResult<MutexGuard<'a, Core<GuiOutput>>> {
 }
 
 #[tauri::command]
+pub fn get_locale() -> NSResult<String> {
+    let locale = get_core()?.get_locale().to_string();
+    release_backend_lock();
+    Ok(locale)
+}
+
+#[tauri::command]
 pub fn get_saves() -> NSResult<Vec<SingleSave>> {
     let saves = get_core()?.get_save_infos().saves.clone();
     release_backend_lock();

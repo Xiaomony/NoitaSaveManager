@@ -1,0 +1,29 @@
+{
+    "startgame": "启动Noita",
+    "setpath": "设置Noita路径",
+    "usage": "查看磁盘占用",
+    "loghistory": "历史日志输出",
+    "instruction": "帮助说明",
+
+    "save": "存档",
+    "qsave": "快速存档",
+    "overwrite": "覆盖式存档",
+    "autosave": "自动存档",
+
+    "load": "加载",
+    "qload": "加载最新存档",
+
+    "delete": "删除",
+    "qdelete": "删除最新存档",
+
+    "lock": "锁定",
+    "unlock": "解锁",
+    "modify": "修改存档信息",
+
+    "op_class": {
+        "save": "存档",
+        "load": "加载",
+        "delete": "删除",
+        "modify": "修改"
+    }
+}

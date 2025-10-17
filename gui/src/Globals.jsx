@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { createContext, useContext, useState, useRef, useEffect } from "react";
 import "./assets/MessagePaneStyle.css";
+import { useTranslation } from "react-i18next";
 
 const Globals = createContext(null);
 
@@ -18,6 +19,7 @@ export function GlobalProvider({ children }) {
     });
     const [saveCheckboxState, setCheckboxState] = useState([]);
     const [backendLocked, setBackendState] = useState(false);
+    const { i18n } = useTranslation();
 
     function msgBoxDisappear(id, is_delete) {
         setMsgStack((msg_stack) => {
@@ -44,6 +46,7 @@ export function GlobalProvider({ children }) {
 
     async function update_save_infos() {
         setInfos(await invoke("get_saves"));
+        setCheckboxState(Array(saveInfos.length).fill(false));
     }
 
     function enableQueryWindow(title, children) {
@@ -67,6 +70,7 @@ export function GlobalProvider({ children }) {
     }
 
     function getCheckedSaveIndexs() {
+        console.log(saveCheckboxState);
         return saveCheckboxState
             .map((ref, index) => (ref ? index : null))
             .filter((index) => index !== null);
@@ -82,6 +86,8 @@ export function GlobalProvider({ children }) {
         const unlistenRelease = listen("release_backend_lock", () => {
             setBackendState(false);
         });
+
+        invoke("get_locale").then((locale) => i18n.changeLanguage(locale));
 
         // React Strict Mode will cause the Components to be mounted twice
         // which will register two listener

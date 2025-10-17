@@ -32,6 +32,7 @@ fn main() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            get_locale,
             get_saves,
             // Utils
             cmd_startgame,
