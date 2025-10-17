@@ -10,7 +10,7 @@
         "tauri": "tauri"
     },
     "dependencies": {
-        "@tauri-apps/api": "^2",
+        "@tauri-apps/api": "^2.8.0",
         "@tauri-apps/plugin-opener": "^2",
         "framer-motion": "^12.23.24",
         "i18next": "^25.6.0",

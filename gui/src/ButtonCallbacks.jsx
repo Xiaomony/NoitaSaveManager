@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { getGlobals } from "./Globals.jsx";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 function OkCancleKit(props) {
     const {
@@ -58,7 +59,7 @@ export default function useButtonCb() {
         stack_state_utils: { stackState, setStackState },
         save_info_utils: { update_save_infos },
         bkg_disability_utils: { setBkgDisability },
-        query_window_utils: { enableQueryWindow },
+        query_window_utils: { enableQueryWindow, disableQueryWindow },
         save_checkbox_utils: { getCheckedSaveIndexs },
         backend_state_utils: { backendLocked, setBackendState },
     } = getGlobals();
@@ -138,7 +139,29 @@ export default function useButtonCb() {
     }
 
     function cmd_instruction() {
-        enableQueryWindow(t("instruction_title"), <></>);
+        enableQueryWindow(
+            t("instruction_title"),
+            <>
+                <p style={{ whiteSpace: "pre", margin: 0 }}>
+                    {t("instruction")}
+                </p>
+                <button
+                    type="button"
+                    onClick={disableQueryWindow}
+                    style={{
+                        width: "35%",
+                        height: "50px",
+                        alignSelf: "center",
+                    }}
+                >
+                    {t("close")}
+                </button>
+            </>,
+        );
+    }
+
+    function cmd_github_link() {
+        openUrl("https://github.com/Xiaomony/NoitaSaveManager");
     }
 
     const saveNameRef = useRef(null);
@@ -301,6 +324,7 @@ export default function useButtonCb() {
         cmd_usage,
         cmd_log_history,
         cmd_instruction,
+        cmd_github_link,
         // Save
         cmd_save,
         cmd_qsave,

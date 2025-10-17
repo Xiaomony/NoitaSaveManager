@@ -16,6 +16,7 @@ function CommandPane(props) {
         cmd_usage,
         cmd_log_history,
         cmd_instruction,
+        cmd_github_link,
         // Save
         cmd_save,
         cmd_qsave,
@@ -56,7 +57,9 @@ function CommandPane(props) {
                 <button type="button" onClick={cmd_instruction}>
                     {t("instruction")}
                 </button>
-                <button type="button">GitHub Link</button>
+                <button type="button" onClick={cmd_github_link}>
+                    {t("github_link")}
+                </button>
             </div>
 
             <div

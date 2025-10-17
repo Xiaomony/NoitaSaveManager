@@ -1,0 +1,72 @@
+{
+    "CommandNames": {
+        "startgame": "启动Noita",
+        "setpath": "设置Noita路径",
+        "usage": "查看磁盘占用",
+        "loghistory": "历史日志输出",
+        "instruction": "帮助说明",
+        "github_link": "Github链接",
+
+        "save": "存档",
+        "qsave": "快速存档",
+        "overwrite": "覆盖式存档",
+        "autosave": "自动存档",
+
+        "load": "加载",
+        "qload": "加载最新存档",
+
+        "delete": "删除",
+        "qdelete": "删除最新存档",
+
+        "lock": "锁定",
+        "unlock": "解锁",
+        "modify": "修改存档信息",
+
+        "op_class": {
+            "save": "存档",
+            "load": "加载",
+            "delete": "删除",
+            "modify": "修改"
+        }
+    },
+
+    "common": {
+        "message": {
+            "backend_locked": "有操作正在进行",
+            "choose_a_save": "请选择一个存档",
+            "choose_only_one_save": "最多选择一个存档"
+        },
+        "ok": "确定",
+        "cancle": "取消",
+        "succeed": "操作成功",
+        "close": "关闭",
+        "msg_stack_clear": "清除",
+        "msg_stack_no_history": "暂无历史",
+        "msg_stack_drag_right": "向右拖动以删除某条消息",
+
+        "setpath_title": "设置noita.exe路径",
+        "setpath_placeholder": "输入noita.exe路径（以noita.exe结尾）",
+
+        "instruction_title": "帮助与说明",
+
+        "save_title": "保存",
+        "savename_placeholder": "存档名（不能为空）",
+        "savenote_placeholder": "存档备注（可以为空）",
+
+        "modify_title": "修改存档信息",
+        "newname_placeholder": "新存档名（留空以保持原名）",
+        "newnote_placeholder": "新存档备注（留空以保持原备注）",
+
+        "savepane": {
+            "title": "存档信息",
+            "notification": "（收藏的存档以加粗、斜体、绿色背景显示，单击某一行以选择其存档）",
+            "select": "选中",
+            "date": "日期",
+            "time": "时间",
+            "name": "存档名",
+            "note": "存档备注"
+        },
+        "instruction":
+            "本程序gitHub主页及更详细的readme文档：https://github.com/Xiaomony/NoitaSaveManager\n注意事项：\n    1. 本程序运行时会在程序所在目录下建立一个Saves文件夹用于存储日志文件和保存的存档，请勿删除(若删除，则相当于恢复程序第一次运行的状态)\n    2. 建议将程序放在磁盘中的某个文件夹下，再发送到桌面快捷方式使用(避免程序在桌面创建Save文件夹后被误删)\n    3. 请在Noita主界面有\"继续\"这一选项时读取存档，若没有则请先\"新游戏\"后再关闭游戏读档，重新打开后再点击\"继续\"\n    4. 建议关闭Steam云存档\n    5. 请在Noita正常保存、关闭后再进行存档\n        (游戏进行中存档的话保存的是Noita的自动存档，可能是几分钟前的存档，并非保存时的存档)\n    6. 游戏进行中请勿读取存档\n    7. 随着游戏的进行，每次存档所用的时间和占用的空间也会不断增大，请耐心等待\n    8. 本程序的命令行版本支持，传入命令行参数\n    9. 命令行版本与GUI版本可以共用一个Saves文件夹，但千万不要同时运行两个版本的程序\n    10. 使用此程序启动Noita会较Steam启动更快，但需要先使用命令设置noita.exe所在的路径\n    11. 使用此程序启动Noita时，如果在Steam未启动时使用此命令，会无法加载Steam中的模组和存档\n    12. 查看noita路径：Steam库中Noita界面 → 右边的小齿轮图标 → 管理 → 浏览本地文件"
+    }
+}

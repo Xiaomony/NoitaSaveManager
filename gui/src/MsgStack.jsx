@@ -106,7 +106,7 @@ export default function MsgStack() {
                             setBkgDisability(false);
                         }}
                     >
-                        {t("msg_stack_close")}
+                        {t("close")}
                     </button>
                 </div>
                 {messages.length == 0 ? (
