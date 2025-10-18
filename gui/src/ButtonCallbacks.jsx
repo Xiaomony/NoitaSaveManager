@@ -3,6 +3,7 @@ import { getGlobals } from "./Globals.jsx";
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { openUrl } from "@tauri-apps/plugin-opener";
+import CmdExplainTable from "./CmdExplainTable.jsx";
 
 function OkCancleKit(props) {
     const {
@@ -145,12 +146,14 @@ export default function useButtonCb() {
                 <p style={{ whiteSpace: "pre", margin: 0 }}>
                     {t("instruction")}
                 </p>
+                <CmdExplainTable />
                 <button
                     type="button"
                     onClick={disableQueryWindow}
                     style={{
-                        width: "35%",
-                        height: "50px",
+                        width: "20%",
+                        minHeight: "50px",
+                        flexShrink: 0,
                         alignSelf: "center",
                     }}
                 >

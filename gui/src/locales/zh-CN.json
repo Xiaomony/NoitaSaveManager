@@ -5,15 +5,15 @@
         "usage": "查看磁盘占用",
         "loghistory": "历史日志输出",
         "instruction": "帮助说明",
-        "github_link": "Github链接",
+        "github_link": "Github页面",
 
         "save": "存档",
         "qsave": "快速存档",
         "overwrite": "覆盖式存档",
         "autosave": "自动存档",
 
-        "load": "加载",
-        "qload": "加载最新存档",
+        "load": "读取",
+        "qload": "读取最新存档",
 
         "delete": "删除",
         "qdelete": "删除最新存档",
@@ -30,6 +30,26 @@
         }
     },
 
+    "CommandExplanation": {
+        "startgame": "在存档较大时启动速度快于Steam，但请确保Steam已启动并设置Noita.exe的路径",
+        "setpath": "设置noita.exe的路径，以noita.exe结尾，详见注意事项第12条",
+        "usage": "查看当前的磁盘占用，Noita长线后期存档较大，请注意磁盘占用",
+        "loghistory": "查看之前弹出的消息",
+        "instruction": "查看帮助说明",
+        "github_link": "用默认浏览器打开本程序的Github页面",
+        "save": "指定存档名存档",
+        "qsave": "根据当前的日期时间（精确到秒）生成一个存档名，同一秒中如果点击多次可能会出现存档名重复的消息",
+        "overwrite": "以当前的Noita存档覆盖存档列表中最新的存档",
+        "autosave": "自动存档，Noita的自动存档间隔为3分钟，故设置自动存档的时间间隔时不应该少于3分钟",
+        "load": "选择一个存档读取",
+        "qload": "读取最新存档",
+        "delete": "删除选定存档，可多选",
+        "qdelete": "删除最新存档",
+        "lock": "锁定选定存档，可多选，锁定的存档无法进行其他操作",
+        "unlock": "解锁选定存档，可多选",
+        "modify": "修改选定存档的存档名和备注"
+    },
+
     "common": {
         "message": {
             "backend_locked": "有操作正在进行",
@@ -40,6 +60,7 @@
         "cancle": "取消",
         "succeed": "操作成功",
         "close": "关闭",
+
         "msg_stack_clear": "清除",
         "msg_stack_no_history": "暂无历史",
         "msg_stack_drag_right": "向右拖动以删除某条消息",
@@ -48,6 +69,8 @@
         "setpath_placeholder": "输入noita.exe路径（以noita.exe结尾）",
 
         "instruction_title": "帮助与说明",
+        "ins_cmdname_title": "命令",
+        "ins_cmdexp_title": "相关说明",
 
         "save_title": "保存",
         "savename_placeholder": "存档名（不能为空）",
@@ -66,6 +89,7 @@
             "name": "存档名",
             "note": "存档备注"
         },
+
         "instruction":
             "本程序gitHub主页及更详细的readme文档：https://github.com/Xiaomony/NoitaSaveManager\n注意事项：\n    1. 本程序运行时会在程序所在目录下建立一个Saves文件夹用于存储日志文件和保存的存档，请勿删除(若删除，则相当于恢复程序第一次运行的状态)\n    2. 建议将程序放在磁盘中的某个文件夹下，再发送到桌面快捷方式使用(避免程序在桌面创建Save文件夹后被误删)\n    3. 请在Noita主界面有\"继续\"这一选项时读取存档，若没有则请先\"新游戏\"后再关闭游戏读档，重新打开后再点击\"继续\"\n    4. 建议关闭Steam云存档\n    5. 请在Noita正常保存、关闭后再进行存档\n        (游戏进行中存档的话保存的是Noita的自动存档，可能是几分钟前的存档，并非保存时的存档)\n    6. 游戏进行中请勿读取存档\n    7. 随着游戏的进行，每次存档所用的时间和占用的空间也会不断增大，请耐心等待\n    8. 本程序的命令行版本支持，传入命令行参数\n    9. 命令行版本与GUI版本可以共用一个Saves文件夹，但千万不要同时运行两个版本的程序\n    10. 使用此程序启动Noita会较Steam启动更快，但需要先使用命令设置noita.exe所在的路径\n    11. 使用此程序启动Noita时，如果在Steam未启动时使用此命令，会无法加载Steam中的模组和存档\n    12. 查看noita路径：Steam库中Noita界面 → 右边的小齿轮图标 → 管理 → 浏览本地文件"
     }

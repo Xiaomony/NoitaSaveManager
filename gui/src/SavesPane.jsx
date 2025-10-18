@@ -28,7 +28,7 @@ function SavesPane(props) {
             className={`${props.className || ""} ${isBkgDisabled ? "disabled" : ""}`}
             id="saves_pane"
         >
-            <table className="saves_table">
+            <table className="my_table">
                 <caption>
                     {t("savepane.title")}
                     <br />
