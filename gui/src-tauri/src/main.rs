@@ -42,6 +42,7 @@ fn main() {
             cmd_save,
             cmd_qsave,
             cmd_overwrite,
+            cmd_autosave,
             // Load
             cmd_load,
             cmd_qload,

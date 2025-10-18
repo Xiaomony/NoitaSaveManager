@@ -85,6 +85,14 @@ pub fn cmd_overwrite() -> NSComResult {
 }
 
 #[tauri::command]
+pub fn cmd_autosave(max_saves: usize) -> NSComResult {
+    let mut core = get_core()?;
+    core.auto_save(max_saves)?;
+    release_backend_lock();
+    Ok(())
+}
+
+#[tauri::command]
 pub fn cmd_load(index: usize) -> NSComResult {
     let core = get_core()?;
     core.load_save(index)?;

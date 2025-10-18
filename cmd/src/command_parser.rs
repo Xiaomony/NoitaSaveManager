@@ -367,7 +367,7 @@ impl<'a> CommandParser<'a> {
 
         time_interval *= 60;
 
-        // core function of auto_save
+        // core functionality of auto_save
         let mut kit = self
             .m_ssave_kit
             .lock()

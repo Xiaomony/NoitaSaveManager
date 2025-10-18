@@ -24,7 +24,7 @@
 
         "op_class": {
             "save": "存档",
-            "load": "加载",
+            "load": "读取",
             "delete": "删除",
             "modify": "修改"
         }
@@ -40,7 +40,8 @@
         "save": "指定存档名存档",
         "qsave": "根据当前的日期时间（精确到秒）生成一个存档名，同一秒中如果点击多次可能会出现存档名重复的消息",
         "overwrite": "以当前的Noita存档覆盖存档列表中最新的存档",
-        "autosave": "自动存档，Noita的自动存档间隔为3分钟，故设置自动存档的时间间隔时不应该少于3分钟",
+        "autosave":
+            "设定一个时间间隔和最大自动存档数，进行自动存档并且超出最大自动存档数时覆盖最老的自动存档，Noita的自动存档间隔为3分钟，故设置自动存档的时间间隔时不应该少于3分钟",
         "load": "选择一个存档读取",
         "qload": "读取最新存档",
         "delete": "删除选定存档，可多选",
@@ -54,7 +55,11 @@
         "message": {
             "backend_locked": "有操作正在进行",
             "choose_a_save": "请选择一个存档",
-            "choose_only_one_save": "最多选择一个存档"
+            "choose_only_one_save": "最多选择一个存档",
+            "old_timer_closed": "已关闭自动存档任务",
+            "autosaving_warning": "正在自动存档，请勿进行其他操作",
+            "autosave_succeed": "自动存档成功",
+            "autosave_backend_occupied": "有其他任务运行中，稍后尝试自动存档"
         },
         "ok": "确定",
         "cancle": "取消",
@@ -75,6 +80,9 @@
         "save_title": "保存",
         "savename_placeholder": "存档名（不能为空）",
         "savenote_placeholder": "存档备注（可以为空）",
+
+        "autosave_title": "自动存档",
+        "cancle_autosave_btn": "关闭当前自动存档任务",
 
         "modify_title": "修改存档信息",
         "newname_placeholder": "新存档名（留空以保持原名）",

@@ -21,6 +21,7 @@ function CommandPane(props) {
         cmd_save,
         cmd_qsave,
         cmd_overwrite,
+        cmd_autosave,
         // Load
         cmd_load,
         cmd_qload,
@@ -77,7 +78,9 @@ function CommandPane(props) {
                 <button type="button" onClick={cmd_overwrite}>
                     {t("overwrite")}
                 </button>
-                <button type="button">{t("autosave")}</button>
+                <button type="button" onClick={cmd_autosave}>
+                    {t("autosave")}
+                </button>
             </div>
 
             <div

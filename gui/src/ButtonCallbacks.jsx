@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { getGlobals } from "./Globals.jsx";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import CmdExplainTable from "./CmdExplainTable.jsx";
@@ -50,6 +50,7 @@ function OkCancleKit(props) {
             >
                 {t("cancle")}
             </button>
+            {props.children}
         </div>
     );
 }
@@ -224,6 +225,59 @@ export default function useButtonCb() {
         }
     }
 
+    const [timer, setTimer] = useState(null);
+    function autosaveWaite(max_saves) {
+        if (check_backend_state()) {
+            pushMsg(t("message.autosaving_warning"), 2);
+            invoke("cmd_autosave", { maxSaves: max_saves }).then(() => {
+                update_save_infos();
+                pushMsg(t("message.autosave_succeed"), 3);
+            });
+        } else {
+            setTimeout(autosaveWaite, 1000);
+            pushMsg(t("autosave_backend_occupied"), 4);
+        }
+    }
+    function cmd_autosave() {
+        enableQueryWindow(
+            t("autosave_title"),
+            <>
+                asefewfawe
+                <OkCancleKit
+                    okCallback={() => {
+                        const interval = 10;
+                        if (timer != null) {
+                            clearTimeout(timer);
+                            pushMsg(t("message.old_timer_closed"), 4);
+                        }
+                        const new_timer = setInterval(
+                            () => {
+                                autosaveWaite(3);
+                            },
+                            // interval * 60 * 1000,
+                            interval * 1000,
+                        );
+                        setTimer(new_timer);
+                    }}
+                >
+                    <button
+                        type="button"
+                        style={{ width: "35%" }}
+                        onClick={() => {
+                            if (timer != null) {
+                                clearTimeout(timer);
+                                pushMsg(t("message.old_timer_closed"), 4);
+                            }
+                            disableQueryWindow();
+                        }}
+                    >
+                        {t("cancle_autosave_btn")}
+                    </button>
+                </OkCancleKit>
+            </>,
+        );
+    }
+
     function cmd_load() {
         const indexs = getCheckedSaveIndexs();
         if (indexs.length == 0) {
@@ -332,6 +386,7 @@ export default function useButtonCb() {
         cmd_save,
         cmd_qsave,
         cmd_overwrite,
+        cmd_autosave,
         // Load
         cmd_load,
         cmd_qload,
