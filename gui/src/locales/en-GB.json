@@ -1,0 +1,113 @@
+{
+    "CommandNames": {
+        "startgame": "Launch Noita",
+        "setpath": "Set Noita Path",
+        "usage": "Check Disk Usage",
+        "loghistory": "Log History",
+        "instruction": "Help Instructions",
+        "github_link": "GitHub Page",
+
+        "save": "Save",
+        "qsave": "Quick Save",
+        "overwrite": "Overwrite Save",
+        "autosave": "Auto Save",
+
+        "load": "Load",
+        "qload": "Load Latest Save",
+
+        "delete": "Delete",
+        "qdelete": "Delete Latest Save",
+
+        "lock": "Lock",
+        "unlock": "Unlock",
+        "modify": "Modify Save Info",
+
+        "op_class": {
+            "save": "Save",
+            "load": "Load",
+            "delete": "Delete",
+            "modify": "Modify"
+        }
+    },
+
+    "CommandExplanation": {
+        "startgame":
+            "Faster than Steam when save files are large, but ensure Steam is running and Noita.exe path is set",
+        "setpath": "Set the path to noita.exe, must end with noita.exe, see note 12 for details",
+        "usage": "Check current disk usage, Noita late-game saves can be large, please monitor disk space",
+        "loghistory": "View previously displayed messages",
+        "instruction": "View help instructions",
+        "github_link": "Open program's GitHub page in default browser",
+        "save": "Save with specified save name",
+        "qsave":
+            "Generate a save name based on current date and time (to the second), duplicate names may occur if clicked multiple times in the same second",
+        "overwrite": "Overwrite the latest save in the save list with current Noita save",
+        "autosave":
+            "1. Set a time interval and maximum number of auto-saves for automatic saving, overwriting oldest auto-saves when maximum is exceeded\n2. Noita's auto-save interval is 3 minutes, so auto-save interval should not be less than 3 minutes\n3. Auto-save names start with \"as_\", and any save starting with \"as_\" is considered an auto-save. Non-auto-saves should not start with \"as_\" to avoid accidental deletion by auto-save commands",
+        "load": "Select a save to load",
+        "qload": "Load the latest save",
+        "delete": "Delete selected saves, multiple selection allowed",
+        "qdelete": "Delete the latest save",
+        "lock": "Lock selected saves, multiple selection allowed, locked saves cannot be modified",
+        "unlock": "Unlock selected saves, multiple selection allowed",
+        "modify": "Modify save name and notes of selected save"
+    },
+
+    "common": {
+        "message": {
+            "backend_locked": "Operation in progress",
+            "choose_a_save": "Please select a save",
+            "choose_only_one_save": "Select only one save",
+            "old_timer_closed": "Current auto-save task closed",
+            "creat_autosave_task":
+                "New auto-save task created:\nTime interval {{interval}} minutes, maximum {{max_saves}} auto-saves",
+            "autosaving_warning": "Auto-saving in progress, please do not perform other operations",
+            "autosave_succeed": "Auto-save successful",
+            "autosave_backend_occupied": "Other tasks running, will retry auto-save later"
+        },
+        "ok": "OK",
+        "cancle": "Cancel",
+        "succeed": "Operation successful",
+        "close": "Close",
+
+        "msg_stack_clear": "Clear",
+        "msg_stack_no_history": "No history yet",
+        "msg_stack_drag_right": "Drag right to delete a message",
+
+        "setpath_title": "Set noita.exe Path",
+        "setpath_placeholder": "Enter noita.exe path (must end with noita.exe)",
+
+        "instruction_title": "Help & Instructions",
+        "ins_cmdname_title": "Command",
+        "ins_cmdexp_title": "Description",
+
+        "save_title": "Save",
+        "savename_placeholder": "Save name (cannot be empty)",
+        "savenote_placeholder": "Save notes (can be empty)",
+
+        "autosave_title": "Auto Save",
+        "cancle_autosave_btn": "Close current auto-save task",
+        "number_span_time_interval": "Time interval",
+        "number_span_max_saves": "Max auto-saves",
+
+        "modify_title": "Modify Save Info",
+        "newname_placeholder": "New save name (leave blank to keep original)",
+        "newnote_placeholder": "New save notes (leave blank to keep original)",
+
+        "savepane": {
+            "title": "Save Information",
+            "notification":
+                "(Favourited saves shown in bold, italic, green background. Click a row to select its save)",
+            "select": "Selected",
+            "date": "Date",
+            "time": "Time",
+            "name": "Save Name",
+            "note": "Save Notes",
+
+            "first_launch_tip": "First time users: please check notes via Help & Instructions button"
+        },
+
+        "instruction":
+            "GitHub repository and detailed README: https://github.com/Xiaomony/NoitaSaveManager\nImportant Notes:\n    1. This program creates an \"Saves\" folder in its directory to store log files and saves. Do not delete this folder (deleting it will reset the program to its initial state)\n    2. It is recommended to place the program in a folder on your disk and create a desktop shortcut (to avoid accidental deletion of the Save folder created on the desktop)\n    3. Load saves only when the \"Continue\" option is available on the Noita main menu. If not, start a \"New Game\", then close the game and load the save, reopening it and clicking \"Continue\"\n    4. It is recommended to disable Steam Cloud saves\n    5. Only save when Noita has been properly saved and closed\n        (Saving during gameplay will save Noita's auto-save, which may be from several minutes ago, not the current state)\n    6. Do not load saves during gameplay\n    7. As the game progresses, the time and space required for each save will increase significantly. Please be patient\n    8. The command-line version of this program supports command-line arguments\n    9. The command-line and GUI versions can share the same Saves folder, but never run both versions simultaneously\n    10. Launching Noita through this program is faster than via Steam, but you must first set the path to noita.exe using the appropriate command\n    11. If Steam is not running when you launch Noita through this program, Steam mods and cloud saves will not be loaded\n    12. To find the Noita path: In your Steam library, go to Noita → click the gear icon → Manage → Browse local files"
+    }
+}

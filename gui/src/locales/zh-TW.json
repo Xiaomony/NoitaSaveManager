@@ -1,0 +1,109 @@
+{
+    "CommandNames": {
+        "startgame": "啟動Noita",
+        "setpath": "設定Noita路徑",
+        "usage": "查看磁碟佔用",
+        "loghistory": "歷史日誌輸出",
+        "instruction": "幫助說明",
+        "github_link": "Github頁面",
+
+        "save": "存檔",
+        "qsave": "快速存檔",
+        "overwrite": "覆蓋式存檔",
+        "autosave": "自動存檔",
+
+        "load": "讀取",
+        "qload": "讀取最新存檔",
+
+        "delete": "刪除",
+        "qdelete": "刪除最新存檔",
+
+        "lock": "鎖定",
+        "unlock": "解鎖",
+        "modify": "修改存檔資訊",
+
+        "op_class": {
+            "save": "存檔",
+            "load": "讀取",
+            "delete": "刪除",
+            "modify": "修改"
+        }
+    },
+
+    "CommandExplanation": {
+        "startgame": "在存檔較大時啟動速度快於Steam，但請確保Steam已啟動並設定Noita.exe的路徑",
+        "setpath": "設定noita.exe的路徑，以noita.exe結尾，詳見注意事項第12條",
+        "usage": "查看當前的磁碟佔用，Noita長線後期存檔較大，請注意磁碟佔用",
+        "loghistory": "查看之前彈出的訊息",
+        "instruction": "查看幫助說明",
+        "github_link": "用預設瀏覽器開啟本程式的Github頁面",
+        "save": "指定存檔名存檔",
+        "qsave": "根據當前的日期時間（精確到秒）生成一個存檔名，同一秒中如果點選多次可能會出現存檔名重複的訊息",
+        "overwrite": "以當前的Noita存檔覆蓋存檔列表中最新的存檔",
+        "autosave":
+            "1.設定一個時間間隔和最大自動存檔數，進行自動存檔並且超出最大自動存檔數時覆蓋最老的自動存檔\n2.Noita的自動存檔間隔為3分鐘，故設定自動存檔的時間間隔時不應該少於3分鐘\n3.自動存檔的存檔名以\"as_\"開頭，且任何\"as_\"開頭的存檔都被視為自動存檔，非自動存檔請不要以\"as_\"開頭，以免被自動存檔命令誤刪",
+        "load": "選擇一個存檔讀取",
+        "qload": "讀取最新存檔",
+        "delete": "刪除選定存檔，可多選",
+        "qdelete": "刪除最新存檔",
+        "lock": "鎖定選定存檔，可多選，鎖定的存檔無法進行其他操作",
+        "unlock": "解鎖選定存檔，可多選",
+        "modify": "修改選定存檔的存檔名和備註"
+    },
+
+    "common": {
+        "message": {
+            "backend_locked": "有操作正在進行",
+            "choose_a_save": "請選擇一個存檔",
+            "choose_only_one_save": "最多選擇一個存檔",
+            "old_timer_closed": "已關閉當前自動存檔任務",
+            "creat_autosave_task": "已建立新的自動存檔任務：\n時間間隔{{interval}}分鐘，最大自動存檔數{{max_saves}}個",
+            "autosaving_warning": "正在自動存檔，請勿進行其他操作",
+            "autosave_succeed": "自動存檔成功",
+            "autosave_backend_occupied": "有其他任務執行中，稍後嘗試自動存檔"
+        },
+        "ok": "確定",
+        "cancle": "取消",
+        "succeed": "操作成功",
+        "close": "關閉",
+
+        "msg_stack_clear": "清除",
+        "msg_stack_no_history": "暫無歷史",
+        "msg_stack_drag_right": "向右拖動以刪除某條訊息",
+
+        "setpath_title": "設定noita.exe路徑",
+        "setpath_placeholder": "輸入noita.exe路徑（以noita.exe結尾）",
+
+        "instruction_title": "幫助與說明",
+        "ins_cmdname_title": "命令",
+        "ins_cmdexp_title": "相關說明",
+
+        "save_title": "保存",
+        "savename_placeholder": "存檔名（不能為空）",
+        "savenote_placeholder": "存檔備註（可以為空）",
+
+        "autosave_title": "自動存檔",
+        "cancle_autosave_btn": "關閉當前自動存檔任務",
+        "number_span_time_interval": "時間間隔",
+        "number_span_max_saves": "最大自動存檔數",
+
+        "modify_title": "修改存檔資訊",
+        "newname_placeholder": "新存檔名（留空以保持原名）",
+        "newnote_placeholder": "新存檔備註（留空以保持原備註）",
+
+        "savepane": {
+            "title": "存檔資訊",
+            "notification": "（锁定的存檔以加粗、斜體、綠色背景顯示，單擊某一行以選擇其存檔）",
+            "select": "選中",
+            "date": "日期",
+            "time": "時間",
+            "name": "存檔名",
+            "note": "存檔備註",
+
+            "first_launch_tip": "首次使用請透過 幫助與說明 按鈕查看注意事項"
+        },
+
+        "instruction":
+            "本程式gitHub主頁及更詳細的readme文件：https://github.com/Xiaomony/NoitaSaveManager\n注意事項：\n    1. 本程式執行時會在程式所在目錄下建立一個Saves資料夾用於儲存日誌檔案和儲存的存檔，請勿刪除(若刪除，則相當於恢復程式第一次執行的狀態)\n    2. 建議將程式放在磁碟中的某個資料夾下，再傳送到桌面捷徑使用(避免程式在桌面建立Save資料夾後被誤刪)\n    3. 請在Noita主介面有\"繼續\"這一選項時讀取存檔，若沒有則請先\"新遊戲\"後再關閉遊戲讀檔，重新開啟後再點選\"繼續\"\n    4. 建議關閉Steam雲端存檔\n    5. 請在Noita正常儲存、關閉後再進行存檔\n        (遊戲進行中存檔的話儲存的是Noita的自動存檔，可能是幾分鐘前的存檔，並非儲存時的存檔)\n    6. 遊戲進行中請勿讀取存檔\n    7. 隨著遊戲的進行，每次存檔所用的時間和佔用的空間也會不斷增大，請耐心等待\n    8. 本程式的命令列版本支援傳入命令列參數\n    9. 命令列版本與GUI版本可以共用一個Saves資料夾，但千萬不要同時執行兩個版本的程式\n    10. 使用此程式啟動Noita會較Steam啟動更快，但需要先使用命令設定noita.exe所在的路徑\n    11. 使用此程式啟動Noita時，如果在Steam未啟動時使用此命令，會無法載入Steam中的模組和存檔\n    12. 查看noita路徑：Steam庫中Noita介面 → 右邊的小齒輪圖示 → 管理 → 瀏覽本機檔案"
+    }
+}

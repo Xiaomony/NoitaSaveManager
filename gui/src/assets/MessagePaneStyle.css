@@ -69,10 +69,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-height: 90%;
-    min-width: 40%;
     min-height: 100px;
+    width: 40%;
     overflow-y: scroll;
-    overflow-x: hidden;
 
     display: flex;
     flex-direction: column;

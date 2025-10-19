@@ -37,6 +37,7 @@ export function CenteredFloatingPane(props) {
                     damping: 20,
                 }}
                 key={props.animation_key}
+                style={{ width: props.width }}
             >
                 {props.children}
             </motion.div>

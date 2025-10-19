@@ -16,6 +16,7 @@ export function GlobalProvider({ children }) {
     const [queryWindowState, setQueryWindowState] = useState({
         enabled: false,
         child: null,
+        width: "40%",
     });
     const [saveCheckboxState, setCheckboxState] = useState([]);
     const [backendLocked, setBackendState] = useState(false);
@@ -49,7 +50,7 @@ export function GlobalProvider({ children }) {
         setCheckboxState(Array(saveInfos.length).fill(false));
     }
 
-    function enableQueryWindow(title, children) {
+    function enableQueryWindow(title, children, width = "40%") {
         setQueryWindowState({
             enabled: true,
             child: (
@@ -58,6 +59,7 @@ export function GlobalProvider({ children }) {
                     {children}
                 </>
             ),
+            width,
         });
         setBkgDisability(true);
     }
@@ -65,6 +67,7 @@ export function GlobalProvider({ children }) {
         setQueryWindowState({
             enabled: false,
             child: null,
+            width: "40%",
         });
         setBkgDisability(false);
     }

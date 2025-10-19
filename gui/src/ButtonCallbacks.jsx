@@ -180,7 +180,13 @@ export default function useButtonCb() {
         enableQueryWindow(
             t("instruction_title"),
             <>
-                <p style={{ whiteSpace: "pre", margin: 0 }}>
+                <p
+                    style={{
+                        whiteSpace: "pre-line",
+                        overflowWrap: "break-word",
+                        margin: 0,
+                    }}
+                >
                     {t("instruction")}
                 </p>
                 <CmdExplainTable />
@@ -197,6 +203,7 @@ export default function useButtonCb() {
                     {t("close")}
                 </button>
             </>,
+            "90%",
         );
     }
 
