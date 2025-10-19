@@ -87,3 +87,28 @@ input[type="text"] {
         filter: drop-shadow(5px 5px 5px white);
     }
 }
+
+@media (prefers-color-scheme: light) {
+    button {
+        border-color: rgba(0, 0, 0, 0.3);
+        color: #1a1a1a;
+        background: rgba(0, 0, 0, 0.05);
+        box-shadow:
+            0 4px 30px rgba(255, 255, 255, 0.1),
+            inset 2px 2px 10px rgba(0, 0, 0, 0.3),
+            inset -2px -2px 10px rgba(255, 255, 255, 0.2);
+    }
+
+    button:active {
+        background: rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 20px rgba(100, 150, 180, 0.3);
+    }
+
+    input[type="text"] {
+        background: rgba(55, 55, 55, 0.2);
+        filter: drop-shadow(5px 5px 5px black);
+    }
+    input[type="text"]::placeholder {
+        color: black;
+    }
+}

@@ -303,8 +303,7 @@ export default function useButtonCb() {
                             () => {
                                 autosaveWaite(max_saves.current);
                             },
-                            // autosave_interval.current * 60 * 1000,
-                            autosave_interval.current * 1000,
+                            autosave_interval.current * 60 * 1000,
                         );
                         setTimer(new_timer);
                         pushMsg(

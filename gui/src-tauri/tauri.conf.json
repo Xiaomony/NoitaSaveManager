@@ -15,7 +15,8 @@
                 "title": "NoitaSaveManager GUI",
                 "width": 1200,
                 "height": 800,
-                "transparent": true
+                "transparent": true,
+                "theme": "Light"
             }
         ],
         "security": {

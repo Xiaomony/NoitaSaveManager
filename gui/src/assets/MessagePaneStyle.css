@@ -34,6 +34,22 @@
     }
 }
 
+@media (prefers-color-scheme: light) {
+    .message_pane {
+        background: rgba(240, 245, 248, 0.9);
+        box-shadow:
+            inset -5px -5px 10px rgba(255, 255, 255, 0.2),
+            inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+            10px 10px 10px rgba(255, 255, 255, 0.3);
+
+        border-color: rgba(160, 170, 180, 0.8);
+    }
+
+    .message_pane_title {
+        color: #007b83;
+    }
+}
+
 /* message stack */
 
 .msg_stack {

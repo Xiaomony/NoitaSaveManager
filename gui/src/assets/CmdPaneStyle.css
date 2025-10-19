@@ -54,3 +54,9 @@
         background-color: rgba(210, 253, 205, 0.1);
     }
 }
+
+@media (prefers-color-scheme: light) {
+    .button_container {
+        background-color: rgba(255, 158, 0, 0.2);
+    }
+}

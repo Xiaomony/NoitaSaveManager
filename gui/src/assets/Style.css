@@ -82,3 +82,24 @@ body {
             10px 10px 10px rgba(0, 0, 0, 0.3);
     }
 }
+
+@media (prefers-color-scheme: light) {
+    :root {
+        color: #2b3a3f; /* 深灰蓝 */
+    }
+
+    .pane {
+        background: rgba(220, 230, 235, 0.42); /* 浅灰蓝 */
+        transition:
+            background 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+    .pane:hover {
+        background: rgba(240, 245, 248, 0.224);
+        box-shadow:
+            inset -5px -5px 10px rgba(255, 255, 255, 0.2),
+            inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+            10px 10px 10px rgba(0, 0, 0, 0.15);
+    }
+}
