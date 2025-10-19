@@ -55,6 +55,41 @@ function OkCancleKit(props) {
     );
 }
 
+function NumberSpan({ children, min_value, count_ref }) {
+    if (!min_value) {
+        min_value = 0;
+    }
+    const [count, setCount] = useState(count_ref.current);
+    return (
+        <div className="number_span">
+            <h4>{children}</h4>
+            <button
+                type="button"
+                onClick={() => {
+                    count_ref.current = count + 1;
+                    setCount(count + 1);
+                }}
+                className="upper_button"
+            >
+                <h4>+</h4>
+            </button>
+            <h1>{count}</h1>
+            <button
+                type="button"
+                onClick={() => {
+                    if (count > min_value) {
+                        count_ref.current = count - 1;
+                        setCount(count - 1);
+                    }
+                }}
+                className="lower_button"
+            >
+                <h4>-</h4>
+            </button>
+        </div>
+    );
+}
+
 export default function useButtonCb() {
     const {
         msg_stack_utils: { pushMsg },
@@ -66,6 +101,7 @@ export default function useButtonCb() {
         backend_state_utils: { backendLocked, setBackendState },
     } = getGlobals();
     const { t } = useTranslation("common");
+    const { t: t_commandExp } = useTranslation("CommandExplanation");
 
     function error_handle(error) {
         const err_string =
@@ -229,35 +265,55 @@ export default function useButtonCb() {
     function autosaveWaite(max_saves) {
         if (check_backend_state()) {
             pushMsg(t("message.autosaving_warning"), 2);
-            invoke("cmd_autosave", { maxSaves: max_saves }).then(() => {
-                update_save_infos();
-                pushMsg(t("message.autosave_succeed"), 3);
-            });
+            invoke("cmd_autosave", { maxSaves: max_saves })
+                .then(() => {
+                    update_save_infos();
+                    pushMsg(t("message.autosave_succeed"), 3);
+                })
+                .catch(error_handle);
         } else {
             setTimeout(autosaveWaite, 1000);
-            pushMsg(t("autosave_backend_occupied"), 4);
+            pushMsg(t("message.autosave_backend_occupied"), 4);
         }
     }
+    const autosave_interval = useRef(3);
+    const max_saves = useRef(1);
     function cmd_autosave() {
         enableQueryWindow(
             t("autosave_title"),
             <>
-                asefewfawe
+                <p style={{ whiteSpace: "pre-line" }}>
+                    {t_commandExp("autosave")}
+                </p>
+                <div className="autosave_numberspans">
+                    <NumberSpan min_value={3} count_ref={autosave_interval}>
+                        {t("number_span_time_interval")}
+                    </NumberSpan>
+                    <NumberSpan min_value={1} count_ref={max_saves}>
+                        {t("number_span_max_saves")}
+                    </NumberSpan>
+                </div>
                 <OkCancleKit
                     okCallback={() => {
-                        const interval = 10;
                         if (timer != null) {
                             clearTimeout(timer);
                             pushMsg(t("message.old_timer_closed"), 4);
                         }
                         const new_timer = setInterval(
                             () => {
-                                autosaveWaite(3);
+                                autosaveWaite(max_saves.current);
                             },
-                            // interval * 60 * 1000,
-                            interval * 1000,
+                            // autosave_interval.current * 60 * 1000,
+                            autosave_interval.current * 1000,
                         );
                         setTimer(new_timer);
+                        pushMsg(
+                            t("message.creat_autosave_task", {
+                                interval: autosave_interval.current,
+                                max_saves: max_saves.current,
+                            }),
+                            3,
+                        );
                     }}
                 >
                     <button
@@ -267,6 +323,7 @@ export default function useButtonCb() {
                             if (timer != null) {
                                 clearTimeout(timer);
                                 pushMsg(t("message.old_timer_closed"), 4);
+                                setTimer(null);
                             }
                             disableQueryWindow();
                         }}

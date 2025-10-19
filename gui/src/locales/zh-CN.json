@@ -41,7 +41,7 @@
         "qsave": "根据当前的日期时间（精确到秒）生成一个存档名，同一秒中如果点击多次可能会出现存档名重复的消息",
         "overwrite": "以当前的Noita存档覆盖存档列表中最新的存档",
         "autosave":
-            "设定一个时间间隔和最大自动存档数，进行自动存档并且超出最大自动存档数时覆盖最老的自动存档，Noita的自动存档间隔为3分钟，故设置自动存档的时间间隔时不应该少于3分钟",
+            "1.设定一个时间间隔和最大自动存档数，进行自动存档并且超出最大自动存档数时覆盖最老的自动存档\n2.Noita的自动存档间隔为3分钟，故设置自动存档的时间间隔时不应该少于3分钟\n3.自动存档的存档名以\"as_\"开头，且任何\"as_\"开头的存档都被视为自动存档，非自动存档请不要以\"as_\"开头，以免被自动存档命令误删",
         "load": "选择一个存档读取",
         "qload": "读取最新存档",
         "delete": "删除选定存档，可多选",
@@ -56,7 +56,8 @@
             "backend_locked": "有操作正在进行",
             "choose_a_save": "请选择一个存档",
             "choose_only_one_save": "最多选择一个存档",
-            "old_timer_closed": "已关闭自动存档任务",
+            "old_timer_closed": "已关闭当前自动存档任务",
+            "creat_autosave_task": "已创建新的自动存档任务：\n时间间隔{{interval}}分钟，最大自动存档数{{max_saves}}个",
             "autosaving_warning": "正在自动存档，请勿进行其他操作",
             "autosave_succeed": "自动存档成功",
             "autosave_backend_occupied": "有其他任务运行中，稍后尝试自动存档"
@@ -83,6 +84,8 @@
 
         "autosave_title": "自动存档",
         "cancle_autosave_btn": "关闭当前自动存档任务",
+        "number_span_time_interval": "时间间隔",
+        "number_span_max_saves": "最大自动存档数",
 
         "modify_title": "修改存档信息",
         "newname_placeholder": "新存档名（留空以保持原名）",
@@ -95,7 +98,9 @@
             "date": "日期",
             "time": "时间",
             "name": "存档名",
-            "note": "存档备注"
+            "note": "存档备注",
+
+            "first_launch_tip": "首次使用请通过 帮助与说明 按钮查看注意事项"
         },
 
         "instruction":

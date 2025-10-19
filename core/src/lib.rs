@@ -188,19 +188,23 @@ impl<Opm: OutputManager> Core<Opm> {
     ) -> NSResult<(Option<SingleSave>, SingleSave)> {
         let saves = &mut self.m_info.saves;
         let mut removed_save = None;
-        let auto_saves_count = saves
+        let auto_saves: Vec<(usize, String)> = saves
             .iter()
-            .filter(|&item| item.get_name().starts_with("as_"))
-            .count();
-        if auto_saves_count >= max_auto_saves {
-            let index = saves
-                .iter()
-                .position(|item| item.get_name().starts_with("as_"))
-                .unwrap();
+            .enumerate()
+            .filter_map(|(index, item)| {
+                if item.get_name().starts_with("as_") {
+                    Some((index, item.get_name().to_string()))
+                } else {
+                    None
+                }
+            })
+            .collect();
+        let delete_to_index = (auto_saves.len() + 1).saturating_sub(max_auto_saves);
+        for (index, save_name) in auto_saves[0..delete_to_index].iter().rev() {
             self.m_file_operator
-                .remove_save(saves[index].get_name())
+                .remove_save(save_name)
                 .explain(&t!("delete_save_fail"))?;
-            removed_save = Some(saves.remove(index));
+            removed_save = Some(saves.remove(*index));
         }
         self.quick_save(true)?;
         self.m_file_operator

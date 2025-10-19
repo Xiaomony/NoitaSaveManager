@@ -25,6 +25,47 @@ input[type="text"] {
     padding: 0 10px;
 }
 
+.number_span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h4 {
+        margin: 5px 0;
+        text-align: center;
+    }
+
+    h1 {
+        width: 97px;
+        margin: 0;
+        border: 2px solid;
+        text-align: center;
+    }
+
+    button {
+        width: 100px;
+        height: 50px;
+        flex-shrink: 0;
+        font-size: 2em;
+    }
+    button:hover {
+        transform: scale(1);
+    }
+
+    .upper_button {
+        border-radius: 20px 20px 0 0;
+    }
+
+    .lower_button {
+        border-radius: 0 0 20px 20px;
+    }
+}
+
+.autosave_numberspans {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 @media (prefers-color-scheme: dark) {
     button {
         border-color: rgba(255, 255, 255, 0.3);

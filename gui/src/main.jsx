@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import "./assets/Style.css";
-import "./assets/Button.css";
+import "./assets/Controls.css";
 import CommandPane from "./CommandPane.jsx";
 import SavesPane from "./SavesPane.jsx";
 import MsgStack from "./MsgStack.jsx";
