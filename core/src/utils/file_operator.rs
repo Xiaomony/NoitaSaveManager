@@ -7,9 +7,17 @@ use std::path::{Path, PathBuf};
 use super::error::*;
 use super::save_infos::AllInfos;
 
-pub const SAVE_FOLDER_PATH: &str = r".\Saves\";
-const SAVE_INFO_PATH: &str = r".\Saves\infos.json";
+const SAVE_INFO_PATH: &str = r"./Saves/infos.json";
+
+#[cfg(target_family = "windows")]
 const NOITA_SAVE_PATH_POSTFIX: &str = r"Appdata\LocalLow\Nolla_Games_Noita\save00";
+#[cfg(target_family = "windows")]
+pub const SAVE_FOLDER_PATH: &str = r".\Saves\";
+
+#[cfg(target_family = "unix")]
+pub const SAVE_FOLDER_PATH: &str = r"Saves";
+#[cfg(target_family = "unix")]
+const NOITA_SAVE_PATH_POSTFIX: &str = r".local/share/Steam/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/save00";
 
 #[derive(Debug)]
 pub struct FileOperator {

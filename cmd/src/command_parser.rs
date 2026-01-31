@@ -77,6 +77,7 @@ impl<'a> CommandParser<'a> {
             &t!("man.startgame"),
             Self::startgame,
         );
+        #[cfg(target_family = "windows")]
         new.add_command(
             &["setpath", "sp"],
             &t!("exp.setpath"),
@@ -250,6 +251,9 @@ impl<'a> CommandParser<'a> {
     }
 
     pub fn cls(&self) {
+        #[cfg(target_family = "unix")]
+        std::process::Command::new("clear").status().unwrap();
+        #[cfg(target_family = "windows")]
         std::process::Command::new("cmd")
             .args(["/C", "cls"])
             .status()
@@ -266,9 +270,16 @@ impl<'a> CommandParser<'a> {
                 )
             );
             print_with_pad(&item.cmd_explanation, 22);
+            #[cfg(target_family = "windows")]
             match index + 1 {
                 3 | 8 | 11 | 14 | 16 => println!(),
                 5 | 9 | 18 => println!("\n"),
+                _ => (),
+            }
+            #[cfg(target_family = "unix")]
+            match index + 1 {
+                3 | 7 | 10 | 13 | 15 => println!(),
+                4 | 8 | 17 => println!("\n"),
                 _ => (),
             }
         }
@@ -290,6 +301,7 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
+    #[cfg(target_family = "windows")]
     fn set_noita_path(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSResult<bool> {
         core.set_noita_path(if parameter.is_empty() {
             let path = CMDOPT.input(t!("prompt.noita_path").to_string())?;

@@ -15,12 +15,30 @@ extern crate rust_i18n;
 i18n!("locales");
 
 // std imports
+#[cfg(target_family = "unix")]
+use directories::BaseDirs;
+#[cfg(target_family = "unix")]
+use std::fs::File;
+#[cfg(target_family = "windows")]
 use std::os::windows::process::CommandExt;
 use std::path::Path;
+use std::path::PathBuf;
 use std::process::Command;
+
+#[cfg(target_family = "unix")]
+const APPID: &str = "881100";
 
 #[derive(Debug)]
 pub struct Core<Opm: OutputManager> {
+    #[cfg(target_family = "unix")]
+    m_steam_dir: PathBuf,
+    #[cfg(target_family = "unix")]
+    m_proton_exe: PathBuf,
+    #[cfg(target_family = "unix")]
+    m_noita_exe: PathBuf,
+    #[cfg(target_family = "unix")]
+    m_noita_dir: PathBuf,
+
     m_file_operator: FileOperator,
     m_info: AllInfos,
     m_opm: Opm,
@@ -45,7 +63,19 @@ impl<Opm: OutputManager> Core<Opm> {
         };
         rust_i18n::set_locale(locale);
         let file_operator = FileOperator::new()?;
+
+        let dir = BaseDirs::new().unwrap();
+        let local_share_dir = dir.data_dir();
         Ok(Self {
+            #[cfg(target_family = "unix")]
+            m_steam_dir: local_share_dir.join("Steam"),
+            #[cfg(target_family = "unix")]
+            m_proton_exe: local_share_dir
+                .join("Steam/steamapps/common/Proton - Experimental/proton"),
+            #[cfg(target_family = "unix")]
+            m_noita_exe: local_share_dir.join("Steam/steamapps/common/Noita/noita.exe"),
+            #[cfg(target_family = "unix")]
+            m_noita_dir: local_share_dir.join("Steam/steamapps/common/Noita"),
             m_info: file_operator.load_infos()?,
             m_file_operator: file_operator,
             m_opm: opm,
@@ -79,15 +109,41 @@ impl<Opm: OutputManager> Core<Opm> {
     }
 
     pub fn startgame(&self) -> NSComResult {
-        let noipath = self.m_info.get_exe_path();
-        if !(noipath.exists() && noipath.ends_with("noita.exe")) {
-            return throw(&t!("please_set_noita_path"));
-        } else {
+        #[cfg(target_family = "windows")]
+        {
+            let noipath = self.m_info.get_exe_path();
+            if !(noipath.exists() && noipath.ends_with("noita.exe")) {
+                return throw(&t!("please_set_noita_path"));
+            } else {
+                self.m_opm
+                    .warning(t!("start_without_steam_warning").to_string() + "\n");
+
+                Command::new(noipath)
+                    .creation_flags(0x00000008) // run noita in detached process
+                    .current_dir(noipath.parent().unwrap())
+                    .spawn()?;
+            }
+        }
+        #[cfg(target_family = "unix")]
+        {
             self.m_opm
                 .warning(t!("start_without_steam_warning").to_string() + "\n");
-            Command::new(noipath)
-                .creation_flags(0x00000008) // run noita in detached process
-                .current_dir(noipath.parent().unwrap())
+
+            Command::new(&self.m_proton_exe)
+                .arg("run")
+                .arg(&self.m_noita_exe)
+                .current_dir(&self.m_noita_dir)
+                .env("STEAM_COMPAT_CLIENT_INSTALL_PATH", &self.m_steam_dir)
+                .env(
+                    "STEAM_COMPAT_DATA_PATH",
+                    format!(
+                        "{}/steamapps/compatdata/{APPID}",
+                        self.m_steam_dir.to_str().unwrap()
+                    ),
+                )
+                .env("STEAM_COMPAT_APP_ID", APPID)
+                .stdout(File::create("/dev/null")?)
+                .stderr(File::create("/dev/null")?)
                 .spawn()?;
         }
         Ok(())
