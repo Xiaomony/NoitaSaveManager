@@ -1,112 +1,146 @@
 # NoitaSaveManager
 
-- [使用说明及注意事项](#使用说明及注意事项)
-- [命令行程序使用说明](#命令行程序使用说明)
-- [存档信息文件](#存档信息文件)
-- [命令列表](#命令列表)
+[简体中文Readme](./docs/Readme_Simplified_Chinese.md) [繁體中文Readme](/docs/Readme_Traditional_Chinese.md)
 
-## 使用说明及注意事项
+The application currently support:
 
-1. 本程序运行时会在程序所在目录下建立一个 **_Saves文件夹_** 用于存储日志文件和保存的存档,请勿删除(若删除,则相当于恢复程序第一次运行的状态)
+- Simplified Chinese
+- Traditional Chinese(AI translated)
+- English(en_US)
+- English(en_GB, AI translated)
+- Japanese(AI translated)
 
-2. 建议将程序放在磁盘中的某个文件夹下,再发送到桌面快捷方式使用(避免程序在桌面创建Saves文件夹后被误删)
+1. [How to use & Notes](#how-to-use-notes)
+2. [Command Line Usage](#command-line-usage)
+3. [Save Info File](#save-info-file)
+4. [Command List](#command-list)
 
-3. 请在Noita主界面有 **"继续"** 这一选项时读取存档,若没有则请先 **"新游戏"** 后再关闭游戏读档,重新打开后再点击 **"继续"**
+## How to use & Notes
 
-4. 建议关闭Steam云存档
+1. The program will create a `Saves` folder in the same directory as the program when it's running.
+   The folder is used to store logs and saved game data.
+   **Don't delete it.** Unless you want reset the state of the program and it will behaviour as the first time you launch it.
 
-5. 请在Noita **_正常保存、关闭_** 后再进行存档(游戏进行中存档的话保存的是Noita的 **自动存档** ,可能是几分钟前的存档,并非保存时的存档)
+2. It’s recommended to place the program in a normal folder on your disk and then create a desktop shortcut.
+   This helps avoid accidentally deleting the `Saves` folder if the program is placed directly on the desktop.
 
-6. 游戏进行中请勿读取存档
+3. Please load your save when there's an "**Continue**" option on your noita menu.
+   if it doesn't, please click "**New Game**", then quit the game and load your save.
+   After loading your save, "**Continue**" option should appear.
 
-7. 随着游戏的进行,每次存档 **所用的时间** 和 **占用的空间** 也会不断 **增大** ,请耐心等待
+4. It’s recommended to **disable Steam Cloud saves**.
 
-8. **本程序的命令行版本支持 传入命令行参数**
+5. Only save after Noita has been **properly saved and closed**.
+   If you save while the game is still running, the program will back up Noita’s **auto-save**, which may be from a few minutes earlier.
 
-9. **使用GUI版时要注意不要同时点击一个按钮多次**
+6. **Don't load saves while game is running**
 
-10. **命令行版本与GUI版本可以共用一个Saves文件夹 但千万不要同时运行两个版本的程序**
+7. As you progress in the game, both the **save time** and **disk usage** will increase.
+   Please be patient.
 
-11. 使用此程序启动Noita时，如果在Steam未启动时使用此命令，会无法加载Steam中的模组和存档
+8. You can pass command-line arguments to the command-line version of the program
 
-12. 查看noita路径：Steam库中Noita界面 → 右边的小齿轮图标 → 管理 → 浏览本地文件
+9. Avoid clicking buttons too fast when using GUI version.
 
-## 命令行程序使用说明
+10. The command-line version and GUI version share the same `Saves` folder,
+    but **never run both of them at the same time**
 
-1. 命令的输入可以使用全写，也可以使用缩写(括号里的)
+11. You can set the path of `noita.exe` and launch noita from the program,
+    which is faster than launching noita via steam.
+    But launch the game without steam running will cause the mods downloaded from steam not loaded.
 
-2. 命令有两种使用方式：命令参数模式和普通模式
-    - 命令参数模式：使用类似命令行的方法进行操作，如
-      `save 存档1 存档备注`
+12. How to check the path of `noita.exe`:
+    Steam Library → Noita → Gear icon → Manage → Browse local files
 
-        在输入命令的同时将其参数一同输入，每个参数用空格隔开，如果存档名、存档备注等任何参数中含有空格，请用 **_英文引号_**（不要用 **_中文引号_** ） 将参数括起来
+## Command Line Usage
 
-        `save "存档 1" "存档  备注"`
+1. Commands can be entered in full or using their abbreviations (shown in parentheses).
 
-        每个命令的命令参数模式的格式不同，请用 `help+命令` 的形式查看某条命令的说明及用法
+2. Commands can be used in two ways: **command-argument mode** and **interactive mode**.
+    - **Command-argument mode**
+      Use commands like a typical CLI:
 
-    - 普通模式：先输入命令，再根据程序的提示输入参数，如
+        ```bash
+        save SaveName SaveNote
+        ```
+
+        Arguments are separated by spaces.
+        If any argument contains spaces, wrap it in **quotes**:
+
+        ```bash
+        save "Save 1" "This is a note"
+        ```
+
+        Each command has its own argument format.
+        Use `help + command` to see detailed usage.
+
+    - **Interactive mode**  
+      Enter the command first, then follow the prompts:
 
         ```bash
         >>>save
-        请输入存档名(直接换行则取消保存):存档 1
-        请输入存档备注(直接换行则不填):存档备注
-        保存成功
+        Please enter save name (press Enter to cancel): Save 1
+        Please enter save note (press Enter to skip): Save note
+        Save successful
+
         ```
 
-3. 使用`lock`命令锁定的存档 **不可进行任何修改** ，请先使用`unlock`解锁才能修改
+3. Saves locked using the `lock` command **cannot be modified**.
+   Use `unlock` first if you want to change them.
 
-4. 使用 `help+命令` 的形式查看某条命令的说明及用法
+4. Use `help + command` to view detailed help for a specific command.
 
-5. `del`和`lock`、`unlock`命令可以**批量操作**，具体可使用 `help del` 查看用法
+5. The `delete`, `lock`, and `unlock` commands support **batch operations**.
+   Use `help delete` to see how they work.
 
-## 存档信息文件
+## Save Info File
 
-此程序使用`./Saves/info.json`文件存储存档的名称、备注、日期时间等信息，打开此文件，格式如下，如果没有接触过json文件，最好不要动它
+This program uses `./Saves/info.json` to store save metadata such as names, notes, and timestamps.
+If you’re not familiar with JSON files, it’s best **not to edit this file manually**.
 
 ```json
 {
-  "noita_exe_path": "",             //存储noita路径
+  "noita_exe_path": "",
   "saves": [
-    {               //每一个存档都以大括号包裹
-      "m_date": "2025年09月20日",   //存储日期
-      "m_time": "20时58分40秒",     //存储时间
-      "m_name": "as_zjuu6O",       //存档名
-      "m_note": "",                //存档备注
-      "m_islocked": true           //是否锁定
-    },
-    ...                            //省略中间的存档
     {
-      "m_date": "2025年09月20日",
-      "m_time": "20时58分40秒",
+      "m_date": "2025-09-20",
+      "m_time": "20:58:40",
       "m_name": "as_zjuu6O",
       "m_note": "",
       "m_islocked": true
-    }                              //最后一个存档结尾没有,
+    },
+    ...
+    {
+      "m_date": "2025-09-20-",
+      "m_time": "20:58:40",
+      "m_name": "as_zjuu6O",
+      "m_note": "",
+      "m_islocked": true
+    }
   ]
 }
 ```
 
-## 命令列表
+## Command List
 
-|   命令    |     含义      |       简写        |                         说明                         |
-| :-------: | :-----------: | :---------------: | :--------------------------------------------------: |
-|   help    |               |         h         |                  使用教程及帮助说明                  |
-|   clear   |               |        cls        |                         清屏                         |
-|   quit    |               |     q 或 exit     |                         退出                         |
-| startgame |               |        sg         |                      启动Noita                       |
-|  setpath  |               |        sp         |                 设置noita.exe的路径                  |
-|   save    |               |         s         |                         保存                         |
-|   qsave   |  quick save   |        qs         | 快速保存（无需填写存档名称和备注，存档名会自动生成） |
-| overwrite |               | ow 或 rsave 或 rs |    覆盖最新存档（存档名与备注不变，存档时间更新）    |
-|   asave   |   auto save   |        as         |                       自动存档                       |
-|   load    |               |         l         |                         加载                         |
-|   qload   |  quick load   |        ql         |                     加载最新存档                     |
-|   list    |               |  ls 或 log 或 lg  |                       存档列表                       |
-|   slist   |  short list   |    sl 或 slog     |                    近几次存档列表                    |
-|  modify   |  modify save  |        mo         |                     修改存档信息                     |
-|  delete   |               |         d         |                         删除                         |
-|  qdelete  | quick deletex |        qd         |                     删除最新存档                     |
-|   lock    |               |      lc 或 f      |                       锁定存档                       |
-|  unlock   |               |     ul 或 uf      |                       解锁存档                       |
-|   usage   |               |        use        |                     查看磁盘用量                     |
+|  Command  |   Meaning    |      Alias      |                      Description                       |
+| :-------: | :----------: | :-------------: | :----------------------------------------------------: |
+|   help    |              |        h        |                  Show help and usage                   |
+|   clear   |              |       cls       |                      Clear screen                      |
+|   quit    |              |    q / exit     |                    Exit the program                    |
+| startgame |              |       sg        |                      Start Noita                       |
+|  setpath  |              |       sp        |               Set the path of noita.exe                |
+|   save    |              |        s        |                          Save                          |
+|   qsave   |  quick save  |       qs        |       Quick save (auto-generated name, no note)        |
+| overwrite |              | ow / rsave / rs | Overwrite the latest save (name and note won't change) |
+|   asave   |  auto save   |       as        |                       Auto save                        |
+|   load    |              |        l        |                      Load a save                       |
+|   qload   |  quick load  |       ql        |                  Load the latest save                  |
+|   list    |              |  ls / log / lg  |                     Show save list                     |
+|   slist   |  short list  |    sl / slog    |                   Show recent saves                    |
+|  modify   | modify save  |       mo        |                     Edit save info                     |
+|  delete   |              |        d        |                         Delete                         |
+|  qdelete  | quick delete |       qd        |                 Delete the latest save                 |
+|   lock    |              |     lc / f      |                      Lock a save                       |
+|  unlock   |              |     ul / uf     |                     Unlock a save                      |
+|   usage   |              |       use       |                    Check disk usage                    |

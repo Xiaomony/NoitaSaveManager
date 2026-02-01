@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Noita Save Manager CMD
+Comment=A program helps manage your noita saves
+Exec=/opt/NoitaSaveManager/noita_save_manager_cmd
+Icon=/opt/NoitaSaveManager/res/Nuke.png
+Terminal=true
+Type=Application
+Categories=Utility;Archiving;ConsoleOnly;
+Keywords=noita;save;manager;

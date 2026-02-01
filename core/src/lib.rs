@@ -22,6 +22,7 @@ use std::fs::File;
 #[cfg(target_family = "windows")]
 use std::os::windows::process::CommandExt;
 use std::path::Path;
+#[cfg(target_family = "unix")]
 use std::path::PathBuf;
 use std::process::Command;
 
@@ -64,7 +65,9 @@ impl<Opm: OutputManager> Core<Opm> {
         rust_i18n::set_locale(locale);
         let file_operator = FileOperator::new()?;
 
+        #[cfg(target_family = "unix")]
         let dir = BaseDirs::new().unwrap();
+        #[cfg(target_family = "unix")]
         let local_share_dir = dir.data_dir();
         Ok(Self {
             #[cfg(target_family = "unix")]
