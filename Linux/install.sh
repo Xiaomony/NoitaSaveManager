@@ -17,6 +17,8 @@ icon_path='res/Nuke.png'
 desktop_entry_url="https://raw.githubusercontent.com/Xiaomony/NoitaSaveManager/main/Linux/noita-save-manager.desktop"
 desktop_entry_name='noita-save-manager.desktop'
 desktop_entry_link_path="/usr/share/applications/${desktop_entry_name}"
+latest_release_content_url='https://api.github.com/repos/Xiaomony/NoitaSaveManager/releases/latest'
+exe_name='noita_save_manager_cmd'
 echo "Install the program to '${install_path}'"
 
 # existing installed files detection
@@ -44,6 +46,7 @@ cd "${install_path}" || {
 
 mkdir "res"
 # download icon from noita wiki
+printf "\n"
 blue "Downloading application icon from noita wiki"
 blue "============================================"
 if curl -fLo "${icon_path}" "${icon_url}"; then
@@ -57,10 +60,11 @@ fi
 blue "============================================"
 
 # download desktop entry file from github
+printf "\n"
 blue "Downloading \`${desktop_entry_name}\` file from github"
 blue "============================================"
 if curl -fLo "${desktop_entry_name}" "${desktop_entry_url}"; then
-    green "\`${desktop_entry_name}\` file downloaded"
+    green "\`${desktop_entry_name}\` downloaded"
 else
     printf "\n"
     red "Fail to download \`${desktop_entry_name}\` file. Please check your network connection,
@@ -71,6 +75,33 @@ blue "============================================"
 
 # link desktop entry
 ln -sf "${install_path}/${desktop_entry_name}" "${desktop_entry_link_path}"
+printf "\n"
 green "\`${desktop_entry_name}\` has been linked to '${desktop_entry_link_path}'"
 
+# downlaod release
+printf "\n"
+blue "Getting latest release info from '${latest_release_content_url}'"
+blue "============================================"
+release_content=$(curl -fL "${latest_release_content_url}")
+exe_url=$(echo "$release_content" | sed -n 's/^ *"browser_download_url": *"\(.*noita_save_manager_cmd\)"$/\1/p')
+green "Latest release \`${exe_url}\` detected."
+blue "============================================"
+
+# download release
+printf "\n"
+blue "Start to download latest release"
+blue "============================================"
+if curl -fLo "${exe_name}" "${exe_url}"; then
+    green "Latest release \`${exe_name}\` downloaded"
+    chmod +x "${exe_name}"
+else
+    printf "\n"
+    red "Fail to download \`${exe_name}\` file. Please check your network connection,
+or download it manually from '${exe_url}'.
+If the url doesn't exist, please check the github page(https://github.com/Xiaomony/NoitaSaveManager) and manually download the release.
+Then put it at '${install_path}'"
+fi
+blue "============================================"
+
+yellow "Installation finished. Follow the instruction if there're errors above"
 cd "${current_path}" || exit 1

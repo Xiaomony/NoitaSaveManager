@@ -10,6 +10,8 @@ The application currently support:
 - English(en_GB, AI translated)
 - Japanese(AI translated)
 
+> The command-line version support _**Linux**_, you can manually download it from release page or use the [install script](./Linux/install.sh)
+
 1. [How to use & Notes](#how-to-use-notes)
 2. [Command Line Usage](#command-line-usage)
 3. [Save Info File](#save-info-file)
