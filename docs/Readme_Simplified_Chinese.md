@@ -2,6 +2,10 @@
 
 > 命令行版本支持***Linux***，可以在Release页面下载或者使用[安装脚本](../Linux/install.sh)
 
+|GUI(dark)|GUI(light)|CMD|
+|:---:|:---:|:---:|
+|![preview_GUI_dark](./res/preview_GUI_dark.png)|![preview_GUI_light](./res/preview_GUI_light.png)|![preview_CMD](./res/preview_CMD.png)|
+
 - [使用说明及注意事项](#使用说明及注意事项)
 - [命令行程序使用说明](#命令行程序使用说明)
 - [存档信息文件](#存档信息文件)

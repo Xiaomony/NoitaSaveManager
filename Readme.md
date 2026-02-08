@@ -12,6 +12,10 @@ The application currently support:
 
 > The command-line version support _**Linux**_, you can manually download it from release page or use the [install script](./Linux/install.sh)
 
+|GUI(dark)|GUI(light)|CMD|
+|:---:|:---:|:---:|
+|![preview_GUI_dark](./docs/res/preview_GUI_dark.png)|![preview_GUI_light](./docs/res/preview_GUI_light.png)|![preview_CMD](./docs/res/preview_CMD.png)|
+
 1. [How to use & Notes](#how-to-use-notes)
 2. [Command Line Usage](#command-line-usage)
 3. [Save Info File](#save-info-file)

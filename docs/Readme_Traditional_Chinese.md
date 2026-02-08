@@ -2,6 +2,10 @@
 
 > 命令列版本支援***Linux***，可以在Release頁面下載或者使用[安裝腳本](../Linux/install.sh)
 
+|GUI(dark)|GUI(light)|CMD|
+|:---:|:---:|:---:|
+|![preview_GUI_dark](./res/preview_GUI_dark.png)|![preview_GUI_light](./res/preview_GUI_light.png)|![preview_CMD](./res/preview_CMD.png)|
+
 - [使用說明及注意事項](#使用說明及注意事項)
 - [命令列程式使用說明](#命令列程式使用說明)
 - [存檔資訊檔案](#存檔資訊檔案)
