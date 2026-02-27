@@ -34,6 +34,8 @@ pub struct Core<Opm: OutputManager> {
     #[cfg(target_family = "unix")]
     m_steam_dir: PathBuf,
     #[cfg(target_family = "unix")]
+    m_steam_runtime_runsh: PathBuf,
+    #[cfg(target_family = "unix")]
     m_proton_exe: PathBuf,
     #[cfg(target_family = "unix")]
     m_noita_exe: PathBuf,
@@ -72,6 +74,8 @@ impl<Opm: OutputManager> Core<Opm> {
         Ok(Self {
             #[cfg(target_family = "unix")]
             m_steam_dir: local_share_dir.join("Steam"),
+            #[cfg(target_family = "unix")]
+            m_steam_runtime_runsh: local_share_dir.join("Steam/ubuntu12_32/steam-runtime/run.sh"),
             #[cfg(target_family = "unix")]
             m_proton_exe: local_share_dir
                 .join("Steam/steamapps/common/Proton - Experimental/proton"),
@@ -132,19 +136,37 @@ impl<Opm: OutputManager> Core<Opm> {
             self.m_opm
                 .warning(t!("start_without_steam_warning").to_string() + "\n");
 
-            Command::new(&self.m_proton_exe)
-                .arg("run")
+            let compat_data_path = self
+                .m_steam_dir
+                .join(format!("steamapps/compatdata/{APPID}"));
+            let shader_cache_path = self
+                .m_steam_dir
+                .join(format!("steamapps/shadercache/{APPID}"));
+            let proton_tool_path = self
+                .m_proton_exe
+                .parent()
+                .unwrap_or(self.m_steam_dir.as_path());
+
+            let mut cmd = if self.m_steam_runtime_runsh.exists() {
+                let mut c = Command::new(&self.m_steam_runtime_runsh);
+                c.arg(&self.m_proton_exe);
+                c
+            } else {
+                Command::new(&self.m_proton_exe)
+            };
+
+            cmd.arg("waitforexitandrun")
                 .arg(&self.m_noita_exe)
                 .current_dir(&self.m_noita_dir)
                 .env("STEAM_COMPAT_CLIENT_INSTALL_PATH", &self.m_steam_dir)
-                .env(
-                    "STEAM_COMPAT_DATA_PATH",
-                    format!(
-                        "{}/steamapps/compatdata/{APPID}",
-                        self.m_steam_dir.to_str().unwrap()
-                    ),
-                )
+                .env("STEAM_COMPAT_DATA_PATH", &compat_data_path)
+                .env("STEAM_COMPAT_SHADER_PATH", &shader_cache_path)
+                .env("STEAM_COMPAT_TOOL_PATH", proton_tool_path)
+                .env("STEAM_COMPAT_TOOL_PATHS", proton_tool_path)
                 .env("STEAM_COMPAT_APP_ID", APPID)
+                .env("SteamAppId", APPID)
+                .env("SteamGameId", APPID)
+                .env("WINEPREFIX", compat_data_path.join("pfx"))
                 .stdout(File::create("/dev/null")?)
                 .stderr(File::create("/dev/null")?)
                 .spawn()?;
