@@ -363,9 +363,13 @@ impl<'a> CommandParser<'a> {
         };
 
         let Ok(max_auto_saves) = (if parameter.is_empty() {
-            CMDOPT
-                .input(t!("prompt.auto_save_max_saves").to_string())?
-                .parse::<usize>()
+            if time_interval == 0 {
+                Ok(1)
+            } else {
+                CMDOPT
+                    .input(t!("prompt.auto_save_max_saves").to_string())?
+                    .parse::<usize>()
+            }
         } else {
             parameter.remove(0).parse::<usize>()
         }) else {
