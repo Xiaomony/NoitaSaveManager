@@ -12,9 +12,9 @@ The application currently support:
 
 > The command-line version support _**Linux**_, you can manually download it from release page or use the [install script](./Linux/install.sh)
 
-|GUI(dark)|GUI(light)|CMD|
-|:---:|:---:|:---:|
-|![preview_GUI_dark](./docs/res/preview_GUI_dark.png)|![preview_GUI_light](./docs/res/preview_GUI_light.png)|![preview_CMD](./docs/res/preview_CMD.png)|
+|                      GUI(dark)                       |                       GUI(light)                       |                    CMD                     |
+| :--------------------------------------------------: | :----------------------------------------------------: | :----------------------------------------: |
+| ![preview_GUI_dark](./docs/res/preview_GUI_dark.png) | ![preview_GUI_light](./docs/res/preview_GUI_light.png) | ![preview_CMD](./docs/res/preview_CMD.png) |
 
 1. [How to use & Notes](#how-to-use-notes)
 2. [Command Line Usage](#command-line-usage)
@@ -22,6 +22,8 @@ The application currently support:
 4. [Command List](#command-list)
 
 ## How to use & Notes
+
+> For linux user, the saved game files is stored under `~/.local/share/NoitaSaveManager/`
 
 1. The program will create a `Saves` folder in the same directory as the program when it's running.
    The folder is used to store logs and saved game data.
@@ -80,7 +82,7 @@ The application currently support:
         Each command has its own argument format.
         Use `help + command` to see detailed usage.
 
-    - **Interactive mode**  
+    - **Interactive mode**
       Enter the command first, then follow the prompts:
 
         ```bash
@@ -101,7 +103,7 @@ The application currently support:
 
 ## Save Info File
 
-This program uses `./Saves/info.json` to store save metadata such as names, notes, and timestamps.
+This program uses `./Saves/infos.json` (for linux user, under `~/.local/share/NoitaSaveManager/infos.json`) to store save metadata such as names, notes, and timestamps.
 If you’re not familiar with JSON files, it’s best **not to edit this file manually**.
 
 ```json

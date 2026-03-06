@@ -18,6 +18,7 @@ instruction:
         10. 使用此程序启动Noita会较Steam启动更快，但需要先使用命令设置noita.exe所在的路径
         11. 使用此程序启动Noita时，如果在Steam未启动时使用此命令，会无法加载Steam中的模组和存档
         12. 查看noita路径：Steam库中Noita界面 → 右边的小齿轮图标 → 管理 → 浏览本地文件
+        13. Linux下, 将会在`~/.local/share/NoitaSaveManager/`下存储存档和存档信息
     ------------------------------------------------------------------------------------------------------------------------
     命令说明：
         1.使用 "help 命令"(help 与命令见用空格分隔) 查看某条命令的说明及用法
@@ -53,6 +54,7 @@ instruction:
         10. 使用此程式啟動Noita會較Steam啟動更快，但需要先使用命令設定noita.exe所在的路徑
         11. 使用此程式啟動Noita時，如果在Steam未啟動時使用此命令，會無法載入Steam中的模組和存檔
         12. 查看noita路徑：Steam庫中Noita介面 → 右邊的小齒輪圖示 → 管理 → 瀏覽本機檔案
+        13. Linux 下，將會在 `~/.local/share/NoitaSaveManager/` 下儲存存檔與存檔資訊
     ------------------------------------------------------------------------------------------------------------------------
     命令說明：
         1.使用 "help 命令"(help 與命令見用空格分隔) 查看某條命令的說明及用法
@@ -88,6 +90,7 @@ instruction:
         10. Launching Noita through this program is faster than via Steam, but you must first set the path to noita.exe using the appropriate command
         11. If Steam is not running when you launch Noita through this program, Steam mods and cloud saves will not be loaded
         12. To find the Noita path: In your Steam library, go to Noita → click the gear icon → Manage → Browse local files
+        13. For Linux users, save files and save information will be stored under `~/.local/share/NoitaSaveManager/`
     ------------------------------------------------------------------------------------------------------------------------
     Command Instructions:
         1. Use "help [command]" (separate help and command with a space) to view the description and usage of a specific command
@@ -123,6 +126,7 @@ instruction:
         10. Launching Noita through this program is faster than via Steam, but you must first set the path to noita.exe using the appropriate command
         11. If Steam is not running when you launch Noita through this program, Steam mods and cloud saves will not be loaded
         12. To find the Noita path: In your Steam library, go to Noita → click the gear icon → Manage → Browse local files
+        13. For linux user, the saved game files is stored under `~/.local/share/NoitaSaveManager/`
     ------------------------------------------------------------------------------------------------------------------------
     Command Instructions:
         1. Use "help [command]" (separate help and command with a space) to view the description and usage of a specific command
@@ -158,6 +162,7 @@ instruction:
         10. このプログラムを通じてNoitaを起動するとSteam経由より高速ですが、まず適切なコマンドを使用してnoita.exeへのパスを設定する必要があります
         11. Steamが実行されていない状態でこのプログラムを通じてNoitaを起動すると、SteamのMODとクラウドセーブは読み込まれません
         12. Noitaのパスを見つける方法：SteamライブラリでNoitaを選択 → 歯車アイコンをクリック → 管理 → ローカルファイルを閲覧
+        13. Linuxでは、アーカイブとアーカイブ情報は `~/.local/share/NoitaSaveManager/` に保存されます
     ------------------------------------------------------------------------------------------------------------------------
     コマンド説明：
         1. 「help [コマンド]」（helpとコマンドをスペースで区切る）を使用して、特定のコマンドの説明と使用方法を表示します

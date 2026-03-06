@@ -2,9 +2,9 @@
 
 > 命令列版本支援***Linux***，可以在Release頁面下載或者使用[安裝腳本](../Linux/install.sh)
 
-|GUI(dark)|GUI(light)|CMD|
-|:---:|:---:|:---:|
-|![preview_GUI_dark](./res/preview_GUI_dark.png)|![preview_GUI_light](./res/preview_GUI_light.png)|![preview_CMD](./res/preview_CMD.png)|
+|                    GUI(dark)                    |                    GUI(light)                     |                  CMD                  |
+| :---------------------------------------------: | :-----------------------------------------------: | :-----------------------------------: |
+| ![preview_GUI_dark](./res/preview_GUI_dark.png) | ![preview_GUI_light](./res/preview_GUI_light.png) | ![preview_CMD](./res/preview_CMD.png) |
 
 - [使用說明及注意事項](#使用說明及注意事項)
 - [命令列程式使用說明](#命令列程式使用說明)
@@ -12,6 +12,8 @@
 - [命令列表](#命令列表)
 
 ## 使用說明及注意事項
+
+> Linux 下，將會在 `~/.local/share/NoitaSaveManager/` 下儲存存檔與存檔資訊
 
 1. 本程式執行時會在程式所在目錄下建立一個 **_Saves 資料夾_**，用於儲存日誌檔案與已保存的存檔，請勿刪除（若刪除，等同於恢復至程式第一次執行的狀態）。
 
@@ -69,7 +71,7 @@
 
 ## 存檔資訊檔案
 
-本程式使用 `./Saves/info.json` 檔案來儲存存檔的名稱、備註、日期時間等資訊。
+本程式使用 `./Saves/infos.json` （對於 Linux 使用者，位於 `~/.local/share/NoitaSaveManager/infos.json`）檔案來儲存存檔的名稱、備註、日期時間等資訊。
 若不熟悉 JSON 檔案格式，建議 **不要手動修改** 此檔案。
 
 ```json
@@ -97,15 +99,15 @@
 
 ## 命令列表
 
-|   命令    |     含义     |       简写        |                         说明                         |
+|   命令    |     含義     |       簡寫        |                         說明                         |
 | :-------: | :----------: | :---------------: | :--------------------------------------------------: |
-|   help    |              |         h         |                  使用教程及帮助说明                  |
-|   clear   |              |        cls        |                         清屏                         |
+|   help    |              |         h         |                  使用教學及幫助說明                  |
+|   clear   |              |        cls        |                       清除螢幕                       |
 |   quit    |              |     q 或 exit     |                         退出                         |
 | startgame |              |        sg         |                      啟動 Noita                      |
 |  setpath  |              |        sp         |                設定 noita.exe 的路徑                 |
-|   save    |              |         s         |                         保存                         |
-|   qsave   |  quick save  |        qs         | 快速保存（無需填寫存檔名稱與備註，存檔名會自動生成） |
+|   save    |              |         s         |                         儲存                         |
+|   qsave   |  quick save  |        qs         | 快速儲存（無需填寫存檔名稱與備註，存檔名會自動生成） |
 | overwrite |              | ow 或 rsave 或 rs |       覆蓋最新存檔（名稱與備註不變，時間更新）       |
 |   asave   |  auto save   |        as         |                       自動存檔                       |
 |   load    |              |         l         |                         載入                         |

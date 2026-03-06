@@ -55,7 +55,8 @@ pub fn cmd_setpath(new_path: String) -> NSComResult {
 
 #[tauri::command]
 pub fn cmd_usage() -> NSResult<f64> {
-    let usage = Core::<GuiOutput>::usage_by_mb()?;
+    let core = get_core()?;
+    let usage = core.usage_by_mb()?;
     release_backend_lock();
     Ok(usage)
 }

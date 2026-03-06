@@ -1,7 +1,7 @@
 mod utils;
 
 pub use utils::error::*;
-use utils::file_operator::{FileOperator, SAVE_FOLDER_PATH};
+use utils::file_operator::FileOperator;
 pub use utils::output_manager;
 use utils::output_manager::OutputManager;
 pub use utils::save_infos::{AllInfos, SingleSave};
@@ -21,7 +21,6 @@ use directories::BaseDirs;
 use std::fs::File;
 #[cfg(target_family = "windows")]
 use std::os::windows::process::CommandExt;
-use std::path::Path;
 #[cfg(target_family = "unix")]
 use std::path::PathBuf;
 use std::process::Command;
@@ -461,7 +460,7 @@ impl<Opm: OutputManager> Core<Opm> {
     }
 
     #[inline]
-    pub fn usage_by_mb() -> NSResult<f64> {
-        FileOperator::caculate_usage(Path::new(SAVE_FOLDER_PATH))
+    pub fn usage_by_mb(&self) -> NSResult<f64> {
+        self.m_file_operator.get_usage()
     }
 }

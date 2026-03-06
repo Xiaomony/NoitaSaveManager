@@ -2,9 +2,9 @@
 
 > 命令行版本支持***Linux***，可以在Release页面下载或者使用[安装脚本](../Linux/install.sh)
 
-|GUI(dark)|GUI(light)|CMD|
-|:---:|:---:|:---:|
-|![preview_GUI_dark](./res/preview_GUI_dark.png)|![preview_GUI_light](./res/preview_GUI_light.png)|![preview_CMD](./res/preview_CMD.png)|
+|                    GUI(dark)                    |                    GUI(light)                     |                  CMD                  |
+| :---------------------------------------------: | :-----------------------------------------------: | :-----------------------------------: |
+| ![preview_GUI_dark](./res/preview_GUI_dark.png) | ![preview_GUI_light](./res/preview_GUI_light.png) | ![preview_CMD](./res/preview_CMD.png) |
 
 - [使用说明及注意事项](#使用说明及注意事项)
 - [命令行程序使用说明](#命令行程序使用说明)
@@ -12,6 +12,8 @@
 - [命令列表](#命令列表)
 
 ## 使用说明及注意事项
+
+> Linux下, 将会在`~/.local/share/NoitaSaveManager/`下存储存档和存档信息
 
 1. 本程序运行时会在程序所在目录下建立一个 **_Saves文件夹_** 用于存储日志文件和保存的存档,请勿删除(若删除,则相当于恢复程序第一次运行的状态)
 
@@ -68,7 +70,7 @@
 
 ## 存档信息文件
 
-此程序使用`./Saves/info.json`文件存储存档的名称、备注、日期时间等信息，打开此文件，格式如下，如果没有接触过json文件，最好不要动它
+此程序使用`./Saves/infos.json` （对于Linux用户，位于`~/.local/share/NoitaSaveManager/infos.json`）文件存储存档的名称、备注、日期时间等信息，打开此文件，格式如下，如果没有接触过json文件，最好不要动它
 
 ```json
 {

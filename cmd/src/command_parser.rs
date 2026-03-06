@@ -632,8 +632,8 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn usage(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
-        let usage = Core::<CmdlineOutput>::usage_by_mb()?;
+    fn usage(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+        let usage = core.usage_by_mb()?;
         if usage > 1024.0 {
             CMDOPT.log(format!("{:.2} GB\n", usage / 1024.0));
         } else {

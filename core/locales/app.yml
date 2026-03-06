@@ -172,6 +172,13 @@ fail_get_noita_save_store_path:
   en-GB: Could not locate Noita's save storage path
   ja-JP: Noitaのアーカイブ保存パスを特定できませんでした
 
+fail_get_local_share_path:
+  zh-CN: 无法确定当前用户的"~/.local/share/"路径
+  zh-TW: 無法確定目前使用者的"~/.local/share/"路徑
+  en-US: Could not locate current user's "~/.local/share/" path
+  en-GB: Could not locate current user's "~/.local/share/" path
+  ja-JP: 現在のユーザーの「~/.local/share/」パスを特定できませんでした
+
 fail_create_save_storage_folder:
   zh-CN: 无法创建存档存储文件夹
   zh-TW: 無法建立存檔儲存資料夾
@@ -243,11 +250,11 @@ fail_go_back_to_start_before_writing:
   ja-JP: 情報ファイルへの書き込み前に、ファイルの先頭に戻ることができませんでした
 
 fail_write_into_info_file:
-  zh-CN: '无法写入存档信息至"info.json"'
-  zh-TW: '無法寫入存檔資訊至"info.json"'
-  en-US: 'Could not write save info to "info.json"'
-  en-GB: 'Could not write save info to "info.json"'
-  ja-JP: 'アーカイブ情報を"info.json"に書き込むことができませんでした'
+  zh-CN: '无法写入存档信息至"infos.json"'
+  zh-TW: '無法寫入存檔資訊至"infos.json"'
+  en-US: 'Could not write save info to "infos.json"'
+  en-GB: 'Could not write save info to "infos.json"'
+  ja-JP: 'アーカイブ情報を"infos.json"に書き込むことができませんでした'
 
 fail_get_crr_pos_after_writing:
   zh-CN: 写入信息文件后无法确定当前位置

@@ -7,15 +7,11 @@ use std::path::{Path, PathBuf};
 use super::error::*;
 use super::save_infos::AllInfos;
 
-const SAVE_INFO_PATH: &str = r"./Saves/infos.json";
+const SAVE_INFO_PATH_POSTFIX: &str = r"infos.json";
 
 #[cfg(target_family = "windows")]
 const NOITA_SAVE_PATH_POSTFIX: &str = r"Appdata\LocalLow\Nolla_Games_Noita\save00";
-#[cfg(target_family = "windows")]
-pub const SAVE_FOLDER_PATH: &str = r".\Saves\";
 
-#[cfg(target_family = "unix")]
-pub const SAVE_FOLDER_PATH: &str = r"Saves";
 #[cfg(target_family = "unix")]
 const NOITA_SAVE_PATH_POSTFIX: &str = r".local/share/Steam/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/save00";
 
@@ -23,13 +19,16 @@ const NOITA_SAVE_PATH_POSTFIX: &str = r".local/share/Steam/steamapps/compatdata/
 pub struct FileOperator {
     m_file: fs::File,
     m_noita_save_path: PathBuf,
+    m_save_folder_path: PathBuf,
 }
 
 impl FileOperator {
     pub fn new() -> NSResult<Self> {
+        let save_folder_path = Self::get_save_folder_path()?;
         Ok(Self {
-            m_file: Self::open_info_file()?,
+            m_file: Self::open_info_file(&save_folder_path)?,
             m_noita_save_path: Self::get_noita_save_path()?,
+            m_save_folder_path: save_folder_path,
         })
     }
 
@@ -41,15 +40,27 @@ impl FileOperator {
         }
     }
 
-    fn open_info_file() -> NSResult<fs::File> {
-        fs::create_dir_all(SAVE_FOLDER_PATH)
+    fn get_save_folder_path() -> NSResult<PathBuf> {
+        #[cfg(target_family = "windows")]
+        return Ok(PathBuf::from(r".\Saves\"));
+        #[cfg(target_family = "unix")]
+        {
+            let Some(home_dir) = BaseDirs::new() else {
+                return throwfatal(&t!("fail_get_local_share_path"));
+            };
+            Ok(home_dir.data_local_dir().join("NoitaSaveManager"))
+        }
+    }
+
+    fn open_info_file(save_folder_path: &Path) -> NSResult<fs::File> {
+        fs::create_dir_all(save_folder_path)
             .explain_fatal(&t!("fail_create_save_storage_folder"))?;
         let mut f = fs::OpenOptions::new()
             .create(true)
             .truncate(false)
             .read(true)
             .write(true)
-            .open(SAVE_INFO_PATH)
+            .open(save_folder_path.join(SAVE_INFO_PATH_POSTFIX))
             .explain_fatal(&t!("fail_create_save_storage_folder"))?;
         if f.metadata()
             .explain(&t!("fail_query_info_file_size"))?
@@ -114,13 +125,13 @@ impl FileOperator {
     }
 
     pub fn save(&self, folder_name: &str) -> NSComResult {
-        let dst = PathBuf::from(SAVE_FOLDER_PATH).join(folder_name);
+        let dst = self.m_save_folder_path.join(folder_name);
         Self::copy_dir(&self.m_noita_save_path, &dst).explain(&t!("fail_save_achive"))?;
         Ok(())
     }
 
     pub fn remove_save(&self, folder_name: &str) -> NSComResult {
-        fs::remove_dir_all(PathBuf::from(SAVE_FOLDER_PATH).join(folder_name))
+        fs::remove_dir_all(self.m_save_folder_path.join(folder_name))
             .explain(&t!("fail_remove_folder", folder_name = folder_name))?;
         Ok(())
     }
@@ -128,7 +139,7 @@ impl FileOperator {
     pub fn load_save(&self, folder_name: String) -> NSComResult {
         fs::remove_dir_all(&self.m_noita_save_path).explain(&t!("fail_remove_crr_noita_save"))?;
         Self::copy_dir(
-            &PathBuf::from(SAVE_FOLDER_PATH).join(folder_name),
+            &self.m_save_folder_path.join(folder_name),
             &self.m_noita_save_path,
         )
         .explain(&t!("fail_load_save"))?;
@@ -136,16 +147,19 @@ impl FileOperator {
     }
 
     pub fn rename_save(&self, old_name: &str, new_name: &str) -> NSComResult {
-        let save_folder_path = PathBuf::from(SAVE_FOLDER_PATH);
         fs::rename(
-            save_folder_path.join(old_name),
-            save_folder_path.join(new_name),
+            self.m_save_folder_path.join(old_name),
+            self.m_save_folder_path.join(new_name),
         )
         .explain(&t!("fail_rename_save_folder"))?;
         Ok(())
     }
 
-    pub fn caculate_usage(path: &Path) -> NSResult<f64> {
+    pub fn get_usage(&self) -> NSResult<f64> {
+        FileOperator::caculate_usage(&self.m_save_folder_path)
+    }
+
+    fn caculate_usage(path: &Path) -> NSResult<f64> {
         let mut size = 0f64;
         for entry in
             fs::read_dir(path).explain(&t!("fail_caculate_size", path = format!("{path:?}")))?
