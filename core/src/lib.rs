@@ -15,30 +15,30 @@ extern crate rust_i18n;
 i18n!("locales");
 
 // std imports
-#[cfg(target_family = "unix")]
+#[cfg(target_os = "linux")]
 use directories::BaseDirs;
-#[cfg(target_family = "unix")]
+#[cfg(target_os = "linux")]
 use std::fs::File;
-#[cfg(target_family = "windows")]
+#[cfg(target_os = "windows")]
 use std::os::windows::process::CommandExt;
-#[cfg(target_family = "unix")]
+#[cfg(target_os = "linux")]
 use std::path::PathBuf;
 use std::process::Command;
 
-#[cfg(target_family = "unix")]
+#[cfg(target_os = "linux")]
 const APPID: &str = "881100";
 
 #[derive(Debug)]
 pub struct Core<Opm: OutputManager> {
-    #[cfg(target_family = "unix")]
+    #[cfg(target_os = "linux")]
     m_steam_dir: PathBuf,
-    #[cfg(target_family = "unix")]
+    #[cfg(target_os = "linux")]
     m_steam_runtime_runsh: PathBuf,
-    #[cfg(target_family = "unix")]
+    #[cfg(target_os = "linux")]
     m_proton_exe: PathBuf,
-    #[cfg(target_family = "unix")]
+    #[cfg(target_os = "linux")]
     m_noita_exe: PathBuf,
-    #[cfg(target_family = "unix")]
+    #[cfg(target_os = "linux")]
     m_noita_dir: PathBuf,
 
     m_file_operator: FileOperator,
@@ -66,21 +66,21 @@ impl<Opm: OutputManager> Core<Opm> {
         rust_i18n::set_locale(locale);
         let file_operator = FileOperator::new()?;
 
-        #[cfg(target_family = "unix")]
+        #[cfg(target_os = "linux")]
         let dir = BaseDirs::new().unwrap();
-        #[cfg(target_family = "unix")]
+        #[cfg(target_os = "linux")]
         let local_share_dir = dir.data_dir();
         Ok(Self {
-            #[cfg(target_family = "unix")]
+            #[cfg(target_os = "linux")]
             m_steam_dir: local_share_dir.join("Steam"),
-            #[cfg(target_family = "unix")]
+            #[cfg(target_os = "linux")]
             m_steam_runtime_runsh: local_share_dir.join("Steam/ubuntu12_32/steam-runtime/run.sh"),
-            #[cfg(target_family = "unix")]
+            #[cfg(target_os = "linux")]
             m_proton_exe: local_share_dir
                 .join("Steam/steamapps/common/Proton - Experimental/proton"),
-            #[cfg(target_family = "unix")]
+            #[cfg(target_os = "linux")]
             m_noita_exe: local_share_dir.join("Steam/steamapps/common/Noita/noita.exe"),
-            #[cfg(target_family = "unix")]
+            #[cfg(target_os = "linux")]
             m_noita_dir: local_share_dir.join("Steam/steamapps/common/Noita"),
             m_info: file_operator.load_infos()?,
             m_file_operator: file_operator,
@@ -115,7 +115,7 @@ impl<Opm: OutputManager> Core<Opm> {
     }
 
     pub fn startgame(&self) -> NSComResult {
-        #[cfg(target_family = "windows")]
+        #[cfg(target_os = "windows")]
         {
             let noipath = self.m_info.get_exe_path();
             if !(noipath.exists() && noipath.ends_with("noita.exe")) {
@@ -130,7 +130,7 @@ impl<Opm: OutputManager> Core<Opm> {
                     .spawn()?;
             }
         }
-        #[cfg(target_family = "unix")]
+        #[cfg(target_os = "linux")]
         {
             self.m_opm
                 .warning(t!("start_without_steam_warning").to_string() + "\n");
@@ -234,7 +234,7 @@ impl<Opm: OutputManager> Core<Opm> {
         Ok(())
     }
 
-    pub fn overwrite_save(&mut self) -> NSComResult {
+    pub fn overwrite_save(&mut self) -> NSBoolResult {
         if let Some(save) = self.m_info.saves.last_mut() {
             save.protect()?;
             let name = save.get_name();
@@ -243,7 +243,7 @@ impl<Opm: OutputManager> Core<Opm> {
                 .m_opm
                 .confirm(t!("overwrite_warning", save_name = name).to_string())?
             {
-                return Ok(());
+                return Ok(false);
             }
 
             self.m_file_operator.remove_save(name)?;
@@ -253,7 +253,7 @@ impl<Opm: OutputManager> Core<Opm> {
             save.modify_time(Self::get_time());
 
             self.write_infos()?;
-            Ok(())
+            Ok(true)
         } else {
             throw(&t!(
                 "no_save_to_operation",
@@ -294,31 +294,43 @@ impl<Opm: OutputManager> Core<Opm> {
         Ok((removed_save, (latest.clone())))
     }
 
-    pub fn load_save(&self, index: usize) -> NSComResult {
-        if let Some(item) = self.m_info.saves.get(index) {
-            self.m_file_operator
-                .load_save(item.get_name().to_string())?;
-            Ok(())
-        } else {
-            if self.m_info.saves.is_empty() {
-                return throw(&t!(
-                    "no_save_to_operation",
-                    operation = t!("load_operation")
-                ));
+    pub fn load_save(&self, index: usize) -> NSBoolResult {
+        match self.m_info.saves.get(index) {
+            Some(item) => {
+                if self
+                    .m_opm
+                    .confirm(t!("load_save_warning", save_name = item.get_name()).to_string())?
+                {
+                    self.m_file_operator
+                        .load_save(item.get_name().to_string())?;
+                    Ok(true)
+                } else {
+                    Ok(false)
+                }
             }
-            throw(&t!("invalid_index"))
+            None => {
+                if self.m_info.saves.is_empty() {
+                    throw(&t!(
+                        "no_save_to_operation",
+                        operation = t!("load_operation")
+                    ))
+                } else {
+                    throw(&t!("invalid_index"))
+                }
+            }
         }
     }
 
     #[inline]
-    pub fn quick_load(&self) -> NSComResult {
+    pub fn quick_load(&self) -> NSBoolResult {
         if self.m_info.saves.is_empty() {
-            return throw(&t!(
+            throw(&t!(
                 "no_save_to_operation",
                 operation = t!("load_operation")
-            ));
+            ))
+        } else {
+            self.load_save(self.m_info.saves.len() - 1)
         }
-        self.load_save(self.m_info.saves.len() - 1)
     }
 
     pub fn modify_save_info(
@@ -347,7 +359,7 @@ impl<Opm: OutputManager> Core<Opm> {
         }
     }
 
-    pub fn delete_saves(&mut self, indexes: Vec<usize>) -> NSComResult {
+    pub fn delete_saves(&mut self, indexes: Vec<usize>) -> NSBoolResult {
         let mut confirm_msg = t!("delete_save_warning").to_string();
         confirm_msg.push_str(":\n");
 
@@ -390,12 +402,14 @@ impl<Opm: OutputManager> Core<Opm> {
             self.m_file_operator
                 .write_infos(&self.m_info)
                 .explain(&t!("fail_modify_info_after_delete"))?;
+            Ok(true)
+        } else {
+            Ok(false)
         }
-        Ok(())
     }
 
     #[inline]
-    pub fn quick_delete_save(&mut self) -> NSComResult {
+    pub fn quick_delete_save(&mut self) -> NSBoolResult {
         let index = if self.m_info.saves.is_empty() {
             0
         } else {

@@ -66,6 +66,13 @@ overwrite_operation:
   en-GB: overwrite
   ja-JP: 上書き
 
+load_save_warning:
+  zh-CN: 将使用"%{save_name}"替换当前的Noita存档
+  zh-TW: 將使用"%{save_name}"替換目前的Noita存檔
+  en-US: Will use "%{save_name}" to replace the current Noita save
+  en-GB: Will use "%{save_name}" to replace the current Noita save
+  ja-JP: 現在のNoitaアーカイブを"%{save_name}"で置き換えます
+
 load_operation:
   zh-CN: 加载
   zh-TW: 載入

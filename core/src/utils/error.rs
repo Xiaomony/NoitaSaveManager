@@ -5,6 +5,7 @@ use serde_json;
 
 pub type NSComResult = Result<(), NSError>;
 pub type NSResult<T> = Result<T, NSError>;
+pub type NSBoolResult = Result<bool, NSError>;
 
 #[derive(Debug)]
 enum ErrorType {

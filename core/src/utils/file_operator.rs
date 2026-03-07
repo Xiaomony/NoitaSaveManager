@@ -9,10 +9,10 @@ use super::save_infos::AllInfos;
 
 const SAVE_INFO_PATH_POSTFIX: &str = r"infos.json";
 
-#[cfg(target_family = "windows")]
+#[cfg(target_os = "windows")]
 const NOITA_SAVE_PATH_POSTFIX: &str = r"Appdata\LocalLow\Nolla_Games_Noita\save00";
 
-#[cfg(target_family = "unix")]
+#[cfg(target_os = "linux")]
 const NOITA_SAVE_PATH_POSTFIX: &str = r".local/share/Steam/steamapps/compatdata/881100/pfx/drive_c/users/steamuser/AppData/LocalLow/Nolla_Games_Noita/save00";
 
 #[derive(Debug)]
@@ -41,9 +41,9 @@ impl FileOperator {
     }
 
     fn get_save_folder_path() -> NSResult<PathBuf> {
-        #[cfg(target_family = "windows")]
+        #[cfg(target_os = "windows")]
         return Ok(PathBuf::from(r".\Saves\"));
-        #[cfg(target_family = "unix")]
+        #[cfg(target_os = "linux")]
         {
             let Some(home_dir) = BaseDirs::new() else {
                 return throwfatal(&t!("fail_get_local_share_path"));

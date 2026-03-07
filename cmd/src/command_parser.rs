@@ -9,12 +9,12 @@ use super::CMDOPT;
 use super::cmdline_output::*;
 use colored::Colorize;
 use noita_save_manager_core::{
-    Core, NSError, NSResult, ResultExt, output_manager::OutputManager, throw,
+    Core, NSBoolResult, NSError, NSResult, ResultExt, output_manager::OutputManager, throw,
 };
 use regex::Regex;
 use rustyline::ExternalPrinter;
 
-type CallBack<'a> = fn(&CommandParser<'a>, &mut CmdCore, Vec<String>) -> NSResult<bool>;
+type CallBack<'a> = fn(&CommandParser<'a>, &mut CmdCore, Vec<String>) -> NSBoolResult;
 type CmdCore = Core<CmdlineOutput>;
 
 const TITLE: &str = concat!("NoitaSaveManager  v", env!("CARGO_PKG_VERSION"));
@@ -77,7 +77,7 @@ impl<'a> CommandParser<'a> {
             &t!("man.startgame"),
             Self::startgame,
         );
-        #[cfg(target_family = "windows")]
+        #[cfg(target_os = "windows")]
         new.add_command(
             &["setpath", "sp"],
             &t!("exp.setpath"),
@@ -188,7 +188,7 @@ impl<'a> CommandParser<'a> {
         });
     }
 
-    pub fn next_command(&mut self) -> NSResult<bool> {
+    pub fn next_command(&mut self) -> NSBoolResult {
         let line = self
             .m_ssave_kit
             .lock()
@@ -225,7 +225,7 @@ impl<'a> CommandParser<'a> {
         }
     }
 
-    fn help(&self, _core: &mut CmdCore, parameter: Vec<String>) -> NSResult<bool> {
+    fn help(&self, _core: &mut CmdCore, parameter: Vec<String>) -> NSBoolResult {
         if parameter.is_empty() {
             CMDOPT.log(t!("instruction").to_string());
         } else if let Some(item) = self.commands.iter().find(|item| {
@@ -251,9 +251,9 @@ impl<'a> CommandParser<'a> {
     }
 
     pub fn cls(&self) {
-        #[cfg(target_family = "unix")]
+        #[cfg(target_os = "linux")]
         std::process::Command::new("clear").status().unwrap();
-        #[cfg(target_family = "windows")]
+        #[cfg(target_os = "windows")]
         std::process::Command::new("cmd")
             .args(["/C", "cls"])
             .status()
@@ -270,13 +270,13 @@ impl<'a> CommandParser<'a> {
                 )
             );
             print_with_pad(&item.cmd_explanation, 22);
-            #[cfg(target_family = "windows")]
+            #[cfg(target_os = "windows")]
             match index + 1 {
                 3 | 8 | 11 | 14 | 16 => println!(),
                 5 | 9 | 18 => println!("\n"),
                 _ => (),
             }
-            #[cfg(target_family = "unix")]
+            #[cfg(target_os = "linux")]
             match index + 1 {
                 3 | 7 | 10 | 13 | 15 => println!(),
                 4 | 8 | 17 => println!("\n"),
@@ -287,22 +287,22 @@ impl<'a> CommandParser<'a> {
         CmdlineOutput::flush();
     }
 
-    fn clear(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn clear(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         self.cls();
         Ok(true)
     }
 
-    fn quit(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn quit(&self, _core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         Ok(false)
     }
 
-    fn startgame(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn startgame(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         core.startgame()?;
         Ok(true)
     }
 
-    #[cfg(target_family = "windows")]
-    fn set_noita_path(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSResult<bool> {
+    #[cfg(target_os = "windows")]
+    fn set_noita_path(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSBoolResult {
         core.set_noita_path(if parameter.is_empty() {
             let path = CMDOPT.input(t!("prompt.noita_path").to_string())?;
             if path.is_empty() {
@@ -317,7 +317,7 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn save(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSResult<bool> {
+    fn save(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSBoolResult {
         let name = if parameter.is_empty() {
             CMDOPT.input(t!("prompt.save_name").to_string())?
         } else {
@@ -338,19 +338,22 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn quick_save(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn quick_save(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         core.quick_save(false)?;
         CMDOPT.succeed();
         Ok(true)
     }
 
-    fn overwrite(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
-        core.overwrite_save()?;
-        CMDOPT.succeed();
+    fn overwrite(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
+        if core.overwrite_save()? {
+            CMDOPT.succeed();
+        } else {
+            CMDOPT.cancel();
+        }
         Ok(true)
     }
 
-    fn auto_save(&self, _core: &mut CmdCore, mut parameter: Vec<String>) -> NSResult<bool> {
+    fn auto_save(&self, _core: &mut CmdCore, mut parameter: Vec<String>) -> NSBoolResult {
         let Ok(mut time_interval) = (if parameter.is_empty() {
             CMDOPT
                 .input(t!("prompt.auto_save_interval").to_string())?
@@ -469,27 +472,33 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn load(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSResult<bool> {
+    fn load(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSBoolResult {
         if parameter.is_empty() {
             parameter.push(CMDOPT.input(t!("prompt.load_index").to_string())?);
         }
         if let Ok(index) = parameter.first().unwrap().as_str().parse::<usize>() {
             if index <= core.get_save_infos().saves.len() {
-                core.load_save(index - 1)?;
+                if core.load_save(index - 1)? {
+                    CMDOPT.succeed();
+                } else {
+                    CMDOPT.cancel();
+                }
+                Ok(true)
             } else {
-                return throw(&t!("warn.invalid_index"));
+                throw(&t!("warn.invalid_index"))
             }
         } else {
             CMDOPT.cancel();
-            return Ok(true);
+            Ok(true)
         }
-        CMDOPT.succeed();
-        Ok(true)
     }
 
-    fn quick_load(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
-        core.quick_load()?;
-        CMDOPT.succeed();
+    fn quick_load(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
+        if core.quick_load()? {
+            CMDOPT.succeed();
+        } else {
+            CMDOPT.cancel();
+        }
         Ok(true)
     }
 
@@ -511,18 +520,18 @@ impl<'a> CommandParser<'a> {
                 }
             });
     }
-    fn log(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn log(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         self.print_log(core, 0);
         Ok(true)
     }
 
-    fn short_log(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn short_log(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         let start = std::cmp::max(core.get_save_infos().saves.len() as isize - 6, 0) as usize;
         self.print_log(core, start);
         Ok(true)
     }
 
-    fn modify_save(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSResult<bool> {
+    fn modify_save(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSBoolResult {
         let index_str = if parameter.is_empty() {
             CMDOPT.input(t!("prompt.modify_index").to_string())?
         } else {
@@ -578,7 +587,7 @@ impl<'a> CommandParser<'a> {
         Ok(indexes.into_iter().collect())
     }
 
-    fn delete(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSResult<bool> {
+    fn delete(&self, core: &mut CmdCore, mut parameter: Vec<String>) -> NSBoolResult {
         if parameter.is_empty() {
             parameter.push(CMDOPT.input(t!("prompt.delete_index").to_string())?);
         }
@@ -587,16 +596,18 @@ impl<'a> CommandParser<'a> {
             CMDOPT.cancel();
             return Ok(true);
         }
-        core.delete_saves(indexes)?;
+        if !core.delete_saves(indexes)? {
+            CMDOPT.cancel();
+        }
         Ok(true)
     }
 
-    fn quick_delete(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn quick_delete(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         core.quick_delete_save()?;
         Ok(true)
     }
 
-    fn lock(&self, core: &mut CmdCore, parameter: Vec<String>) -> NSResult<bool> {
+    fn lock(&self, core: &mut CmdCore, parameter: Vec<String>) -> NSBoolResult {
         let indexes = Self::get_indexes_by_parameter(if parameter.is_empty() {
             CMDOPT
                 .input(t!("prompt.lock_index").to_string())?
@@ -614,7 +625,7 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn unlock(&self, core: &mut CmdCore, parameter: Vec<String>) -> NSResult<bool> {
+    fn unlock(&self, core: &mut CmdCore, parameter: Vec<String>) -> NSBoolResult {
         let indexes = Self::get_indexes_by_parameter(if parameter.is_empty() {
             CMDOPT
                 .input(t!("prompt.unlock_index").to_string())?
@@ -632,7 +643,7 @@ impl<'a> CommandParser<'a> {
         Ok(true)
     }
 
-    fn usage(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSResult<bool> {
+    fn usage(&self, core: &mut CmdCore, _parameter: Vec<String>) -> NSBoolResult {
         let usage = core.usage_by_mb()?;
         if usage > 1024.0 {
             CMDOPT.log(format!("{:.2} GB\n", usage / 1024.0));
