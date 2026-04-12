@@ -1,4 +1,4 @@
-# NoitaSaveManager
+# Noita Save Manager
 
 > 命令行版本支持***Linux***，可以在Release页面下载或者使用[安装脚本](../Linux/install.sh)
 

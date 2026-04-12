@@ -1,4 +1,4 @@
-# NoitaSaveManager
+# Noita Save Manager
 
 [简体中文Readme](./docs/Readme_Simplified_Chinese.md) [繁體中文Readme](/docs/Readme_Traditional_Chinese.md)
 
