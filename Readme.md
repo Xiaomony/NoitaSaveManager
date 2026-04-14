@@ -10,7 +10,8 @@ The application currently support:
 - English(en_GB, AI translated)
 - Japanese(AI translated)
 
-> The command-line version support _**Linux**_, you can manually download it from release page or use the [install script](./Linux/install.sh)
+> The command-line version support _**Linux**_, you can manually download it from release page or use the [install script](./Linux/install.sh) <br/> Also, you can use the following command:<br/>
+> `sudo -E sh -c "$(curl -L https://raw.github.com/Xiaomony/NoitaSaveManager/main/Linux/install.sh)"`
 
 |                      GUI(dark)                       |                       GUI(light)                       |                    CMD                     |
 | :--------------------------------------------------: | :----------------------------------------------------: | :----------------------------------------: |

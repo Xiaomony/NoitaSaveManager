@@ -5,12 +5,12 @@ edition.workspace = true
 build = "build.rs"
 
 [dependencies]
-colored = "3.0.0"
+colored = "3.1.1"
 noita_save_manager_core = { path = "../core/" }
-regex = "1.11.2"
+regex = "1.12.3"
 rust-i18n = { workspace = true }
-rustyline = "17.0.1"
-unicode-width = "0.2.1"
+rustyline = "18.0.0"
+unicode-width = "0.2.2"
 
 [build-dependencies]
 winres = "0.1.12"

@@ -1,9 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
-  "./gui/src-tauri/",
-  "cmd",
-  "core",
+    "./gui/src-tauri/",
+    "cmd",
+    "core",
 ]
 
 [workspace.package]
@@ -11,4 +11,4 @@ version = "4.2.4"
 edition = "2024"
 
 [workspace.dependencies]
-rust-i18n = "3.1.5"
+rust-i18n = "4.0.0"

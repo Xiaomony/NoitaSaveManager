@@ -1,6 +1,7 @@
 # Noita Save Manager
 
-> 命令行版本支持***Linux***，可以在Release页面下载或者使用[安装脚本](../Linux/install.sh)
+> 命令行版本支持***Linux***，可以在Release页面下载或者使用[安装脚本](../Linux/install.sh) <br/> 也可以使用如下命令进行安装：<br/>
+> `sudo -E sh -c "$(curl -L https://raw.github.com/Xiaomony/NoitaSaveManager/main/Linux/install.sh)"`
 
 |                    GUI(dark)                    |                    GUI(light)                     |                  CMD                  |
 | :---------------------------------------------: | :-----------------------------------------------: | :-----------------------------------: |
