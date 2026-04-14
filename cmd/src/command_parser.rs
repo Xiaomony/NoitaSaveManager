@@ -9,7 +9,7 @@ use super::CMDOPT;
 use super::cmdline_output::*;
 use colored::Colorize;
 use noita_save_manager_core::{
-    Core, NSBoolResult, NSError, NSResult, ResultExt, output_manager::OutputManager, throw,
+    Core, NSBoolResult, NSResult, ResultExt, output_manager::OutputManager, throw,
 };
 use regex::Regex;
 use rustyline::ExternalPrinter;
@@ -39,7 +39,7 @@ pub struct CommandParser<'a> {
 }
 
 impl<'a> CommandParser<'a> {
-    pub fn new() -> Result<Self, NSError> {
+    pub fn new() -> NSResult<Self> {
         let mut new = Self {
             commands: Vec::new(),
             m_core: Arc::new(Mutex::new(Core::new(CMDOPT)?)),
@@ -188,26 +188,8 @@ impl<'a> CommandParser<'a> {
         });
     }
 
-    pub fn next_command(&mut self) -> NSBoolResult {
-        let line = self
-            .m_ssave_kit
-            .lock()
-            .unwrap()
-            .m_rustyline_reader
-            .readline(">>>")
-            .unwrap();
+    pub fn parse(&mut self, mut parts: Vec<String>, is_cmd_args_mode: bool) -> NSBoolResult {
         let core = &mut *self.m_core.lock().explain(&t!("err.fail_get_mutex_lock"))?;
-        let re = Regex::new(r#""([^"]*)"|(\S+)"#).explain(&t!("err.fail_init_regex"))?;
-        let mut parts: Vec<String> = re
-            .captures_iter(&line)
-            .map(|cap| {
-                cap.get(1)
-                    .or_else(|| cap.get(2))
-                    .unwrap()
-                    .as_str()
-                    .to_string()
-            })
-            .collect();
 
         if parts.is_empty() {
             return throw(&t!("warn.incorrect_cmd_format"));
@@ -219,10 +201,39 @@ impl<'a> CommandParser<'a> {
                 .iter()
                 .any(|&sub_item| sub_item == command_str)
         }) {
+            if is_cmd_args_mode && let cmd_name @ ("quit" | "clear" | "asave") = command.cmd_name[0]
+            {
+                return throw(&t!(
+                    "err.cmd_cant_be_use_in_cmd_args_mode",
+                    command_name = cmd_name
+                ));
+            }
             (command.callback)(self, core, parts)
         } else {
             throw(&t!("warn.incorrect_cmd_format"))
         }
+    }
+
+    pub fn next_command(&mut self) -> NSBoolResult {
+        let line = self
+            .m_ssave_kit
+            .lock()
+            .unwrap()
+            .m_rustyline_reader
+            .readline(">>>")
+            .unwrap();
+        let re = Regex::new(r#""([^"]*)"|(\S+)"#).explain(&t!("err.fail_init_regex"))?;
+        let parts: Vec<String> = re
+            .captures_iter(&line)
+            .map(|cap| {
+                cap.get(1)
+                    .or_else(|| cap.get(2))
+                    .unwrap()
+                    .as_str()
+                    .to_string()
+            })
+            .collect();
+        self.parse(parts, false)
     }
 
     fn help(&self, _core: &mut CmdCore, parameter: Vec<String>) -> NSBoolResult {

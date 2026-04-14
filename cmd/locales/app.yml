@@ -22,6 +22,13 @@ err.fail_to_input:
   en-GB: Fail to get input
   ja-JP: 入力の取得に失敗
 
+err.cmd_cant_be_use_in_cmd_args_mode:
+  zh-CN: 无法在命令行参数模式下使用"%{command_name}"
+  zh-TW: 無法在命令列參數模式下使用「%{command_name}」
+  en-US: Command "%{command_name}" can't be used in command-line arguments mode
+  en-GB: Command "%{command_name}" can't be used in command-line arguments mode
+  ja-JP: コマンドライン引数モードでは「%{command_name}」は使用できません
+
 # warning
 warn.incorrect_cmd_format:
   zh-CN: 命令格式不正确

@@ -8,7 +8,7 @@ i18n!(
 mod cmdline_output;
 mod command_parser;
 
-use std::error::Error;
+use std::{env::args, error::Error};
 
 use cmdline_output::CmdlineOutput;
 use command_parser::CommandParser;
@@ -36,8 +36,20 @@ fn process() -> NSComResult {
     Ok(())
 }
 
+fn cmdline_args_mode(args: Vec<String>) -> NSComResult {
+    let mut parser = CommandParser::new()?;
+    parser.parse(args, true).map(|_| ())
+}
+
 fn main() {
-    if let Err(e) = process() {
+    let arguments = args();
+    let result = if arguments.len() > 1 {
+        cmdline_args_mode(arguments.skip(1).collect())
+    } else {
+        process()
+    };
+
+    if let Err(e) = result {
         CMDOPT.fatal_error(format!("{} :\n", e));
         e.get_explanation().iter().rev().for_each(|item| {
             CMDOPT.fatal_error(format!("\t-{}\n", item));
